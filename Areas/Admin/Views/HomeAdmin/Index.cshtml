@@ -1,0 +1,62 @@
+﻿
+@{
+    ViewBag.Title = "Home admin";
+    Layout = "~/Views/Share/_LayoutPage.cshtml";
+}
+
+<link href="~/Assets/Admin/css/HomeAdmin.css" rel="stylesheet" />
+@section svg{
+    @Html.Partial("_Svg")
+}
+<body>
+
+    <div class="container">
+        @*<div class="slideshow-container">
+            <div class="slide fade">
+                <img src="~/Assets/Admin/img/img1.jpeg" alt="Ảnh 1" />
+            </div>
+            <div class="slide fade">
+                <img src="~/Assets/Admin/img/img2.jpg" alt="Ảnh 2" />
+            </div>
+            <div class="slide fade">
+                <img src="~/Assets/Admin/img/img3.jpg" alt="Ảnh 3">
+            </div>
+            <a class="prev" onclick="plusSlides(-1)">❮</a>
+            <a class="next" onclick="plusSlides(1)">❯</a>
+        </div>*@
+
+        <aside class="sidebar right">
+            <button class="post-story">
+                <i class="fas fa-plus"></i>
+                Đăng Truyện
+            </button>
+            <ul class="list_menu">
+                <li>
+                    <a href="#">
+                        <div class="icon-box">
+                            <i class="fas fa-list"></i>
+                        </div>
+                    </a>
+                    <h4>Truyện</h4>
+                </li>
+                <li>
+                    <a href="#">
+                        <div class="icon-box">
+                            <i class="fas fa-user"></i>
+                        </div>
+                    </a>
+                    <h4>Người dùng</h4>
+                </li>
+                <li>
+                    <a href="@Url.Action("DanhSach", "TheLoai", new { area = "Admin" })">
+                        <div class="icon-box">
+                            <i class="fas fa-tags"></i>
+                        </div>
+                    </a>
+                    <h4>Thể loại</h4>
+                </li>
+            </ul>
+        </aside>
+    </div>
+    <script src="~/Assets/Admin/js/homeAdmin.js"></script>
+</body>

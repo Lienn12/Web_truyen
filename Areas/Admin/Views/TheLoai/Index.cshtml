@@ -1,0 +1,17 @@
+﻿@{
+    var theLoaiList = ViewData["TheLoaiList"] as List<Web_truyen.Models.TheLoai>;
+}
+
+@if (theLoaiList != null && theLoaiList.Any())
+{
+    <ul class="dropdown-menu grid-2-col">
+        @foreach (var item in theLoaiList)
+        {
+            <li><a href="#">@item.TenTheLoai</a></li>
+        }
+    </ul>
+}
+else
+{
+    <ul class="dropdown-menu"><li><a href="#">Không có dữ liệu</a></li></ul>
+}

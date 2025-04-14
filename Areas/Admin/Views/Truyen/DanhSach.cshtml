@@ -1,0 +1,48 @@
+﻿@model List<Web_truyen.Areas.Admin.Models.ListTruyenViewModel>
+
+@{
+    ViewBag.Title = "DanhSach";
+    Layout = "~/Views/Share/_LayoutPage.cshtml";
+}
+
+<h2>DanhSach</h2>
+
+<p>
+    @Html.ActionLink("Create New", "ThemMoi",new {area="Admin"})
+</p>
+<table class="table">
+    <tr>
+        <th>Truyện ID</th>
+        <th>Ảnh Bìa</th>
+        <th>Tiêu Đề</th>
+        <th>Ngày Tạo</th>
+        <th>Trạng Thái</th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.TruyenId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AnhBia)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TieuDe)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.NgayTao)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TrangThai)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+            </td>
+        </tr>
+    }
+
+</table>

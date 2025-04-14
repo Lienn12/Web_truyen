@@ -1,0 +1,13 @@
+﻿:root {
+    /* màu nền   */
+    --gradient: linear-gradient(to right, #977DFF, #0033FF, #0600AB);
+    /* màu nút */
+    --button: #0600AB;
+    --button_hover: #977DFF;
+    --radio_box: 14px;
+    --radio_input: 10px;
+    --complete: #27453A;
+    --Writing: #6D3233;
+    --following: #977DFF;
+    --font: 'Quicksand', sans-serif;
+}

@@ -1,0 +1,64 @@
+﻿@model Web_truyen.ViewModel.SignUpViewModel
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Sign Up</title>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="~/Assets/css/Style.css" rel="stylesheet" />
+    <link href="~/Assets/css/Account.css" rel="stylesheet" />
+</head>
+<body>
+    <div class="form-container">
+        <h2>Sign Up</h2>
+        @if (!ViewData.ModelState.IsValid)
+        {
+            <ul class="text-danger">
+                @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+                {
+                    <li>@error.ErrorMessage</li>
+                }
+            </ul>
+        }
+        @using (Html.BeginForm())
+        {
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            @Html.AntiForgeryToken()
+            <div class="form-group">
+                <label>Username</label>
+                @Html.TextBoxFor(m => m.Username, new { @class = "form-control", placeholder = "Enter username" })
+                @Html.ValidationMessageFor(m => m.Username, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="form-group">
+                <label>Email</label>
+                @Html.TextBoxFor(m => m.Email, new { @class = "form-control", placeholder = "Enter email" })
+                @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="form-group">
+                <label>Password</label>
+                @Html.PasswordFor(m => m.Password, new { @class = "form-control", placeholder = "Enter password" })
+                @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="form-group">
+                <label>Confirm Password</label>
+                @Html.Password("ConfirmPassword", null, new { @class = "form-control", placeholder = "Confirm password" })
+            </div>
+
+            <div class="form-group">
+                <input type="submit" value="Sign up" class="btn-submit" />
+            </div>
+
+            <div class="Link">
+                <label>Already have an account?</label>
+                @Html.ActionLink("Log in", "Login", "Account", null, new { @class = "btnLink" })
+            </div>
+        }
+    </div>
+</body>
+</html>

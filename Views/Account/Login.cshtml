@@ -1,0 +1,54 @@
+﻿@model Web_truyen.ViewModel.loginViewModel
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Login</title>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="~/Assets/css/Style.css" rel="stylesheet" />
+    <link href="~/Assets/css/Account.css" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="form-container">
+        <h2>Login</h2>
+        @using (Html.BeginForm())
+        {
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            @Html.AntiForgeryToken()
+            <div class="form-group">
+                <label>Username</label>
+                @Html.TextBoxFor(m => m.Username, new { @class = "form-control", placeholder = "Enter username" })
+                @Html.ValidationMessageFor(m => m.Username, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="form-group">
+                <label>Password</label>
+                <div class="password-container">
+                    @Html.PasswordFor(m => m.Password, new { @class = "form-control", placeholder = "Enter Password", id = "password" })
+                    <i class="fa fa-eye toggle-password" id="togglePassword" onclick="togglePasswordVisibility()"></i>
+                </div>
+                @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
+            </div>
+            <div class="form-group flex-container">
+                @Html.CheckBox("RememberMe", new { @class = "form-check-input", id = "rememberMe"})
+                @Html.DisplayNameFor(m => m.RememberMe)
+                @Html.ActionLink("Forgot password?", "VerifyEmail", "", new { @class = "btnForgot" })
+            </div>
+
+            <div class="form-group">
+                <input type="submit" value="Login" class="btn-submit" />
+            </div>
+
+            <div class="Link">
+                <label>Don't have an account?</label>
+                @Html.ActionLink("Sign up", "Signup", "Account", null, new { @class = "btnLink" })
+            </div>
+        }
+    </div>
+    <script src="~/Assets/js/Account.js"></script>
+</body>
+</html>

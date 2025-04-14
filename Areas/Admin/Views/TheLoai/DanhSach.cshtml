@@ -1,0 +1,97 @@
+﻿@model PagedList.IPagedList<Web_truyen.Models.TheLoai>
+
+@{
+    ViewBag.Title = "Danh Sách";
+    Layout = "~/Views/Share/_LayoutPage.cshtml";
+}
+
+@using PagedList
+@using PagedList.Mvc
+
+<link href="~/Assets/Admin/css/TheLoai.css" rel="stylesheet" />
+
+@section top {
+    @Html.Partial("_MenuHead")
+}
+
+<div class="row">
+    <!-- Form Thêm / Sửa -->
+    <div class="col-md-4 form-container">
+        <h4>@(ViewBag.EditId != null ? "Sửa thể loại" : "Thêm thể loại")</h4>
+
+        @using (Html.BeginForm(ViewBag.EditId != null ? "CapNhat" : "DanhSach", "TheLoai", FormMethod.Post, new { area = "Admin" }))
+        {
+            @Html.AntiForgeryToken()
+
+            if (ViewBag.EditId != null)
+            {
+                @Html.Hidden("id", (int)ViewBag.EditId)
+
+            }
+
+            <div class="form-group">
+                <label>Tên thể loại</label>
+                @Html.TextBox("TenTheLoai", ViewBag.EditTenTheLoai as string, new { @class = "form-control", placeholder = "Nhập tên thể loại..." })
+            </div>
+
+            if (TempData["Error"] != null)
+            {
+                <div class="alert alert-danger mt-2">@TempData["Error"]</div>
+            }
+
+            <div class="text-center mt-2">
+                @if (ViewBag.EditId != null)
+                {
+                    <button type="submit" class="btn btn-success">Lưu</button>
+                }
+                else
+                {
+                    <button type="submit" class="btn btn-success">Thêm</button>
+                }
+            </div>
+        }
+    </div>
+
+    <!-- Danh sách -->
+    <div class="col-md-8 table-container">
+        <h4>Danh sách thể loại</h4>
+        <table class="table table-bordered table-striped table-custom">
+            <thead>
+                <tr>
+                    <th class="Stt-column">STT</th>
+                    <th>Tên Thể Loại</th>
+                    <th class="action-column">Hành động</th>
+                </tr>
+            </thead>
+            <tbody>
+                @for (int i = 0; i < Model.Count(); i++)
+                {
+                    var item = Model[i];
+                    <tr>
+                        <td>@((Model.PageNumber - 1) * Model.PageSize + i + 1)</td>
+                        <td>@item.TenTheLoai</td>
+                        <td>
+                            <a href="@Url.Action("DanhSach", "TheLoai", new { area = "Admin", editId = item.TheLoaiId })" class="btn btn-warning btn-sm">
+                                <i class="fas fa-edit" style="color:#0600AB;"></i>
+                            </a>
+                            <a href="@Url.Action("Delete", "TheLoai", new { id = item.TheLoaiId, area = "Admin" })" class="btn btn-danger btn-sm" onclick="return confirm('Bạn có chắc chắn muốn xóa không?');">
+                                <i class="fas fa-trash-alt" style="color: red;"></i>
+                            </a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+        <!-- Phân trang -->
+        <div class="text-center">
+            @Html.PagedListPager(Model, page => Url.Action("DanhSach", new { page }),
+                new PagedListRenderOptions
+                {
+                    UlElementClasses = new[] { "pagination" },
+                    LiElementClasses = new[] { "page-item" },
+                })
+
+        </div>
+    </div>
+</div>

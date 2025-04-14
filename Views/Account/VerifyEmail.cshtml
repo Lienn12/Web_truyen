@@ -1,0 +1,44 @@
+﻿@model Web_truyen.ViewModel.VerifyRmailViewModel
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Verify Email</title>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <link href="~/Assets/css/Style.css" rel="stylesheet" />
+    <link href="~/Assets/css/Account.css" rel="stylesheet" />
+</head>
+<body>
+    <div class="form-container">
+        <a href="@Url.Action("Login", "Account")" class="back-icon">
+            <i class="fas fa-arrow-left fa-2x"></i>
+        </a>
+        <h2>Verify Email</h2>
+        @if (!ViewData.ModelState.IsValid)
+        {
+            <ul class="text-danger">
+                @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+                {
+                    <li>@error.ErrorMessage</li>
+                }
+            </ul>
+        }
+        @using (Html.BeginForm())
+
+        {
+            <div class="form-group">
+                <label>Email</label>
+                @Html.TextBoxFor(m => m.Email, new { @class = "form-control", placeholder = "Enter email" })
+                @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Verify" class="btn-submit" />
+            </div>
+        }
+    </div>
+</body>
+</html>

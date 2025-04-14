@@ -1,0 +1,83 @@
+﻿.head {
+    background-color: rgba(255, 255, 255, 0.95);
+    height: 90px;
+    width: 100%;
+    display: flex;
+    gap: 50px;
+    align-items: center;
+    padding-left: 50px;
+    color: black;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.text-center {
+    text-align: left;
+    font-size: 20px;
+    font-weight: bold;
+    color: black;
+}
+
+.sidebar-menu {
+    position: fixed;
+    top: 214px;
+    left: -250px;
+    width: 250px;
+    height: 100%;
+    background-color: #f8f9fa;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    transition: left 0.3s ease;
+    z-index: 999;
+}
+
+    .sidebar-menu.active {
+        left: 0;
+    }
+
+    .sidebar-menu li {
+        list-style: none;
+        margin-bottom: 15px;
+    }
+
+        .sidebar-menu li a {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+            color: var(--button);
+            font-size: 16px;
+            transition: all 0.3s ease;
+            padding: 10px 0;
+            border-radius: 5px;
+        }
+
+    .sidebar-menu a:hover {
+        color: var(--button_hover);
+        transform: translateX(5px);
+        padding-left: 15px;
+        background-color: #e6e6fa;
+    }
+
+    .sidebar-menu a i {
+        font-size: 18px;
+        color: var(--button);
+        transition: color 0.3s ease;
+    }
+
+    .sidebar-menu a:hover i {
+        color: var(--button_hover);
+    }
+
+    .sidebar-menu li:last-child {
+        margin-bottom: 30px;
+    }
+    .sidebar-menu a.active-page {
+        color: var(--button_hover);
+        font-weight: bold;
+        background-color: #e6e6fa;
+        transform: translateX(5px);
+        padding-left: 15px;
+    }
+        .sidebar-menu a.active-page i {
+            color: var(--button_hover);
+        }

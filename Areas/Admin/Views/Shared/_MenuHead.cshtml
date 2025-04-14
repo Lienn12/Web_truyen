@@ -1,0 +1,14 @@
+﻿<link href="~/Assets/Admin/css/_MenuHead.css" rel="stylesheet" />
+<div class="head">
+    <a id="menu-toggle"><i class="fas fa-bars fa-2x"></i></a>
+    <h2 class="text-center">Quản lý thể loại</h2>
+</div>
+
+<div class="sidebar-menu" id="sidebarMenu">
+    <ul>
+        <li><a href="#" class="sidebar-link"><i class="fas fa-home"></i>Trang chủ</a></li>
+        <li><a href="@Url.Action("DanhSach", "TheLoai", new { area = "Admin" })" class="sidebar-link"><i class="fas fa-list-alt"></i>Quản lý thể loại</a></li>
+        <li><a href="#" class="sidebar-link"><i class="fas fa-book"></i>Quản lý truyện</a></li>
+    </ul>
+</div>
+<script src="~/Assets/Admin/js/_MenuHead.js"></script>
