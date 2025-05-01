@@ -1,0 +1,108 @@
+﻿@model PagedList.IPagedList<Web_truyen.Areas.Admin.Models.ListUserViewModel>
+
+@using PagedList
+@using PagedList.Mvc
+@{
+    ViewBag.Title = "Danh Sách Người Dùng";
+    ViewBag.TitlePage = "Quản lý người dùng";
+    Layout = "~/Views/Share/_LayoutPage.cshtml";
+}
+<link href="~/Assets/Admin/css/truyen/DsTruyen.css" rel="stylesheet" />
+@section top {
+    @Html.Partial("_MenuHead")
+}
+
+<div class="container_story">
+    <form method="get" action="@Url.Action("DanhSachUser", "User")" class="search-bar">
+        <input type="text" name="searchTerm" placeholder="Nhập tên người dùng..." value="@ViewBag.SearchTerm" />
+
+        <!-- Có thể ẩn nếu không lọc trạng thái người dùng -->
+        <select name="roleFilter">
+            <option value="">-- Tất cả vai trò --</option>
+            <option value="author" @(ViewBag.RoleFilter == "author" ? "selected" : "")>Tác giả</option>
+            <option value="reader" @(ViewBag.RoleFilter == "user" ? "selected" : "")>Độc giả</option>
+            <option value="block" @(ViewBag.RoleFilter == "NULL" ? "selected" : "")>Tài khoản bị khóa</option>
+        </select>
+
+        <button type="submit"><i class="fa fa-search"></i> Tìm kiếm</button>
+    </form>
+
+    <div class="tab-menu">
+        <div class="filter-item @(ViewBag.CurrentFilter == null ? "active" : "")">
+            <a href="@Url.Action("DanhSachUser", "User")">Tất cả</a>
+        </div>
+        <div class="filter-item @(ViewBag.CurrentFilter == "bibaocao" ? "active" : "")">
+            <a href="@Url.Action("DanhSachUser", "User", new { filter = "bibaocao" })">Người bị báo cáo</a>
+        </div>
+    </div>
+
+    <div class="container_table">
+        <table class="table">
+            <tr>
+                <th>User ID</th>
+                <th>Tên đăng nhập</th>
+                <th>Số tác phẩm</th>
+                <th></th>
+            </tr>
+
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.UserId</td>
+                    <td>@item.UserName</td>
+                    <td>@item.SoTacPham</td>
+                    <td class="action-buttons">
+                        @if (item.TrangThai == false)
+                        {
+                            using (Html.BeginForm("MoKhoaTaiKhoan", "User", FormMethod.Post, new { @style = "display:inline;" }))
+                            {
+                                @Html.AntiForgeryToken()
+                                @Html.Hidden("userId", item.UserId)
+                                <button type="submit" class="btn-view" style="display: inline-flex; align-items: center; justify-content: center; margin: 0 6px; width: 40px; height: 40px; border-radius: 50%; box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1); font-size: 16px; transition: all 0.3s ease; text-decoration: none; color: white; background: #28a745 " title="Mở khóa tài khoản">
+                                    <i class="fa fa-unlock"></i>
+                                </button>
+                            }
+                        }
+                        else
+                        {
+                            using (Html.BeginForm("KhoaTaiKhoan", "User", FormMethod.Post, new { @style = "display:inline;" }))
+                            {
+                                @Html.AntiForgeryToken()
+                                @Html.Hidden("userId", item.UserId)
+                                <button type="submit" class="btn-delete" style="display: inline-flex; align-items: center; justify-content: center; margin: 0 6px; width: 40px; height: 40px; border-radius: 50%; box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1); font-size: 16px; transition: all 0.3s ease; text-decoration: none; color: white; background: #e67e22 " title="Khóa tài khoản">
+                                    <i class="fa fa-lock"></i>
+                                </button>
+                            }
+                        }
+
+
+                        <!-- Nút xem hồ sơ -->
+                        <a href="/Admin/User/HoSoCaNhan?useId=@item.UserId" class="btn-view" title="Xem hồ sơ">
+                            <i class="fa fa-eye"></i>
+                        </a>
+                    </td>
+
+
+                </tr>
+            }
+        </table>
+
+        <div class="pagination-container text-center">
+            @Html.PagedListPager(Model, page => Url.Action("DanhSachUser", new
+            {
+                page,
+                filter = ViewBag.CurrentFilter,
+                searchTerm = ViewBag.SearchTerm,
+                statusFilter = ViewBag.StatusFilter
+            }),
+            new PagedListRenderOptions
+            {
+                MaximumPageNumbersToDisplay = 5,
+                UlElementClasses = new[] { "pagination" },
+                LiElementClasses = new[] { "page-item" },
+            })
+        </div>
+    </div>
+</div>
+
+<script src="~/Assets/Admin/js/truyen/dsTruyen.js"></script>

@@ -1,0 +1,131 @@
+﻿a{
+    text-decoration:none
+}
+.header-actions {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 15px;
+}
+
+.chapter-list {
+    list-style: none;
+    padding: 0;
+}
+.status{
+    color: #a0a0a0;
+}
+.status-published {
+    color: var(--button);
+    font-weight: bold;
+}
+
+
+.chapter {
+    display: flex;
+    gap:20px;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    margin-top: 5px;
+    border-radius: 5px;
+    position: relative;
+}
+
+.chapter-info {
+    display:flex;
+    flex-direction:column;
+    gap:15px;
+}   
+    .chapter-info .title{
+        font-size:18px;
+        font-weight:500
+    }
+.chapter-icons {
+    display: flex;
+    gap: 10px;
+    color: #a0a0a0;
+}
+
+    .chapter-icons span {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+    }
+
+.options-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 25px;
+
+}
+    .options-btn:hover {
+        background-color: #f0f0f0;
+    }
+.options-menu {
+    display: none;
+    position: absolute;
+    background: white;
+    border: 1px solid #ccc;
+    padding: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    right: -150px; /* Ẩn menu ngoài khung nhìn */
+    top: 40px;
+    width: 150px;
+    transition: right 0.3s ease-in-out; /* Hiệu ứng mượt */
+}
+
+    .options-menu.show {
+        right: 0; /* Khi hiển thị, menu trượt vào */
+    }
+
+    .options-menu button {
+        display: block;
+        padding: 5px;
+        border: none;
+        background: none;
+        cursor: pointer;
+    }
+/* Container phân trang */
+.pagination {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+    list-style-type: none;
+}
+
+    /* Các trang */
+    .pagination a, .pagination span {
+        padding: 8px 16px;
+        margin: 0 5px;
+        border: 1px solid #ccc;
+        text-decoration: none;
+        color: #007bff;
+        border-radius: 5px;
+        font-size: 14px;
+        cursor: pointer;
+    }
+
+        /* Hover hiệu ứng cho các trang */
+        .pagination a:hover {
+            background-color: #007bff;
+            color: #fff;
+        }
+
+    /* Thêm kiểu cho trang đang chọn */
+    .pagination .current {
+        background-color: #007bff;
+        color: #fff;
+        border: 1px solid #007bff;
+    }
+
+    /* Các nút phân trang disabled */
+    .pagination .disabled {
+        color: #6c757d;
+        cursor: not-allowed;
+    }
+
+    /* Cải thiện cách hiển thị của số trang */
+    .pagination a {
+        transition: background-color 0.3s ease, color 0.3s ease;
+    }

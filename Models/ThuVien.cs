@@ -18,8 +18,8 @@ namespace Web_truyen.Models
         public int TruyenID { get; set; }
         public Nullable<int> ChuongDocGanNhat { get; set; }
         public Nullable<System.DateTime> ThoiGianDocGanNhat { get; set; }
-        public Nullable<bool> CoLuu { get; set; }
-        public Nullable<bool> DocXong { get; set; }
+        public bool CoLuu { get; set; }
+        public bool DocXong { get; set; }
     
         public virtual Chuong Chuong { get; set; }
         public virtual Truyen Truyen { get; set; }

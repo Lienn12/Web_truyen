@@ -11,9 +11,21 @@
 </head>
 <body>
     <header class="navbar">
+        @{
+            var vaiTro = Web_truyen.App_Start.SessionConfig.GetUser()?.VaiTro ?? "";
+            var isAdmin = vaiTro.Equals("Admin", StringComparison.OrdinalIgnoreCase);
+            var action = "Index";
+            var controller = isAdmin ? "HomeAdmin" : "Home";
+            var area = isAdmin ? "Admin" : "";
+        }
+
+
         <div class="logo">
-            <img src="~/Assets/img/LogoWeb.png" alt="Logo" />
+            <a href="@Url.Action(action, controller, new { area = area })">
+                <img src="~/Assets/img/LogoWeb.png" alt="Logo" />
+            </a>
         </div>
+
         <nav class="nav-links">
             <div class="dropdown">
                 <a href="#" class="dropdown-toggle">Danh sách<i class="fa-solid fa-angle-down"></i></a>
@@ -25,7 +37,7 @@
             </div>
             <div class="dropdown">
                 <a href="#" class="dropdown-toggle">Thể loại<i class="fa-solid fa-angle-down"></i></a>
-                @Html.Action("Index", "TheLoai",new {area="Admin"})
+                @Html.Action("Index", "TheLoai", new { area = "Admin" })
             </div>
         </nav>
 
@@ -33,7 +45,7 @@
             <input type="text" placeholder="Search yours book">
             <button><img src="~/Assets/img/search.png" alt="Search"></button>
         </div>
-        @{ 
+        @{
             var user = Web_truyen.App_Start.SessionConfig.GetUser();
         }
         @if (user == null)
@@ -50,10 +62,10 @@
                 <div class="user-info">
                     <p>Welcome back</p>
                     <h3>@user.Username</h3>
-                </div> 
+                </div>
                 <div class="dropdown">
                     <a href="#" class="dropdown-toggle">
-                        <img src="@(user.avt != null ? Url.Content(user.avt.ToString()) : Url.Content("~/Assets/img/user1.png"))" alt="Avatar" />
+                        <img src="@(user.avt != null ? Url.Content("~/Assets/img/"+user.avt.ToString()) : Url.Content("~/Assets/img/user1.png"))" alt="Avatar" />
                     </a>
                     <ul class="dropdown-menu">
                         <li><a href="#">Hồ sơ của tôi</a></li>
@@ -67,7 +79,7 @@
     <div class="svg">
         @RenderSection("svg", false)
     </div>
-    <div class="menu">
+    <div class="menu" id="menu">
         @RenderSection("top", false)
     </div>
     <div class="main-content">

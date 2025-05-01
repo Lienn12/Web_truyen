@@ -1,0 +1,48 @@
+﻿@model Tuple<List<Web_truyen.Models.Chuong>, int>
+<link href="~/Assets/Admin/css/MucLuc.css" rel="stylesheet" />
+
+<div id="mucLucContainer" class="muc-luc-container">
+    <h3 class="muc-luc-title">Mục Lục</h3>
+
+    <ul class="muc-luc-list">
+        @foreach (var chuong in Model.Item1)
+        {
+            var actionName = ViewBag.ActionName ?? "Edit";
+            var controllerName = ViewBag.ControllerName ?? "Chuong";
+            var isActive = chuong.ChuongId == Model.Item2;
+
+            <li class="@(isActive ? "active-chapter" : "")">
+                <a href="@Url.Action(actionName, controllerName, new { area = "Admin", id = chuong.ChuongId })"
+                   class="chapter-title">
+                    @chuong.TieuDe
+                </a>
+
+                <span class="status">
+                    @if (ViewBag.IsDocChuong == true)
+                    {
+                        @(chuong.DaDang ? "" : "Bản thảo")
+                    }
+                    else
+                    {
+                        @: @(chuong.DaDang ? "Đã đăng" : "Bản thảo")
+                        if (chuong.NgayTao != null)
+                        {
+                            @: - @chuong.NgayTao.ToString("dd/MM/yyyy")
+                        }}
+                </span>
+            </li>
+        }
+    </ul>
+
+    @if (ViewBag.HienThiNutThemChuong == true)
+    {
+        <form id="formCreateChapter" method="post"
+              action="@Url.Action("Create", "Chuong", new { area = "Admin" })"
+              style="display: inline;">
+            <input type="hidden" name="truyenId" value="@ViewBag.TruyenId" />
+            <button type="submit" class="btn-new-chapter">+ Chương mới</button>
+        </form>
+    }
+</div>
+
+<script src="~/Assets/Admin/js/MucLuc.js"></script>

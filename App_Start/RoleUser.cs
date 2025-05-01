@@ -17,9 +17,9 @@ namespace Web_truyen.App_Start
                 filterContext.Result = new RedirectToRouteResult(
                     new RouteValueDictionary( new 
                     {
-                        controller = "Users",
+                        controller = "Account",
                         action = "Login",
-                        area="Admin",
+                        area="",
                     }));
                 return;
             }

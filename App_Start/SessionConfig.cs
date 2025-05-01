@@ -16,5 +16,5 @@ namespace Web_truyen.App_Start
         {
             return (Users)HttpContext.Current.Session["user"];
         }
-    }
+    }   
 }

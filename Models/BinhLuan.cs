@@ -15,11 +15,11 @@ namespace Web_truyen.Models
     public partial class BinhLuan
     {
         public int BinhLuanId { get; set; }
-        public Nullable<int> userId { get; set; }
-        public Nullable<int> truyenId { get; set; }
-        public Nullable<int> ChuongId { get; set; }
+        public int userId { get; set; }
+        public int truyenId { get; set; }
+        public int ChuongId { get; set; }
         public string NoiDung { get; set; }
-        public Nullable<System.DateTime> NgayTao { get; set; }
+        public System.DateTime NgayTao { get; set; }
     
         public virtual Chuong Chuong { get; set; }
         public virtual Truyen Truyen { get; set; }

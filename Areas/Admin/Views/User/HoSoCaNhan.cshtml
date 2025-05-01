@@ -1,0 +1,132 @@
+﻿@model Web_truyen.Models.Users
+@using Web_truyen.Areas.Admin.Models
+@using Web_truyen.App_Start
+
+@{
+    var currentUserId = SessionConfig.GetUser().userId;
+    var isOwner = Model.userId == currentUserId;
+    //ViewBag.Title = "HoSoCaNhan";
+    var daTheoDoi = ViewBag.DaTheoDoi != null && (bool)ViewBag.DaTheoDoi;
+
+    Layout = "~/Views/Share/_LayoutPage.cshtml";
+}
+
+
+<link href="~/Assets/Admin/css/User/HoSoCaNhan.css" rel="stylesheet" />
+<div class="profile-container">
+    <!-- Phần tiêu đề -->
+    <div class="profile-header">
+        <div class="profile-avatar-container">
+            <img src="@Url.Content(string.IsNullOrEmpty(Model.avt) ? "~/Assets/img/user1.png" : "~/Assets/img/" + Model.avt)" alt="Ảnh đại diện" class="profile-avatar">
+
+        </div>
+        <div class="profile-info">
+            <h1>@Model.Username </h1>
+            <table class="profile-stats">
+                <tr>
+                    <td><strong>Tác phẩm:</strong></td>
+                    <td>@ViewBag.SoTruyen</td>
+                </tr>
+                <tr>
+                    <td><strong>Người theo dõi:</strong></td>
+                    <td>@ViewBag.SoNguoiTheoDoi</td>
+                </tr>
+            </table>
+            @if (isOwner)
+            {
+                <span class="edit-icon">
+                    <i class="fas fa-pencil-alt edit-icon"></i>
+                </span>
+            }
+
+            @if (!isOwner)
+            {
+                if (daTheoDoi)
+                {
+                    <form action="@Url.Action("HuyTheoDoiNguoiDung", "TheoDoiNguoiDung", new { area = "Admin" })" method="post">
+                        <input type="hidden" name="idNguoiDuocHuy" value="@Model.userId" />
+                        <button type="submit" class="btn btn-success">Đã theo dõi</button>
+                    </form>
+                }
+                else
+                {
+                    <form action="@Url.Action("TheoDoiNguoiDung", "TheoDoiNguoiDung", new { area = "Admin" })" method="post">
+                        <input type="hidden" name="idNguoiDuocTheoDoi" value="@Model.userId" />
+                        <button type="submit" class="btn btn-primary">Theo dõi</button>
+                    </form>
+                }
+            }
+        </div>
+    </div>
+
+
+    <!-- Nút theo dõi -->
+    <div class="profile-actions">
+        <div class="profile-btn">
+            <button class="toggle-btn" type="button" onclick="showProfileSection('intro-content', this)">Giới thiệu</button>
+            @if (isOwner)
+            {
+                <button class="toggle-btn active" type="button" onclick="showProfileSection('follow-content', this)">Đang theo dõi</button>
+            }
+
+        </div>
+        <div class="profile-conten">
+
+            <div id="follow-content" class="profile-section">
+
+            </div>
+            <div id="intro-content" class="profile-section" style="display: none;">
+                <div class="story-list">
+                    <h2>Truyện của tôi</h2>
+                    @if (ViewBag.DanhSachTruyen != null)
+                    {
+
+                        <p>@ViewBag.SoTruyenDaDang truyện đã đăng - @ViewBag.SoTruyenBanThao Bản thảo (chỉ mình tôi thấy)</p>
+
+                        foreach (var item in ViewBag.DanhSachTruyen as List<TruyenWithCountViewModel>)
+                        {
+                            var truyen = item.Truyen;
+                            int soChuong = item.SoChuong;
+                            <div class="story-item published">
+                                <img src="@Url.Content(string.IsNullOrEmpty(truyen.AnhBia) ? "~/Assets/img/default.png" : "~/Assets/img/" + truyen.AnhBia)" alt="@truyen.TieuDe" class="story-image">
+                                <div class="story-info">
+                                    <p class="story-title">@truyen.TieuDe</p>
+                                    <div class="detail">
+
+                                        <div class="stat-item">
+                                            <i class="fa-solid fa-eye"></i>
+                                            <span>@truyen.LuotDoc</span>
+                                        </div>
+
+                                        <div class="stat-item">
+                                            <i class="fa-solid fa-list"></i>
+                                            <span>@soChuong</span>
+                                        </div>
+
+                                    </div>
+                                    <p>@truyen.MoTa</p>
+                                    <div class="status_story @(truyen.TrangThai ? "completed" : "in-progress")">
+                                        @if (truyen.TrangThai)
+                                        {
+                                            @:Hoàn thành
+                                        }
+                                        else
+                                        {
+                                            @:Đang viết
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <!-- Danh sách truyện -->
+
+</div>
+<script src="~/Assets/Admin/js/User/HoSoCaNhan.js"></script>

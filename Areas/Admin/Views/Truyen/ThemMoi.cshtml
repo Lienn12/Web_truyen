@@ -1,62 +1,32 @@
 ﻿@model Web_truyen.Models.Truyen
+@using Web_truyen.App_Start
 
 @{
     ViewBag.Title = "Thêm mới truyện";
     Layout = "~/Views/Share/_LayoutPage.cshtml";
+    ViewBag.TheLoai = ViewBag.TheLoaiId;
 }
+<link href="~/Assets/Admin/css/truyen/ThemTruyen.css" rel="stylesheet" />
+<link href="~/Assets/Admin/css/_head.css" rel="stylesheet" />
 
-@using (Html.BeginForm("ThemMoi", "Truyen", FormMethod.Post, new { enctype = "multipart/form-data" }))
-{
-    @Html.AntiForgeryToken()
+@section top {
+    <div class="container_head">
+        <button id="back" onclick="history.back()" class="btn-back">
+            <i class="fas fa-chevron-left fa-2x" style="color: gray"></i>
+        </button>
 
-    <div class="container mt-4">
-        <div class="row">
-            <!-- Ảnh bìa -->
-            <div class="col-md-4 text-center">
-                <img src="~/Content/Images/upload-placeholder.png" alt="Ảnh bìa" class="img-thumbnail mb-3" />
-                <div class="mb-3">
-                    <label class="form-label">Tải ảnh bìa</label>
-                    <input type="file" name="AnhBiaFile" class="form-control" />
-                    <small class="form-text text-muted">Định dạng PNG/JPG/GIF, tối đa 2MB</small>
-                </div>
-            </div>
-
-            <!-- Chi tiết truyện -->
-            <div class="col-md-8">
-                <div class="card p-4 shadow-sm">
-                    <h4 class="card-title border-bottom pb-2">Thông tin truyện</h4>
-
-                    <div class="mb-3">
-                        @Html.LabelFor(model => model.TieuDe)
-                        @Html.TextBoxFor(model => model.TieuDe, new { @class = "form-control", placeholder = "Nhập tiêu đề" })
-                        @Html.ValidationMessageFor(model => model.TieuDe, "", new { @class = "text-danger" })
-                    </div>
-
-                    <div class="mb-3">
-                        @Html.LabelFor(model => model.MoTa)
-                        @Html.TextAreaFor(model => model.MoTa, 5, 50, new { @class = "form-control" })
-                        @Html.ValidationMessageFor(model => model.MoTa, "", new { @class = "text-danger" })
-                    </div>
-
-                    <div class="mb-3">
-                        @Html.LabelFor(model => model.TheLoaiId, "Thể loại")
-                        @Html.DropDownListFor(model => model.TheLoaiId, (IEnumerable<SelectListItem>)ViewBag.TheLoaiId, "Chọn thể loại", new { @class = "form-control" })
-                        @Html.ValidationMessageFor(model => model.TheLoaiId, "", new { @class = "text-danger" })
-                    </div>
-
-                    <div class="mb-3">
-                        @Html.LabelFor(model => model.TrangThai)
-                        @Html.TextBoxFor(model => model.TrangThai, new { @class = "form-control", placeholder = "Ví dụ: Đang cập nhật, Hoàn thành..." })
-                    </div>
-
-                    <div class="mb-3 form-check">
-                        @Html.CheckBox("XepLoai", Model.XepLoai ?? false, new { @class = "form-check-input" })
-                        @Html.Label("XepLoai", "Truyện trưởng thành", new { @class = "form-check-label" })
-                    </div>
-
-                    <button type="submit" class="btn btn-primary mt-2">Lưu truyện</button>
-                </div>
+        <div class="containes-text">
+            <div class="title-author">
+                <h4 class="text-center" style="color:gray;">Thêm truyện mới</h4>
+                <h2 class="text-title">Truyện chưa có tiêu đề</h2>
             </div>
         </div>
+        <div class="btn_link mt-4">
+            <button type="button" id="btnCancel" class="btn btn1" data-url="@Url.Action("DanhSach", "Truyen", new { area = "Admin" })">Huỷ</button>
+            <button type="button" id="btnSaveAndNext" class="btn btn2">Tiếp tục</button>
+        </div>
+
     </div>
 }
+@Html.Partial("_themTruyen", Model)
+<script src="~/Assets/Admin/js/truyen/Themtruyen.js"></script>

@@ -1,0 +1,154 @@
+﻿@model Web_truyen.Areas.Admin.Models.ChuongViewModel
+@{
+    ViewBag.Title = "Đọc chương";
+    Layout = "~/Views/Share/_LayoutPage.cshtml";
+}
+<link href="~/Assets/Admin/css/_head.css" rel="stylesheet" />
+<link href="~/Assets/Admin/css/DocChuong.css" rel="stylesheet" />
+<style>
+
+    .comment-box {
+        width: 100%;
+        padding: 10px;
+        margin: 20px auto;
+        display: flex;
+        gap: 30px;
+        background: white;
+        border-radius: 5px;
+        box-shadow: 0px 0px 5px rgba(0,0,0,0.2);
+        flex-direction: column;
+    }
+
+    .comment {
+        margin-bottom: 10px;
+    }
+
+    .author {
+        font-weight: bold;
+    }
+
+    .reply-btn {
+        color: blue;
+        cursor: pointer;
+        font-size: 12px;
+    }
+
+    .comment-input {
+        display: flex;
+        margin-top: 10px;
+        height:30px;
+        border-radius:8px;
+    }
+
+    input {
+        flex: 1;
+        padding: 5px;
+        border: 1px solid #ccc;
+        border-radius: 3px;
+    }
+
+    button {
+        padding: 5px 10px;
+        background-color: blue;
+        color: white;
+        border: none;
+        border-radius: 3px;
+        cursor: pointer;
+        margin-left: 5px;
+    }
+</style>
+@section top {
+    <div class="container_head">
+        <div class="containes-text" id="toggleMucLuc">
+            <div class="containes-text">
+                <div class="title-author">
+                    <h2 class="text-title">@ViewBag.TieuDeTruyen</h2>
+                    <h4 class="text-center" style="color:gray">
+                        @ViewBag.TacGia
+                    </h4>
+                </div>
+                <i class="fa-solid fa-chevron-down toggle-icon"></i>
+            </div>
+        </div>
+
+        <div class="btn_link">
+            @*@if (ViewBag.CurrentUserId != null && Model.Chuong.Truyen.userId == ViewBag.CurrentUserId)
+            {*@
+                <button id="btnback" class="btn btn1"
+                        data-url="@Url.Action("Edit", "Chuong", new { area = "Admin", id = Model.Chuong.ChuongId })">
+                    Quay lại phần viết
+                </button>
+                @*}*@
+
+            @using (Html.BeginForm("DocChuong", "Chuong", FormMethod.Post, new { area = "Admin" }))
+            {
+                @Html.AntiForgeryToken()
+                @Html.HiddenFor(m => m.Chuong.ChuongId)
+                @Html.HiddenFor(m => m.Chuong.DaDang)
+
+                <!-- Kiểm tra và ẩn nút Đăng tải nếu DaDang là true -->
+                <button type="submit" id="btnSubmit" class="btn btn3"
+                        style="@(Model.Chuong.DaDang ? "display:none;" : "")">
+                    Đăng tải
+                </button>
+            }
+
+
+
+
+        </div>
+    </div>
+    @{
+        ViewBag.ActionName = "DocChuong";
+        ViewBag.HienThiNutThemChuong = false;
+
+    }
+    @Html.Partial("MucLuc", new Tuple<List<Web_truyen.Models.Chuong>, int>(Model.DanhSachChuong, ViewBag.ChuongDangChon ?? 0))
+}
+<div class="wrapper">
+    @*<aside class="author-info">
+            <img src="avatar.jpg" alt="avatar" class="author-avatar" />
+            <p class="author-text">bởi <strong>Hann</strong></p>
+        </aside>*@
+
+    <main class="chapter-body">
+        <h2 class="chapter-heading">@Model.Chuong.TieuDe</h2>
+        <div class="chapter-meta">
+            <i class="fa-regular fa-eye"></i> 10
+            @*<i class="fa-regular fa-star"></i> 0*@
+            <i class="fa-regular fa-comment"></i> 2
+        </div>
+        <div class="chapter-content">
+            @Html.Raw(Model.Chuong.NoiDung)
+        </div>
+    </main>
+
+    <div class="chapter-navigation">
+        @if (ViewBag.ChuongTruocId != null)
+        {
+            <a class="btn btn-prev" href="@Url.Action("DocChuong", "Chuong", new { id = ViewBag.ChuongTruocId })">Phần trước đó</a>
+        }
+        @if (ViewBag.ChuongSauId != null)
+        {
+            <a class="btn btn-next" href="@Url.Action("DocChuong", "Chuong", new { id = ViewBag.ChuongSauId })">Phần tiếp theo</a>
+        }
+    </div>
+    <div class="comment-box">
+        <div class="comment-input">
+            <input type="text" placeholder="Viết bình luận...">
+            <button>Gửi</button>
+        </div>
+        <div class="comment">
+            <span class="author">Lin:</span> Hay quá
+            @*<div class="reply-btn">Trả lời</div>*@
+        </div>
+        <div class="comment">
+            <span class="author">admin (Tác giả):</span> cảm ơn 
+            @*<div class="reply-btn">Trả lời</div>*@
+        </div>
+        <!-- Ô nhập bình luận -->
+
+    </div>
+</div>
+
+<script src="~/Assets/Admin/js/DocChuong.js"></script>

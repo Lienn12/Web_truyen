@@ -3,6 +3,7 @@
     justify-content: space-between;
     gap: 200px;
     justify-content:center;
+    margin-top:-80px;
 }
 .slideshow-container {
     width: 100%;

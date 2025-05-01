@@ -143,12 +143,12 @@ header {
     top: 124px;
     left: 0;
     width: 100%;
-    z-index: 999;
+    z-index: 90;
 }
 .main-content {
     max-width: 1200px;
     margin: 0 auto;
-    padding: 150px 20px 45px;
+    padding: 250px 20px 45px;
     position: relative;
     z-index: 10;
 }

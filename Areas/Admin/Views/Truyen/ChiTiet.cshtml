@@ -1,0 +1,104 @@
+﻿@model Web_truyen.Models.Truyen
+
+@{
+    ViewBag.Title = "chi tiết truyện";
+    Layout = "~/Views/Share/_LayoutPage.cshtml";
+}
+<link href="~/Assets/Admin/css/truyen/ChiTiet.css" rel="stylesheet" />
+<div class="container">
+    <!-- Phần ảnh & thông tin truyện -->
+    <div class="story-header">
+        <img id="previewImage" src="~/Assets/img/@Model.AnhBia" alt="Ảnh bìa" class="cover-image" />
+        <div class="story-info">
+            <h1>@Model.TieuDe</h1>
+            <table class="story-table">
+                <thead>
+                    <tr>
+                        <th>Lượt đọc</th>
+                        <th>Số chương</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>10</td>
+                        <td>@ViewBag.TongSoChuong</td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="btn-group">
+                <button class="read-btn">Bắt đầu đọc</button>
+                <button class="plus-btn">+</button>
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="container-main">
+        <!-- Phần tác giả -->
+        <div class="author-box">
+            <div class="author-info">
+                <img src="@Url.Content(string.IsNullOrEmpty(Model.Users.avt) ? "~/Assets/img/user1.png" : "~/Assets/img/" + Model.Users.avt)" alt="Tác giả" class="author-image" />
+
+                <p>@Model.Users.Username</p>
+            </div>
+            <div class="status_story @(Model.TrangThai ? "completed" : "in-progress")">
+                @if (Model.TrangThai)
+                {
+                    @:Hoàn thành
+                }
+                else
+                {
+                    @:Đang viết
+                }
+            </div>
+
+            <div class="des">@Model.MoTa</div>
+        </div>
+
+        <!-- Mục lục -->
+        <div class="table-of-contents">
+            @{
+                ViewBag.ControllerName = "Chuong";
+                ViewBag.ActionName = "DocChuong";
+                ViewBag.IsDocChuong = true;
+            }
+            @Html.Partial("~/Areas/Admin/Views/Chuong/MucLuc.cshtml", new Tuple<List<Web_truyen.Models.Chuong>, int>(ViewBag.DanhSachChuong, ViewBag.ChuongDangChon ?? 0))
+        </div>
+
+    </div>
+    <!-- Mục truyện đề xuất -->
+    @if (ViewBag.TruyenGoiY != null)
+    {
+        <div class="recommendations">
+            <h2>Có thể bạn sẽ thích</h2>
+            <div class="story-grid">
+                @foreach (var truyen in ViewBag.TruyenGoiY as List<Web_truyen.Models.Truyen>)
+                {
+                    <div class="story-card">
+                        <a href="@Url.Action("ChiTiet", "Truyen", new { id = truyen.truyenId })">
+                            <img src="@Url.Content(string.IsNullOrEmpty(@truyen.AnhBia) ? "~/Assets/img/user1.png" : "~/Assets/img/" + truyen.AnhBia)" alt="@truyen.TieuDe" />
+                            <div class="story-card_container">
+                                <p class="tieude">@truyen.TieuDe</p>
+                                <div class="status_story @(Model.TrangThai ? "completed" : "in-progress")">
+                                    @if (Model.TrangThai)
+                                    {
+                                        @:Hoàn thành
+                                    }
+                                    else
+                                    {
+                                        @:Đang viết
+                                    }
+                                </div>
+                                @*<p class="mota">@truyen.MoTa</p>*@
+                            </div>
+                            
+                        </a>
+                    </div>
+                }
+            </div>
+        </div>
+    }
+
+
+</div>

@@ -16,7 +16,7 @@ namespace Web_truyen.Models
     {
         public int TheoDoiNguoiDungId { get; set; }
         public int NguoiTheoDoiId { get; set; }
-        public Nullable<System.DateTime> NgayTheoDoi { get; set; }
+        public System.DateTime NgayTheoDoi { get; set; }
     
         public virtual Users Users { get; set; }
         public virtual Users Users1 { get; set; }

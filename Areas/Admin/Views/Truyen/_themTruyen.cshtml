@@ -1,0 +1,50 @@
+﻿@model Web_truyen.Models.Truyen
+@using Web_truyen.App_Start
+
+@using (Html.BeginForm(Model.truyenId == 0 ? "ThemMoi" : "EditTruyen", "Truyen", FormMethod.Post, new { enctype = "multipart/form-data", id = Model.truyenId == 0 ? "ThemMoi" : "EditTruyen" }))
+{
+
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(model => model.NgayTao)
+    @Html.HiddenFor(model => model.NgayCapNhap)
+    @Html.HiddenFor(model => model.TrangThai, new { @Value = false })
+    @Html.HiddenFor(model => model.DaDang, new { @Value = false })
+
+    <div class="them-truyen-wrapper">
+        <div class="left-panel">
+            <img id="previewImage"
+                 src="@(string.IsNullOrEmpty(Model.AnhBia) ? Url.Content("~/Assets/img/upload-placeholder.png") : Url.Content("~/Assets/img/" + Model.AnhBia))"
+                 alt="Ảnh bìa"
+                 class="preview-img" />
+
+            <input type="file" name="AnhBiaFile" class="custom-file-input" id="AnhBiaFileInput" />
+        </div>
+
+        <div class="right-panel">
+            <h2 class="form-title">Chi tiết truyện</h2>
+
+            <div class="form-group">
+                <label>Tiêu đề</label>
+                @Html.TextBoxFor(model => model.TieuDe, new { @class = "form-control", placeholder = "Tiêu đề truyện" })
+                @Html.ValidationMessageFor(model => model.TieuDe, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="form-group">
+                <label>Mô tả</label>
+                @Html.TextAreaFor(model => model.MoTa, 4, 50, new { @class = "form-control", placeholder = "Mô tả truyện" })
+                @Html.ValidationMessageFor(model => model.MoTa, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="form-group">
+                <label>Thể loại</label>
+                @Html.DropDownListFor(model => model.TheLoaiId, ViewBag.TheLoai as SelectList, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.TheLoaiId, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="form-check">
+                @Html.CheckBox("XepLoai", Model.XepLoai, new { @class = "form-check-input" })
+                @Html.Label("XepLoai", "Truyện trưởng thành", new { @class = "form-check-label" })
+            </div>
+        </div>
+    </div>
+}

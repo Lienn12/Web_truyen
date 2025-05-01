@@ -44,11 +44,20 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="AngleSharp, Version=0.17.1.0, Culture=neutral, PublicKeyToken=e83494dcdc6d31ea, processorArchitecture=MSIL">
+      <HintPath>packages\AngleSharp.0.17.1\lib\net472\AngleSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="AngleSharp.Css, Version=0.17.0.0, Culture=neutral, PublicKeyToken=e83494dcdc6d31ea, processorArchitecture=MSIL">
+      <HintPath>packages\AngleSharp.Css.0.17.0\lib\net472\AngleSharp.Css.dll</HintPath>
+    </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>packages\EntityFramework.6.4.4\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
     <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>packages\EntityFramework.6.4.4\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="HtmlSanitizer, Version=9.0.0.0, Culture=neutral, PublicKeyToken=61c49a1a9e79cc28, processorArchitecture=MSIL">
+      <HintPath>packages\HtmlSanitizer.9.0.876\lib\net461\HtmlSanitizer.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="PagedList, Version=1.17.0.0, Culture=neutral, PublicKeyToken=abbb863e9397c5e1, processorArchitecture=MSIL">
@@ -57,8 +66,27 @@
     <Reference Include="PagedList.Mvc, Version=4.5.0.0, Culture=neutral, PublicKeyToken=abbb863e9397c5e1, processorArchitecture=MSIL">
       <HintPath>packages\PagedList.Mvc.4.5.0.0\lib\net40\PagedList.Mvc.dll</HintPath>
     </Reference>
+    <Reference Include="System.Buffers, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>packages\System.Buffers.4.5.1\lib\net461\System.Buffers.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Collections.Immutable, Version=9.0.0.1, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>packages\System.Collections.Immutable.9.0.1\lib\net462\System.Collections.Immutable.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Memory, Version=4.0.1.2, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>packages\System.Memory.4.5.5\lib\net461\System.Memory.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Numerics" />
+    <Reference Include="System.Numerics.Vectors, Version=4.1.4.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>packages\System.Numerics.Vectors.4.5.0\lib\net46\System.Numerics.Vectors.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>packages\System.Runtime.CompilerServices.Unsafe.6.0.0\lib\net461\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
+    </Reference>
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Security" />
+    <Reference Include="System.Text.Encoding.CodePages, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>packages\System.Text.Encoding.CodePages.6.0.0\lib\net461\System.Text.Encoding.CodePages.dll</HintPath>
+    </Reference>
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
@@ -103,25 +131,46 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Assets\Admin\css\DocChuong.css" />
+    <Content Include="Assets\Admin\css\EditChuong.css" />
     <Content Include="Assets\Admin\css\HomeAdmin.css" />
+    <Content Include="Assets\Admin\css\MucLuc.css" />
     <Content Include="Assets\Admin\css\TheLoai.css" />
+    <Content Include="Assets\Admin\css\truyen\ChiTiet.css" />
+    <Content Include="Assets\Admin\css\truyen\MucLucEdit.css" />
+    <Content Include="Assets\Admin\css\truyen\ThemTruyen.css" />
+    <Content Include="Assets\Admin\css\truyen\EditTruyen.css" />
+    <Content Include="Assets\Admin\css\User\HoSoCaNhan.css" />
+    <Content Include="Assets\Admin\css\_head.css" />
     <Content Include="Assets\Admin\css\_MenuHead.css" />
     <Content Include="Assets\Admin\css\_Svg.css" />
     <Content Include="Assets\Admin\img\img1.jpeg" />
     <Content Include="Assets\Admin\img\img2.jpg" />
     <Content Include="Assets\Admin\img\img3.jpg" />
+    <Content Include="Assets\Admin\js\DocChuong.js" />
+    <Content Include="Assets\Admin\js\truyen\EditTruyen.js" />
+    <Content Include="Assets\Admin\js\truyen\dsTruyen.js" />
+    <Content Include="Assets\Admin\js\EditChuong.js" />
     <Content Include="Assets\Admin\js\homeAdmin.js" />
+    <Content Include="Assets\Admin\js\MucLuc.js" />
+    <Content Include="Assets\Admin\js\truyen\MucLucEdit.js" />
+    <Content Include="Assets\Admin\js\truyen\Themtruyen.js" />
+    <Content Include="Assets\Admin\js\User\HoSoCaNhan.js" />
     <Content Include="Assets\Admin\js\_MenuHead.js" />
     <Content Include="Assets\css\Account.css" />
     <Content Include="Assets\css\Home.css" />
     <Content Include="Assets\css\Layout.css" />
     <Content Include="Assets\css\Style.css" />
+    <Content Include="Assets\Admin\css\truyen\DsTruyen.css" />
     <Content Include="Assets\img\user1.png" />
     <Content Include="Assets\img\search.png" />
     <Content Include="Assets\img\LogoWeb.png" />
+    <Content Include="Assets\img\usermacdinh.jpg" />
     <Content Include="Assets\js\Account.js" />
+    <Content Include="Assets\js\Home.js" />
     <Content Include="Assets\js\Layout.js" />
     <Content Include="Content\PagedList.css" />
+    <Content Include="Content\Site.css" />
     <Content Include="Global.asax" />
     <Content Include="Models\Connect.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
@@ -140,10 +189,17 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\SessionConfig.cs" />
     <Compile Include="Areas\Admin\AdminAreaRegistration.cs" />
+    <Compile Include="Areas\Admin\Controllers\ChuongController.cs" />
     <Compile Include="Areas\Admin\Controllers\HomeAdminController.cs" />
     <Compile Include="Areas\Admin\Controllers\TheLoaiController.cs" />
+    <Compile Include="Areas\Admin\Controllers\TheoDoiNguoiDungController.cs" />
     <Compile Include="Areas\Admin\Controllers\TruyenController.cs" />
+    <Compile Include="Areas\Admin\Controllers\UserController.cs" />
+    <Compile Include="Areas\Admin\Models\ListChuongViewModel.cs" />
     <Compile Include="Areas\Admin\Models\ListTruyenViewModel.cs" />
+    <Compile Include="Areas\Admin\Models\ListUserViewModel.cs" />
+    <Compile Include="Areas\Admin\Models\TaoAnhBiaMacDinh.cs" />
+    <Compile Include="Areas\Admin\Models\TruyenWithCountViewModel.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Global.asax.cs">
@@ -179,10 +235,16 @@
     <Compile Include="Models\sp_helpdiagrams_Result.cs">
       <DependentUpon>Connect.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\sysdiagrams.cs">
+      <DependentUpon>Connect.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\TheLoai.cs">
       <DependentUpon>Connect.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\TheoDoi_NguoiDung.cs">
+      <DependentUpon>Connect.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\TheoDoi_Truyen.cs">
       <DependentUpon>Connect.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\ThongBao.cs">
@@ -208,6 +270,21 @@
     <Content Include="Areas\Admin\Views\web.config" />
     <Content Include="Areas\Admin\Views\HomeAdmin\Index.cshtml" />
     <Content Include="Areas\Admin\Views\Shared\_MenuHead.cshtml" />
+    <Content Include="Areas\Admin\Views\Truyen\DanhSach.cshtml" />
+    <Content Include="Areas\Admin\Views\Truyen\ThemMoi.cshtml" />
+    <Content Include="Areas\Admin\Views\TheLoai\DanhSach.cshtml" />
+    <Content Include="Areas\Admin\Views\Shared\_Svg.cshtml" />
+    <Content Include="Areas\Admin\Views\TheLoai\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\Truyen\ChiTiet.cshtml" />
+    <Content Include="Areas\Admin\Views\Shared\_head.cshtml" />
+    <Content Include="Areas\Admin\Views\Chuong\Edit.cshtml" />
+    <Content Include="Areas\Admin\Views\Chuong\MucLuc.cshtml" />
+    <Content Include="Areas\Admin\Views\Chuong\DocChuong.cshtml" />
+    <Content Include="Areas\Admin\Views\Truyen\Edit.cshtml" />
+    <Content Include="Areas\Admin\Views\Truyen\MucLucEdit.cshtml" />
+    <Content Include="Areas\Admin\Views\User\DanhSachUser.cshtml" />
+    <Content Include="Areas\Admin\Views\User\HoSoCaNhan.cshtml" />
+    <Content Include="Areas\Admin\Views\User\TruyenCuaToi.cshtml" />
     <EntityDeploy Include="Models\Connect.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>Connect.Designer.cs</LastGenOutput>
@@ -215,11 +292,7 @@
     <Content Include="Models\Connect.edmx.diagram">
       <DependentUpon>Connect.edmx</DependentUpon>
     </Content>
-    <Content Include="Areas\Admin\Views\Truyen\DanhSach.cshtml" />
-    <Content Include="Areas\Admin\Views\Truyen\ThemMoi.cshtml" />
-    <Content Include="Areas\Admin\Views\TheLoai\DanhSach.cshtml" />
-    <Content Include="Areas\Admin\Views\Shared\_Svg.cshtml" />
-    <Content Include="Areas\Admin\Views\TheLoai\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\Truyen\_themTruyen.cshtml" />
     <None Include="packages.config" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Account\Login.cshtml" />
@@ -227,6 +300,7 @@
     <Content Include="Views\Account\ChangePassword.cshtml" />
     <Content Include="Views\Account\Signup.cshtml" />
     <Content Include="Views\Share\_LayoutPage.cshtml" />
+    <Content Include="Views\Account\EnterResetCode.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -236,6 +310,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Areas\Admin\Views\TheoDoiNguoiDung\" />
     <Folder Include="Assets\Uploads\" />
   </ItemGroup>
   <ItemGroup>

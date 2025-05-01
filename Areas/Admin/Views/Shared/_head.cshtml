@@ -1,0 +1,51 @@
+﻿<link href="~/Assets/Admin/css/_head.css" rel="stylesheet" />
+
+<div class="container_head">
+    @if (!string.IsNullOrEmpty(ViewBag.BackClick as string))
+    {
+        <button id="back" onclick="@ViewBag.BackClick" class="btn-back">
+            <i class="fas fa-chevron-left fa-2x" style="color: gray"></i>
+        </button>
+    }
+    else
+    {
+        <a id="back">
+            <i class="fas fa-chevron-left fa-2x" style="color: gray"></i>
+        </a>
+    }
+    <div class="containes-text">
+        <h2 class="text-title">
+            <a href="@Url.Action("ChiTiet", "Truyen", new { id = ViewBag.StoryId })" style="text-decoration: none; color: inherit;">
+                @ViewBag.TitleStory
+            </a>
+        </h2>
+
+    <h2 class="text-title">@ViewBag.TitleStory</h2>
+    <h4 class="text-check" style="color:gray;">@ViewBag.Check</h4>
+</div>
+
+    @if (!string.IsNullOrEmpty(ViewBag.Button1 as string)
+     || !string.IsNullOrEmpty(ViewBag.Button2 as string)
+     || !string.IsNullOrEmpty(ViewBag.Button3 as string))
+    {
+        <div class="btn_link">
+            @if (!string.IsNullOrEmpty(ViewBag.Button1 as string))
+            {
+                <button type="button" id="btnCancel" class="btn btn1" data-url="@Url.Action("ThemMoi", "Truyen", new { area = "Admin" })">@ViewBag.Button1</button>
+            }
+            @if (!string.IsNullOrEmpty(ViewBag.Button2 as string))
+            {
+                <button type="button" id="btnPreview" class="btn btn2">@ViewBag.Button2</button>
+            }
+            @if (!string.IsNullOrEmpty(ViewBag.Button3 as string))
+            {
+                <button type="button" id="btnSubmit" class="btn btn3">@ViewBag.Button3</button>
+            }
+        </div>
+    }
+</div>
+<script>
+    function handleBack() {
+        history.back(); // hoặc window.location.href = '...';
+    }
+</script>

@@ -1,0 +1,229 @@
+﻿.container_story {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    margin-top:70px;
+}
+
+.btn-primary {
+    float: right;
+    background-color: var(--button);
+    color: white;
+    font-weight: bold;
+    padding: 10px 20px;
+    border-radius: 10px;
+    border: none;
+    font-size: 16px;
+    text-decoration: none;
+}
+
+    .btn-primary:hover {
+        background-color: var(--button_hover);
+    }
+
+.tab-menu {
+    display: flex;
+    border-bottom: 2px solid #e0e0e0;
+    padding-left: 10px;
+    margin-bottom: 20px;
+}
+
+    .tab-menu div {
+        position: relative;
+        padding: 10px 20px;
+        cursor: pointer;
+        font-weight: bold;
+    }
+
+        .tab-menu div a {
+            text-decoration: none;
+            color: #555;
+            padding: 5px 10px;
+            transition: color 0.3s ease-in-out;
+        }
+
+        .tab-menu div.active a {
+            color: var(--button);
+        }
+
+        .tab-menu div.active::after {
+            content: "";
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background-color: var(--button); 
+            border-radius: 2px;
+        }
+
+
+.container_table {
+    margin-top: 20px;
+    border-radius: 15px;
+    padding: 20px;
+}
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+    .table th {
+        background-color: white;
+        font-weight: bold;
+        text-align: center;
+        padding: 12px;
+        font-size: 16px;
+    }
+
+    .table td {
+        text-align: center;
+        padding: 15px;
+        vertical-align: middle;
+        font-size: 16px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        max-width: 200px;
+    }
+
+    .table img {
+        width: 100px;
+        height: 120px;
+        background-color: #a383ff;
+        border-radius: 12px;
+    }
+
+    .table tr:not(:first-child) {
+        border-top: 1px solid #ccc;
+    }
+
+.badge {
+    padding: 6px 12px;
+    border-radius: 12px;
+    font-size: 14px;
+    color: white;
+    font-weight: bold;
+    display: inline-block;
+    width:140px;
+}
+
+.badge-hoanthanh {
+  background-color: var(--complete); 
+}
+
+.badge-dangviet {
+   background-color: var(--Writing);
+}
+.badge-success {
+    color:black;
+}
+.badge-warning {
+    color: var(--button);
+}
+.action-buttons a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 6px;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+    font-size: 16px;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    color: white;
+}
+.btn-edit {
+    background-color: #f8c291; 
+}
+
+.btn-view {
+    background-color: #82ccdd; 
+}
+
+.btn-delete {
+    background-color: #e77f67; 
+}
+
+.action-buttons a:hover {
+    transform: scale(1.1);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    opacity: 0.9;
+}
+
+.pagination {
+    list-style: none;
+    display: flex;
+    justify-content: center;
+    padding: 10px;
+}
+
+.page-item {
+    margin: 0 5px;
+}
+
+    .page-item a {
+        padding: 8px 12px;
+        border-radius: 5px;
+        background: #eee;
+        color: #333;
+        text-decoration: none;
+    }
+
+        .page-item a:hover {
+            background: #007BFF;
+            color: white;
+        }
+
+.page-item {
+    background-color: #007bff;
+    color: white !important;
+    border-color: #007bff;
+}
+
+    .page-item.active a {
+        background-color: #007BFF;
+        pointer-events: none;
+    }
+.search-bar {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    padding: 10px;
+    border-radius: 8px;
+}
+
+    .search-bar input {
+        flex: 1;
+        padding: 8px;
+        border: 1px solid #ddd;
+        border-radius: 6px;
+        font-size: 16px;
+    }
+
+    .search-bar select {
+        padding: 8px;
+        border: 1px solid #ddd;
+        border-radius: 6px;
+        font-size: 16px;
+        background: #fff;
+        cursor: pointer;
+    }
+
+    .search-bar button {
+        padding: 8px 15px;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 6px;
+        font-size: 16px;
+        cursor: pointer;
+        transition: background 0.3s ease;
+    }
+
+        .search-bar button:hover {
+            background-color: #0056b3;
+        }

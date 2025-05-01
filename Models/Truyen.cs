@@ -19,27 +19,30 @@ namespace Web_truyen.Models
         {
             this.BinhLuan = new HashSet<BinhLuan>();
             this.Chuong = new HashSet<Chuong>();
+            this.TheoDoi_Truyen = new HashSet<TheoDoi_Truyen>();
             this.ThuVien = new HashSet<ThuVien>();
         }
     
         public int truyenId { get; set; }
-        public Nullable<int> userId { get; set; }
+        public int userId { get; set; }
         public string TieuDe { get; set; }
         public string MoTa { get; set; }
         public string AnhBia { get; set; }
-        public Nullable<int> TheLoaiId { get; set; }
-        public string TrangThai { get; set; }
-        public Nullable<System.DateTime> NgayTao { get; set; }
-        public Nullable<System.DateTime> NgayCapNhap { get; set; }
-        public Nullable<int> LuotDoc { get; set; }
-        public Nullable<bool> XepLoai { get; set; }
-        public Nullable<bool> DaDang { get; set; }
+        public int TheLoaiId { get; set; }
+        public bool TrangThai { get; set; }
+        public System.DateTime NgayTao { get; set; }
+        public System.DateTime NgayCapNhap { get; set; }
+        public int LuotDoc { get; set; }
+        public bool XepLoai { get; set; }
+        public bool DaDang { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<BinhLuan> BinhLuan { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Chuong> Chuong { get; set; }
         public virtual TheLoai TheLoai { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<TheoDoi_Truyen> TheoDoi_Truyen { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ThuVien> ThuVien { get; set; }
         public virtual Users Users { get; set; }

@@ -1,0 +1,250 @@
+﻿*{
+    font-family:var(--font);
+}
+.btn2{
+    background-color:var(--button);
+    color:white;
+}
+.update-success {
+    color: green;
+    font-size: 14px;
+    margin-left: 12px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-weight: 500;
+    animation: fadeIn 0.5s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-4px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.story-container {  
+    margin: auto;
+    border-radius: 10px;
+    display: flex;
+    justify-content: space-between;
+}
+.story-content {
+    display: flex;
+    gap: 20px;
+    flex-direction:column
+}
+
+.story-image {
+    position: relative;
+    display:flex;
+    flex-direction:column;
+    gap: 20px;
+}
+
+.preview-image {
+    width: 350px;
+    height: 400px;
+    border-radius: 5px;
+    transition: filter 0.3s ease;
+}
+
+.btn-edit {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(0, 0, 0, 0.6);
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 18px;
+    display: none; 
+}
+.story-image:hover .preview-image {
+    filter: blur(1px);
+}
+
+.story-image:hover .btn-edit {
+    display: block;
+}
+
+
+.btn-preview {
+    padding: 10px 12px;
+    background-color: var(--button);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight:bold;
+}
+    .btn-preview:hover {
+        background-color: var(--button_hover);
+    }
+.story-info{
+    width:700px;
+}
+.tab-menu {
+    display: flex;
+    justify-content: space-around;
+    background-color: white;
+    border-radius: 8px 8px 0 0;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.tab-btn {
+    padding: 8px 12px;
+    border: none;
+    background: transparent;
+    font-size: 20px;
+    color: black;
+    cursor: pointer;
+    position: relative;
+}
+
+    .tab-btn.active {
+        color: var(--button);
+        font-weight: bold;
+    }
+
+        .tab-btn.active::after {
+            content: "";
+            width: 100%;
+            height: 3px;
+            background: var(--button);
+            position: absolute;
+            bottom: -3px;
+            left: 0;
+        }
+
+.add-btn {
+    background-color: var(--button);
+    color: white;
+    padding: 10px;
+    border: none;
+    cursor: pointer;
+    font-size: 14px;
+    border-radius: 5px;
+}
+#formCreate {
+    background-color: white;
+    padding: 15px 15px 10px 30px;
+}
+.section {
+    background-color: white;
+    padding: 2px 20px 20px 20px;
+    border-radius: 0 0 8px 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    margin: 0 auto;
+}
+    .section label {
+        font-weight: bold;
+        color: #333;
+        display: block;
+    }
+.form-control {
+    width: 100%;
+    padding: 10px;
+    border: 0.1px solid #ddd;
+    border-radius: 5px;
+    font-size: 14px;
+}
+    .form-control:focus {
+        outline: none;
+        border: 0.3px solid #000;
+    }
+textarea.form-control {
+    resize: vertical; 
+    min-height:150px;
+}
+
+.select-dropdown {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 14px;
+}
+#story-details {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+.status-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.author-name {
+    font-weight: bold;
+}
+
+.form-control[type="checkbox"] {
+    appearance: none;
+    width: 60px;
+    height: 27px;
+    background: #757575;
+    border-radius: 50px;
+    position: relative;
+    cursor: pointer;
+    transition: background 0.3s;
+    outline: none;
+    border: 0px solid #000;
+}
+
+    .form-control[type="checkbox"]:checked {
+        background: #A3E4D7;
+    }
+
+    .form-control[type="checkbox"]::before {
+        content: "";
+        position: absolute;
+        width: 20px;
+        height: 20px;
+        background: white;
+        border-radius: 50%;
+        top: 2.5px;
+        left: 4.6px;
+        transition: left 0.3s;
+    }
+
+    .form-control[type="checkbox"]:checked::before {
+        left: 35px;
+    }
+
+.section .form-group {
+    margin-bottom: 20px;
+}
+
+    .section .form-group:last-child {
+        margin-bottom: 0;
+    }
+    .section label{
+        margin-top:10px
+    }
+.form-control {
+    box-sizing: border-box;
+}
+h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 24px;
+    color: #333;
+}
+
+.checkbox {
+    display: flex;
+    align-items: center; 
+    gap: 15px;
+    text-align:center
+}

@@ -9,7 +9,6 @@
     @Html.Partial("_Svg")
 }
 <body>
-
     <div class="container">
         @*<div class="slideshow-container">
             <div class="slide fade">
@@ -26,13 +25,14 @@
         </div>*@
 
         <aside class="sidebar right">
-            <button class="post-story">
+            <button class="post-story" onclick="location.href='@Url.Action("ThemMoi", "Truyen", new { area = "Admin" })'">
                 <i class="fas fa-plus"></i>
                 Đăng Truyện
             </button>
+
             <ul class="list_menu">
                 <li>
-                    <a href="#">
+                    <a href="@Url.Action("DanhSach", "Truyen", new { area = "Admin" })">
                         <div class="icon-box">
                             <i class="fas fa-list"></i>
                         </div>
@@ -40,7 +40,7 @@
                     <h4>Truyện</h4>
                 </li>
                 <li>
-                    <a href="#">
+                    <a href="@Url.Action("DanhSachUser", "User", new { area = "Admin" })">
                         <div class="icon-box">
                             <i class="fas fa-user"></i>
                         </div>
@@ -57,6 +57,8 @@
                 </li>
             </ul>
         </aside>
+
     </div>
+
     <script src="~/Assets/Admin/js/homeAdmin.js"></script>
 </body>

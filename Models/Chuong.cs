@@ -22,11 +22,14 @@ namespace Web_truyen.Models
         }
     
         public int ChuongId { get; set; }
-        public Nullable<int> truyenId { get; set; }
+        public int truyenId { get; set; }
         public string TieuDe { get; set; }
         public string NoiDung { get; set; }
-        public Nullable<System.DateTime> NgayTao { get; set; }
-        public Nullable<bool> DaDang { get; set; }
+        public System.DateTime NgayTao { get; set; }
+        public bool DaDang { get; set; }
+        public int ThuTu { get; set; }
+        public int LuotDoc { get; set; }
+        public string TrangThaiDuyet { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<BinhLuan> BinhLuan { get; set; }

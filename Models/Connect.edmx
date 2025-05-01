@@ -4,46 +4,59 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="Web_TruyenModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="Web_TruyenModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="BaoCao">
           <Key>
             <PropertyRef Name="BaoCaoId" />
           </Key>
           <Property Name="BaoCaoId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="NguoiBaoCaoId" Type="int" />
-          <Property Name="LoaiBaoCao" Type="varchar" MaxLength="20" />
+          <Property Name="NguoiBaoCaoId" Type="int" Nullable="false" />
+          <Property Name="LoaiBaoCao" Type="varchar" MaxLength="20" Nullable="false" />
           <Property Name="DoiTuongId" Type="int" Nullable="false" />
-          <Property Name="LyDo" Type="nvarchar(max)" />
-          <Property Name="NgayBaoCao" Type="datetime" />
+          <Property Name="LyDo" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="NgayBaoCao" Type="datetime" Nullable="false" />
         </EntityType>
         <EntityType Name="BinhLuan">
           <Key>
             <PropertyRef Name="BinhLuanId" />
           </Key>
           <Property Name="BinhLuanId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="userId" Type="int" />
-          <Property Name="truyenId" Type="int" />
-          <Property Name="ChuongId" Type="int" />
-          <Property Name="NoiDung" Type="nvarchar(max)" />
-          <Property Name="NgayTao" Type="datetime" />
+          <Property Name="userId" Type="int" Nullable="false" />
+          <Property Name="truyenId" Type="int" Nullable="false" />
+          <Property Name="ChuongId" Type="int" Nullable="false" />
+          <Property Name="NoiDung" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="NgayTao" Type="datetime" Nullable="false" />
         </EntityType>
         <EntityType Name="Chuong">
           <Key>
             <PropertyRef Name="ChuongId" />
           </Key>
           <Property Name="ChuongId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="truyenId" Type="int" />
-          <Property Name="TieuDe" Type="nvarchar" MaxLength="255" />
-          <Property Name="NoiDung" Type="nvarchar(max)" />
-          <Property Name="NgayTao" Type="datetime" />
-          <Property Name="DaDang" Type="bit" />
+          <Property Name="truyenId" Type="int" Nullable="false" />
+          <Property Name="TieuDe" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="NoiDung" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="NgayTao" Type="datetime" Nullable="false" />
+          <Property Name="DaDang" Type="bit" Nullable="false" />
+          <Property Name="ThuTu" Type="int" Nullable="false" />
+          <Property Name="LuotDoc" Type="int" Nullable="false" />
+          <Property Name="TrangThaiDuyet" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="principal_id" Type="int" Nullable="false" />
+          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="version" Type="int" />
+          <Property Name="definition" Type="varbinary(max)" />
         </EntityType>
         <EntityType Name="TheLoai">
           <Key>
             <PropertyRef Name="TheLoaiId" />
           </Key>
           <Property Name="TheLoaiId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="TenTheLoai" Type="nvarchar" MaxLength="50" />
+          <Property Name="TenTheLoai" Type="nvarchar" MaxLength="50" Nullable="false" />
         </EntityType>
         <EntityType Name="TheoDoi_NguoiDung">
           <Key>
@@ -52,24 +65,26 @@
           </Key>
           <Property Name="TheoDoiNguoiDungId" Type="int" Nullable="false" />
           <Property Name="NguoiTheoDoiId" Type="int" Nullable="false" />
-          <Property Name="NgayTheoDoi" Type="datetime" />
+          <Property Name="NgayTheoDoi" Type="datetime" Nullable="false" />
         </EntityType>
-        <!--Errors Found During Generation:
-warning 6013: The table/view 'Web_Truyen.dbo.TheoDoi_Truyen' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
         <EntityType Name="TheoDoi_Truyen">
-          <Property Name="userId" Type="int" />
-          <Property Name="truyenId" Type="int" />
-          <Property Name="NgayTheoDoi" Type="datetime" />
-        </EntityType>-->
+          <Key>
+            <PropertyRef Name="userId" />
+            <PropertyRef Name="truyenId" />
+          </Key>
+          <Property Name="userId" Type="int" Nullable="false" />
+          <Property Name="truyenId" Type="int" Nullable="false" />
+          <Property Name="NgayTheoDoi" Type="datetime" Nullable="false" />
+        </EntityType>
         <EntityType Name="ThongBao">
           <Key>
             <PropertyRef Name="ID_ThongBao" />
           </Key>
           <Property Name="ID_ThongBao" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="userId" Type="int" />
-          <Property Name="NoiDung" Type="nvarchar" MaxLength="255" />
-          <Property Name="DaXem" Type="bit" />
-          <Property Name="NgayTao" Type="datetime" />
+          <Property Name="userId" Type="int" Nullable="false" />
+          <Property Name="NoiDung" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="DaXem" Type="bit" Nullable="false" />
+          <Property Name="NgayTao" Type="datetime" Nullable="false" />
         </EntityType>
         <EntityType Name="ThuVien">
           <Key>
@@ -80,41 +95,42 @@ warning 6013: The table/view 'Web_Truyen.dbo.TheoDoi_Truyen' does not have a pri
           <Property Name="TruyenID" Type="int" Nullable="false" />
           <Property Name="ChuongDocGanNhat" Type="int" />
           <Property Name="ThoiGianDocGanNhat" Type="datetime" />
-          <Property Name="CoLuu" Type="bit" />
-          <Property Name="DocXong" Type="bit" />
+          <Property Name="CoLuu" Type="bit" Nullable="false" />
+          <Property Name="DocXong" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="Truyen">
           <Key>
             <PropertyRef Name="truyenId" />
           </Key>
           <Property Name="truyenId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="userId" Type="int" />
-          <Property Name="TieuDe" Type="nvarchar" MaxLength="255" />
-          <Property Name="MoTa" Type="nvarchar(max)" />
-          <Property Name="AnhBia" Type="nvarchar" MaxLength="255" />
-          <Property Name="TheLoaiId" Type="int" />
-          <Property Name="TrangThai" Type="nvarchar" MaxLength="20" />
-          <Property Name="NgayTao" Type="datetime" />
-          <Property Name="NgayCapNhap" Type="datetime" />
-          <Property Name="LuotDoc" Type="int" />
-          <Property Name="XepLoai" Type="bit" />
-          <Property Name="DaDang" Type="bit" />
+          <Property Name="userId" Type="int" Nullable="false" />
+          <Property Name="TieuDe" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="MoTa" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="AnhBia" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="TheLoaiId" Type="int" Nullable="false" />
+          <Property Name="TrangThai" Type="bit" Nullable="false" />
+          <Property Name="NgayTao" Type="datetime" Nullable="false" />
+          <Property Name="NgayCapNhap" Type="datetime" Nullable="false" />
+          <Property Name="LuotDoc" Type="int" Nullable="false" />
+          <Property Name="XepLoai" Type="bit" Nullable="false" />
+          <Property Name="DaDang" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="Users">
           <Key>
             <PropertyRef Name="userId" />
           </Key>
           <Property Name="userId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Username" Type="nvarchar" MaxLength="50" />
-          <Property Name="Email" Type="nvarchar" MaxLength="100" />
-          <Property Name="Password" Type="nvarchar" MaxLength="255" />
-          <Property Name="GioiTinh" Type="nvarchar" MaxLength="10" />
-          <Property Name="NgaySinh" Type="date" />
-          <Property Name="VaiTro" Type="nvarchar" MaxLength="20" />
-          <Property Name="avt" Type="nvarchar" MaxLength="255" />
+          <Property Name="Username" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Email" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="Password" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="GioiTinh" Type="nvarchar" MaxLength="10" Nullable="false" />
+          <Property Name="NgaySinh" Type="date" Nullable="false" />
+          <Property Name="VaiTro" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="avt" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="TrangThai" Type="bit" Nullable="false" />
         </EntityType>
-        <Association Name="FK__BaoCao__NguoiBao__25518C17">
-          <End Role="Users" Type="Self.Users" Multiplicity="0..1" />
+        <Association Name="FK__BaoCao__NguoiBao__66B53B20">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
           <End Role="BaoCao" Type="Self.BaoCao" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Users">
@@ -125,8 +141,8 @@ warning 6013: The table/view 'Web_Truyen.dbo.TheoDoi_Truyen' does not have a pri
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__BinhLuan__Chuong__0D7A0286">
-          <End Role="Chuong" Type="Self.Chuong" Multiplicity="0..1" />
+        <Association Name="FK__BinhLuan__Chuong__75F77EB0">
+          <End Role="Chuong" Type="Self.Chuong" Multiplicity="1" />
           <End Role="BinhLuan" Type="Self.BinhLuan" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Chuong">
@@ -137,8 +153,8 @@ warning 6013: The table/view 'Web_Truyen.dbo.TheoDoi_Truyen' does not have a pri
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__BinhLuan__truyen__0C85DE4D">
-          <End Role="Truyen" Type="Self.Truyen" Multiplicity="0..1" />
+        <Association Name="FK__BinhLuan__truyen__75035A77">
+          <End Role="Truyen" Type="Self.Truyen" Multiplicity="1" />
           <End Role="BinhLuan" Type="Self.BinhLuan" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Truyen">
@@ -149,8 +165,8 @@ warning 6013: The table/view 'Web_Truyen.dbo.TheoDoi_Truyen' does not have a pri
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__BinhLuan__userId__0B91BA14">
-          <End Role="Users" Type="Self.Users" Multiplicity="0..1" />
+        <Association Name="FK__BinhLuan__userId__740F363E">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
           <End Role="BinhLuan" Type="Self.BinhLuan" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Users">
@@ -161,8 +177,8 @@ warning 6013: The table/view 'Web_Truyen.dbo.TheoDoi_Truyen' does not have a pri
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Chuong__truyenId__06CD04F7">
-          <End Role="Truyen" Type="Self.Truyen" Multiplicity="0..1" />
+        <Association Name="FK__Chuong__truyenId__6D6238AF">
+          <End Role="Truyen" Type="Self.Truyen" Multiplicity="1" />
           <End Role="Chuong" Type="Self.Chuong" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Truyen">
@@ -173,7 +189,7 @@ warning 6013: The table/view 'Web_Truyen.dbo.TheoDoi_Truyen' does not have a pri
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__TheoDoi_N__Nguoi__160F4887">
+        <Association Name="FK__TheoDoi_N__Nguoi__5772F790">
           <End Role="Users" Type="Self.Users" Multiplicity="1" />
           <End Role="TheoDoi_NguoiDung" Type="Self.TheoDoi_NguoiDung" Multiplicity="*" />
           <ReferentialConstraint>
@@ -185,7 +201,7 @@ warning 6013: The table/view 'Web_Truyen.dbo.TheoDoi_Truyen' does not have a pri
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__TheoDoi_N__TheoD__151B244E">
+        <Association Name="FK__TheoDoi_N__TheoD__567ED357">
           <End Role="Users" Type="Self.Users" Multiplicity="1" />
           <End Role="TheoDoi_NguoiDung" Type="Self.TheoDoi_NguoiDung" Multiplicity="*" />
           <ReferentialConstraint>
@@ -197,14 +213,32 @@ warning 6013: The table/view 'Web_Truyen.dbo.TheoDoi_Truyen' does not have a pri
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <!--Errors Found During Generation:
-error 6004: The table 'Web_Truyen.dbo.TheoDoi_Truyen' is referenced by a relationship, but cannot be found.
-        <Association Name="FK__TheoDoi_T__truye__114A936A" />-->
-        <!--Errors Found During Generation:
-error 6004: The table 'Web_Truyen.dbo.TheoDoi_Truyen' is referenced by a relationship, but cannot be found.
-        <Association Name="FK__TheoDoi_T__userI__10566F31" />-->
-        <Association Name="FK__ThongBao__userId__19DFD96B">
-          <End Role="Users" Type="Self.Users" Multiplicity="0..1" />
+        <Association Name="FK__TheoDoi_T__truye__52AE4273">
+          <End Role="Truyen" Type="Self.Truyen" Multiplicity="1" />
+          <End Role="TheoDoi_Truyen" Type="Self.TheoDoi_Truyen" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Truyen">
+              <PropertyRef Name="truyenId" />
+            </Principal>
+            <Dependent Role="TheoDoi_Truyen">
+              <PropertyRef Name="truyenId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__TheoDoi_T__userI__51BA1E3A">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="TheoDoi_Truyen" Type="Self.TheoDoi_Truyen" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="userId" />
+            </Principal>
+            <Dependent Role="TheoDoi_Truyen">
+              <PropertyRef Name="userId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__ThongBao__userId__5B438874">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
           <End Role="ThongBao" Type="Self.ThongBao" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Users">
@@ -215,7 +249,7 @@ error 6004: The table 'Web_Truyen.dbo.TheoDoi_Truyen' is referenced by a relatio
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__ThuVien__ChuongD__208CD6FA">
+        <Association Name="FK__ThuVien__ChuongD__7E8CC4B1">
           <End Role="Chuong" Type="Self.Chuong" Multiplicity="0..1" />
           <End Role="ThuVien" Type="Self.ThuVien" Multiplicity="*" />
           <ReferentialConstraint>
@@ -227,7 +261,7 @@ error 6004: The table 'Web_Truyen.dbo.TheoDoi_Truyen' is referenced by a relatio
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__ThuVien__TruyenI__1F98B2C1">
+        <Association Name="FK__ThuVien__TruyenI__7D98A078">
           <End Role="Truyen" Type="Self.Truyen" Multiplicity="1" />
           <End Role="ThuVien" Type="Self.ThuVien" Multiplicity="*" />
           <ReferentialConstraint>
@@ -239,7 +273,7 @@ error 6004: The table 'Web_Truyen.dbo.TheoDoi_Truyen' is referenced by a relatio
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__ThuVien__UserID__1EA48E88">
+        <Association Name="FK__ThuVien__UserID__7CA47C3F">
           <End Role="Users" Type="Self.Users" Multiplicity="1" />
           <End Role="ThuVien" Type="Self.ThuVien" Multiplicity="*" />
           <ReferentialConstraint>
@@ -251,8 +285,8 @@ error 6004: The table 'Web_Truyen.dbo.TheoDoi_Truyen' is referenced by a relatio
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Truyen__TheLoaiI__7E37BEF6">
-          <End Role="TheLoai" Type="Self.TheLoai" Multiplicity="0..1" />
+        <Association Name="FK__Truyen__TheLoaiI__3DB3258D">
+          <End Role="TheLoai" Type="Self.TheLoai" Multiplicity="1" />
           <End Role="Truyen" Type="Self.Truyen" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="TheLoai">
@@ -263,8 +297,8 @@ error 6004: The table 'Web_Truyen.dbo.TheoDoi_Truyen' is referenced by a relatio
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Truyen__userId__7D439ABD">
-          <End Role="Users" Type="Self.Users" Multiplicity="0..1" />
+        <Association Name="FK__Truyen__userId__3CBF0154">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
           <End Role="Truyen" Type="Self.Truyen" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Users">
@@ -310,67 +344,76 @@ error 6004: The table 'Web_Truyen.dbo.TheoDoi_Truyen' is referenced by a relatio
           <EntitySet Name="BaoCao" EntityType="Self.BaoCao" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="BinhLuan" EntityType="Self.BinhLuan" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Chuong" EntityType="Self.Chuong" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TheLoai" EntityType="Self.TheLoai" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TheoDoi_NguoiDung" EntityType="Self.TheoDoi_NguoiDung" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TheoDoi_Truyen" EntityType="Self.TheoDoi_Truyen" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ThongBao" EntityType="Self.ThongBao" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ThuVien" EntityType="Self.ThuVien" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Truyen" EntityType="Self.Truyen" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
-          <AssociationSet Name="FK__BaoCao__NguoiBao__25518C17" Association="Self.FK__BaoCao__NguoiBao__25518C17">
+          <AssociationSet Name="FK__BaoCao__NguoiBao__66B53B20" Association="Self.FK__BaoCao__NguoiBao__66B53B20">
             <End Role="Users" EntitySet="Users" />
             <End Role="BaoCao" EntitySet="BaoCao" />
           </AssociationSet>
-          <AssociationSet Name="FK__BinhLuan__Chuong__0D7A0286" Association="Self.FK__BinhLuan__Chuong__0D7A0286">
+          <AssociationSet Name="FK__BinhLuan__Chuong__75F77EB0" Association="Self.FK__BinhLuan__Chuong__75F77EB0">
             <End Role="Chuong" EntitySet="Chuong" />
             <End Role="BinhLuan" EntitySet="BinhLuan" />
           </AssociationSet>
-          <AssociationSet Name="FK__BinhLuan__truyen__0C85DE4D" Association="Self.FK__BinhLuan__truyen__0C85DE4D">
+          <AssociationSet Name="FK__BinhLuan__truyen__75035A77" Association="Self.FK__BinhLuan__truyen__75035A77">
             <End Role="Truyen" EntitySet="Truyen" />
             <End Role="BinhLuan" EntitySet="BinhLuan" />
           </AssociationSet>
-          <AssociationSet Name="FK__BinhLuan__userId__0B91BA14" Association="Self.FK__BinhLuan__userId__0B91BA14">
+          <AssociationSet Name="FK__BinhLuan__userId__740F363E" Association="Self.FK__BinhLuan__userId__740F363E">
             <End Role="Users" EntitySet="Users" />
             <End Role="BinhLuan" EntitySet="BinhLuan" />
           </AssociationSet>
-          <AssociationSet Name="FK__Chuong__truyenId__06CD04F7" Association="Self.FK__Chuong__truyenId__06CD04F7">
+          <AssociationSet Name="FK__Chuong__truyenId__6D6238AF" Association="Self.FK__Chuong__truyenId__6D6238AF">
             <End Role="Truyen" EntitySet="Truyen" />
             <End Role="Chuong" EntitySet="Chuong" />
           </AssociationSet>
-          <AssociationSet Name="FK__TheoDoi_N__Nguoi__160F4887" Association="Self.FK__TheoDoi_N__Nguoi__160F4887">
+          <AssociationSet Name="FK__TheoDoi_N__Nguoi__5772F790" Association="Self.FK__TheoDoi_N__Nguoi__5772F790">
             <End Role="Users" EntitySet="Users" />
             <End Role="TheoDoi_NguoiDung" EntitySet="TheoDoi_NguoiDung" />
           </AssociationSet>
-          <AssociationSet Name="FK__TheoDoi_N__TheoD__151B244E" Association="Self.FK__TheoDoi_N__TheoD__151B244E">
+          <AssociationSet Name="FK__TheoDoi_N__TheoD__567ED357" Association="Self.FK__TheoDoi_N__TheoD__567ED357">
             <End Role="Users" EntitySet="Users" />
             <End Role="TheoDoi_NguoiDung" EntitySet="TheoDoi_NguoiDung" />
           </AssociationSet>
-          <AssociationSet Name="FK__ThongBao__userId__19DFD96B" Association="Self.FK__ThongBao__userId__19DFD96B">
+          <AssociationSet Name="FK__TheoDoi_T__truye__52AE4273" Association="Self.FK__TheoDoi_T__truye__52AE4273">
+            <End Role="Truyen" EntitySet="Truyen" />
+            <End Role="TheoDoi_Truyen" EntitySet="TheoDoi_Truyen" />
+          </AssociationSet>
+          <AssociationSet Name="FK__TheoDoi_T__userI__51BA1E3A" Association="Self.FK__TheoDoi_T__userI__51BA1E3A">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="TheoDoi_Truyen" EntitySet="TheoDoi_Truyen" />
+          </AssociationSet>
+          <AssociationSet Name="FK__ThongBao__userId__5B438874" Association="Self.FK__ThongBao__userId__5B438874">
             <End Role="Users" EntitySet="Users" />
             <End Role="ThongBao" EntitySet="ThongBao" />
           </AssociationSet>
-          <AssociationSet Name="FK__ThuVien__ChuongD__208CD6FA" Association="Self.FK__ThuVien__ChuongD__208CD6FA">
+          <AssociationSet Name="FK__ThuVien__ChuongD__7E8CC4B1" Association="Self.FK__ThuVien__ChuongD__7E8CC4B1">
             <End Role="Chuong" EntitySet="Chuong" />
             <End Role="ThuVien" EntitySet="ThuVien" />
           </AssociationSet>
-          <AssociationSet Name="FK__ThuVien__TruyenI__1F98B2C1" Association="Self.FK__ThuVien__TruyenI__1F98B2C1">
+          <AssociationSet Name="FK__ThuVien__TruyenI__7D98A078" Association="Self.FK__ThuVien__TruyenI__7D98A078">
             <End Role="Truyen" EntitySet="Truyen" />
             <End Role="ThuVien" EntitySet="ThuVien" />
           </AssociationSet>
-          <AssociationSet Name="FK__ThuVien__UserID__1EA48E88" Association="Self.FK__ThuVien__UserID__1EA48E88">
+          <AssociationSet Name="FK__ThuVien__UserID__7CA47C3F" Association="Self.FK__ThuVien__UserID__7CA47C3F">
             <End Role="Users" EntitySet="Users" />
             <End Role="ThuVien" EntitySet="ThuVien" />
           </AssociationSet>
-          <AssociationSet Name="FK__Truyen__TheLoaiI__7E37BEF6" Association="Self.FK__Truyen__TheLoaiI__7E37BEF6">
+          <AssociationSet Name="FK__Truyen__TheLoaiI__3DB3258D" Association="Self.FK__Truyen__TheLoaiI__3DB3258D">
             <End Role="TheLoai" EntitySet="TheLoai" />
             <End Role="Truyen" EntitySet="Truyen" />
           </AssociationSet>
-          <AssociationSet Name="FK__Truyen__userId__7D439ABD" Association="Self.FK__Truyen__userId__7D439ABD">
+          <AssociationSet Name="FK__Truyen__userId__3CBF0154" Association="Self.FK__Truyen__userId__3CBF0154">
             <End Role="Users" EntitySet="Users" />
             <End Role="Truyen" EntitySet="Truyen" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="Web_TruyenModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -379,48 +422,61 @@ error 6004: The table 'Web_Truyen.dbo.TheoDoi_Truyen' is referenced by a relatio
             <PropertyRef Name="BaoCaoId" />
           </Key>
           <Property Name="BaoCaoId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="NguoiBaoCaoId" Type="Int32" />
-          <Property Name="LoaiBaoCao" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="NguoiBaoCaoId" Type="Int32" Nullable="false" />
+          <Property Name="LoaiBaoCao" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="DoiTuongId" Type="Int32" Nullable="false" />
-          <Property Name="LyDo" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="NgayBaoCao" Type="DateTime" Precision="3" />
-          <NavigationProperty Name="Users" Relationship="Self.FK__BaoCao__NguoiBao__25518C17" FromRole="BaoCao" ToRole="Users" />
+          <Property Name="LyDo" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="NgayBaoCao" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="Users" Relationship="Self.FK__BaoCao__NguoiBao__66B53B20" FromRole="BaoCao" ToRole="Users" />
         </EntityType>
         <EntityType Name="BinhLuan">
           <Key>
             <PropertyRef Name="BinhLuanId" />
           </Key>
           <Property Name="BinhLuanId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="userId" Type="Int32" />
-          <Property Name="truyenId" Type="Int32" />
-          <Property Name="ChuongId" Type="Int32" />
-          <Property Name="NoiDung" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="NgayTao" Type="DateTime" Precision="3" />
-          <NavigationProperty Name="Chuong" Relationship="Self.FK__BinhLuan__Chuong__0D7A0286" FromRole="BinhLuan" ToRole="Chuong" />
-          <NavigationProperty Name="Truyen" Relationship="Self.FK__BinhLuan__truyen__0C85DE4D" FromRole="BinhLuan" ToRole="Truyen" />
-          <NavigationProperty Name="Users" Relationship="Self.FK__BinhLuan__userId__0B91BA14" FromRole="BinhLuan" ToRole="Users" />
+          <Property Name="userId" Type="Int32" Nullable="false" />
+          <Property Name="truyenId" Type="Int32" Nullable="false" />
+          <Property Name="ChuongId" Type="Int32" Nullable="false" />
+          <Property Name="NoiDung" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="NgayTao" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="Chuong" Relationship="Self.FK__BinhLuan__Chuong__4DE98D56" FromRole="BinhLuan" ToRole="Chuong" />
+          <NavigationProperty Name="Truyen" Relationship="Self.FK__BinhLuan__truyen__4CF5691D" FromRole="BinhLuan" ToRole="Truyen" />
+          <NavigationProperty Name="Users" Relationship="Self.FK__BinhLuan__userId__4C0144E4" FromRole="BinhLuan" ToRole="Users" />
         </EntityType>
         <EntityType Name="Chuong">
           <Key>
             <PropertyRef Name="ChuongId" />
           </Key>
           <Property Name="ChuongId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="truyenId" Type="Int32" />
-          <Property Name="TieuDe" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="NoiDung" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="NgayTao" Type="DateTime" Precision="3" />
-          <Property Name="DaDang" Type="Boolean" />
-          <NavigationProperty Name="BinhLuan" Relationship="Self.FK__BinhLuan__Chuong__0D7A0286" FromRole="Chuong" ToRole="BinhLuan" />
-          <NavigationProperty Name="Truyen" Relationship="Self.FK__Chuong__truyenId__06CD04F7" FromRole="Chuong" ToRole="Truyen" />
-          <NavigationProperty Name="ThuVien" Relationship="Self.FK__ThuVien__ChuongD__208CD6FA" FromRole="Chuong" ToRole="ThuVien" />
+          <Property Name="truyenId" Type="Int32" Nullable="false" />
+          <Property Name="TieuDe" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="NoiDung" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="NgayTao" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="DaDang" Type="Boolean" Nullable="false" />
+          <Property Name="ThuTu" Type="Int32" Nullable="false" />
+          <Property Name="LuotDoc" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="BinhLuan" Relationship="Self.FK__BinhLuan__Chuong__4DE98D56" FromRole="Chuong" ToRole="BinhLuan" />
+          <NavigationProperty Name="Truyen" Relationship="Self.FK__Chuong__truyenId__46486B8E" FromRole="Chuong" ToRole="Truyen" />
+          <NavigationProperty Name="ThuVien" Relationship="Self.FK__ThuVien__ChuongD__61F08603" FromRole="Chuong" ToRole="ThuVien" />
+          <Property Name="TrangThaiDuyet" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
         </EntityType>
         <EntityType Name="TheLoai">
           <Key>
             <PropertyRef Name="TheLoaiId" />
           </Key>
           <Property Name="TheLoaiId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="TenTheLoai" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="Truyen" Relationship="Self.FK__Truyen__TheLoaiI__7E37BEF6" FromRole="TheLoai" ToRole="Truyen" />
+          <Property Name="TenTheLoai" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Truyen" Relationship="Self.FK__Truyen__TheLoaiI__3DB3258D" FromRole="TheLoai" ToRole="Truyen" />
         </EntityType>
         <EntityType Name="TheoDoi_NguoiDung">
           <Key>
@@ -429,20 +485,31 @@ error 6004: The table 'Web_Truyen.dbo.TheoDoi_Truyen' is referenced by a relatio
           </Key>
           <Property Name="TheoDoiNguoiDungId" Type="Int32" Nullable="false" />
           <Property Name="NguoiTheoDoiId" Type="Int32" Nullable="false" />
-          <Property Name="NgayTheoDoi" Type="DateTime" Precision="3" />
-          <NavigationProperty Name="Users" Relationship="Self.FK__TheoDoi_N__Nguoi__160F4887" FromRole="TheoDoi_NguoiDung" ToRole="Users" />
-          <NavigationProperty Name="Users1" Relationship="Self.FK__TheoDoi_N__TheoD__151B244E" FromRole="TheoDoi_NguoiDung" ToRole="Users" />
+          <Property Name="NgayTheoDoi" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="Users" Relationship="Self.FK__TheoDoi_N__Nguoi__5772F790" FromRole="TheoDoi_NguoiDung" ToRole="Users" />
+          <NavigationProperty Name="Users1" Relationship="Self.FK__TheoDoi_N__TheoD__567ED357" FromRole="TheoDoi_NguoiDung" ToRole="Users" />
+        </EntityType>
+        <EntityType Name="TheoDoi_Truyen">
+          <Key>
+            <PropertyRef Name="userId" />
+            <PropertyRef Name="truyenId" />
+          </Key>
+          <Property Name="userId" Type="Int32" Nullable="false" />
+          <Property Name="truyenId" Type="Int32" Nullable="false" />
+          <Property Name="NgayTheoDoi" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="Truyen" Relationship="Self.FK__TheoDoi_T__truye__52AE4273" FromRole="TheoDoi_Truyen" ToRole="Truyen" />
+          <NavigationProperty Name="Users" Relationship="Self.FK__TheoDoi_T__userI__51BA1E3A" FromRole="TheoDoi_Truyen" ToRole="Users" />
         </EntityType>
         <EntityType Name="ThongBao">
           <Key>
             <PropertyRef Name="ID_ThongBao" />
           </Key>
           <Property Name="ID_ThongBao" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="userId" Type="Int32" />
-          <Property Name="NoiDung" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="DaXem" Type="Boolean" />
-          <Property Name="NgayTao" Type="DateTime" Precision="3" />
-          <NavigationProperty Name="Users" Relationship="Self.FK__ThongBao__userId__19DFD96B" FromRole="ThongBao" ToRole="Users" />
+          <Property Name="userId" Type="Int32" Nullable="false" />
+          <Property Name="NoiDung" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="DaXem" Type="Boolean" Nullable="false" />
+          <Property Name="NgayTao" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="Users" Relationship="Self.FK__ThongBao__userId__5B438874" FromRole="ThongBao" ToRole="Users" />
         </EntityType>
         <EntityType Name="ThuVien">
           <Key>
@@ -453,56 +520,59 @@ error 6004: The table 'Web_Truyen.dbo.TheoDoi_Truyen' is referenced by a relatio
           <Property Name="TruyenID" Type="Int32" Nullable="false" />
           <Property Name="ChuongDocGanNhat" Type="Int32" />
           <Property Name="ThoiGianDocGanNhat" Type="DateTime" Precision="3" />
-          <Property Name="CoLuu" Type="Boolean" />
-          <Property Name="DocXong" Type="Boolean" />
-          <NavigationProperty Name="Chuong" Relationship="Self.FK__ThuVien__ChuongD__208CD6FA" FromRole="ThuVien" ToRole="Chuong" />
-          <NavigationProperty Name="Truyen" Relationship="Self.FK__ThuVien__TruyenI__1F98B2C1" FromRole="ThuVien" ToRole="Truyen" />
-          <NavigationProperty Name="Users" Relationship="Self.FK__ThuVien__UserID__1EA48E88" FromRole="ThuVien" ToRole="Users" />
+          <Property Name="CoLuu" Type="Boolean" Nullable="false" />
+          <Property Name="DocXong" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Chuong" Relationship="Self.FK__ThuVien__ChuongD__61F08603" FromRole="ThuVien" ToRole="Chuong" />
+          <NavigationProperty Name="Truyen" Relationship="Self.FK__ThuVien__TruyenI__60FC61CA" FromRole="ThuVien" ToRole="Truyen" />
+          <NavigationProperty Name="Users" Relationship="Self.FK__ThuVien__UserID__60083D91" FromRole="ThuVien" ToRole="Users" />
         </EntityType>
         <EntityType Name="Truyen">
           <Key>
             <PropertyRef Name="truyenId" />
           </Key>
           <Property Name="truyenId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="userId" Type="Int32" />
-          <Property Name="TieuDe" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="MoTa" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="AnhBia" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="TheLoaiId" Type="Int32" />
-          <Property Name="TrangThai" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
-          <Property Name="NgayTao" Type="DateTime" Precision="3" />
-          <Property Name="NgayCapNhap" Type="DateTime" Precision="3" />
-          <Property Name="LuotDoc" Type="Int32" />
-          <Property Name="XepLoai" Type="Boolean" />
-          <Property Name="DaDang" Type="Boolean" />
-          <NavigationProperty Name="BinhLuan" Relationship="Self.FK__BinhLuan__truyen__0C85DE4D" FromRole="Truyen" ToRole="BinhLuan" />
-          <NavigationProperty Name="Chuong" Relationship="Self.FK__Chuong__truyenId__06CD04F7" FromRole="Truyen" ToRole="Chuong" />
-          <NavigationProperty Name="TheLoai" Relationship="Self.FK__Truyen__TheLoaiI__7E37BEF6" FromRole="Truyen" ToRole="TheLoai" />
-          <NavigationProperty Name="ThuVien" Relationship="Self.FK__ThuVien__TruyenI__1F98B2C1" FromRole="Truyen" ToRole="ThuVien" />
-          <NavigationProperty Name="Users" Relationship="Self.FK__Truyen__userId__7D439ABD" FromRole="Truyen" ToRole="Users" />
+          <Property Name="userId" Type="Int32" Nullable="false" />
+          <Property Name="TieuDe" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="MoTa" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="AnhBia" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="TheLoaiId" Type="Int32" Nullable="false" />
+          <Property Name="TrangThai" Type="Boolean" Nullable="false" />
+          <Property Name="NgayTao" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="NgayCapNhap" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="LuotDoc" Type="Int32" Nullable="false" />
+          <Property Name="XepLoai" Type="Boolean" Nullable="false" />
+          <Property Name="DaDang" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="BinhLuan" Relationship="Self.FK__BinhLuan__truyen__4CF5691D" FromRole="Truyen" ToRole="BinhLuan" />
+          <NavigationProperty Name="Chuong" Relationship="Self.FK__Chuong__truyenId__46486B8E" FromRole="Truyen" ToRole="Chuong" />
+          <NavigationProperty Name="TheLoai" Relationship="Self.FK__Truyen__TheLoaiI__3DB3258D" FromRole="Truyen" ToRole="TheLoai" />
+          <NavigationProperty Name="TheoDoi_Truyen" Relationship="Self.FK__TheoDoi_T__truye__52AE4273" FromRole="Truyen" ToRole="TheoDoi_Truyen" />
+          <NavigationProperty Name="ThuVien" Relationship="Self.FK__ThuVien__TruyenI__60FC61CA" FromRole="Truyen" ToRole="ThuVien" />
+          <NavigationProperty Name="Users" Relationship="Self.FK__Truyen__userId__3CBF0154" FromRole="Truyen" ToRole="Users" />
         </EntityType>
         <EntityType Name="Users">
           <Key>
             <PropertyRef Name="userId" />
           </Key>
           <Property Name="userId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Username" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Email" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="Password" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="GioiTinh" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
-          <Property Name="NgaySinh" Type="DateTime" Precision="0" />
-          <Property Name="VaiTro" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
-          <Property Name="avt" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="BaoCao" Relationship="Self.FK__BaoCao__NguoiBao__25518C17" FromRole="Users" ToRole="BaoCao" />
-          <NavigationProperty Name="BinhLuan" Relationship="Self.FK__BinhLuan__userId__0B91BA14" FromRole="Users" ToRole="BinhLuan" />
-          <NavigationProperty Name="TheoDoi_NguoiDung" Relationship="Self.FK__TheoDoi_N__Nguoi__160F4887" FromRole="Users" ToRole="TheoDoi_NguoiDung" />
-          <NavigationProperty Name="TheoDoi_NguoiDung1" Relationship="Self.FK__TheoDoi_N__TheoD__151B244E" FromRole="Users" ToRole="TheoDoi_NguoiDung" />
-          <NavigationProperty Name="ThongBao" Relationship="Self.FK__ThongBao__userId__19DFD96B" FromRole="Users" ToRole="ThongBao" />
-          <NavigationProperty Name="ThuVien" Relationship="Self.FK__ThuVien__UserID__1EA48E88" FromRole="Users" ToRole="ThuVien" />
-          <NavigationProperty Name="Truyen" Relationship="Self.FK__Truyen__userId__7D439ABD" FromRole="Users" ToRole="Truyen" />
+          <Property Name="Username" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Email" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Password" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="GioiTinh" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="NgaySinh" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="VaiTro" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="avt" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="TrangThai" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="BaoCao" Relationship="Self.FK__BaoCao__NguoiBao__66B53B20" FromRole="Users" ToRole="BaoCao" />
+          <NavigationProperty Name="BinhLuan" Relationship="Self.FK__BinhLuan__userId__4C0144E4" FromRole="Users" ToRole="BinhLuan" />
+          <NavigationProperty Name="TheoDoi_NguoiDung" Relationship="Self.FK__TheoDoi_N__Nguoi__5772F790" FromRole="Users" ToRole="TheoDoi_NguoiDung" />
+          <NavigationProperty Name="TheoDoi_NguoiDung1" Relationship="Self.FK__TheoDoi_N__TheoD__567ED357" FromRole="Users" ToRole="TheoDoi_NguoiDung" />
+          <NavigationProperty Name="TheoDoi_Truyen" Relationship="Self.FK__TheoDoi_T__userI__51BA1E3A" FromRole="Users" ToRole="TheoDoi_Truyen" />
+          <NavigationProperty Name="ThongBao" Relationship="Self.FK__ThongBao__userId__5B438874" FromRole="Users" ToRole="ThongBao" />
+          <NavigationProperty Name="ThuVien" Relationship="Self.FK__ThuVien__UserID__60083D91" FromRole="Users" ToRole="ThuVien" />
+          <NavigationProperty Name="Truyen" Relationship="Self.FK__Truyen__userId__3CBF0154" FromRole="Users" ToRole="Truyen" />
         </EntityType>
-        <Association Name="FK__BaoCao__NguoiBao__25518C17">
-          <End Role="Users" Type="Self.Users" Multiplicity="0..1" />
+        <Association Name="FK__BaoCao__NguoiBao__66B53B20">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
           <End Role="BaoCao" Type="Self.BaoCao" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Users">
@@ -513,8 +583,8 @@ error 6004: The table 'Web_Truyen.dbo.TheoDoi_Truyen' is referenced by a relatio
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__BinhLuan__Chuong__0D7A0286">
-          <End Role="Chuong" Type="Self.Chuong" Multiplicity="0..1" />
+        <Association Name="FK__BinhLuan__Chuong__4DE98D56">
+          <End Role="Chuong" Type="Self.Chuong" Multiplicity="1" />
           <End Role="BinhLuan" Type="Self.BinhLuan" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Chuong">
@@ -525,8 +595,8 @@ error 6004: The table 'Web_Truyen.dbo.TheoDoi_Truyen' is referenced by a relatio
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__BinhLuan__truyen__0C85DE4D">
-          <End Role="Truyen" Type="Self.Truyen" Multiplicity="0..1" />
+        <Association Name="FK__BinhLuan__truyen__4CF5691D">
+          <End Role="Truyen" Type="Self.Truyen" Multiplicity="1" />
           <End Role="BinhLuan" Type="Self.BinhLuan" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Truyen">
@@ -537,8 +607,8 @@ error 6004: The table 'Web_Truyen.dbo.TheoDoi_Truyen' is referenced by a relatio
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__BinhLuan__userId__0B91BA14">
-          <End Role="Users" Type="Self.Users" Multiplicity="0..1" />
+        <Association Name="FK__BinhLuan__userId__4C0144E4">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
           <End Role="BinhLuan" Type="Self.BinhLuan" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Users">
@@ -549,8 +619,8 @@ error 6004: The table 'Web_Truyen.dbo.TheoDoi_Truyen' is referenced by a relatio
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Chuong__truyenId__06CD04F7">
-          <End Role="Truyen" Type="Self.Truyen" Multiplicity="0..1" />
+        <Association Name="FK__Chuong__truyenId__46486B8E">
+          <End Role="Truyen" Type="Self.Truyen" Multiplicity="1" />
           <End Role="Chuong" Type="Self.Chuong" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Truyen">
@@ -561,7 +631,7 @@ error 6004: The table 'Web_Truyen.dbo.TheoDoi_Truyen' is referenced by a relatio
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__ThuVien__ChuongD__208CD6FA">
+        <Association Name="FK__ThuVien__ChuongD__61F08603">
           <End Role="Chuong" Type="Self.Chuong" Multiplicity="0..1" />
           <End Role="ThuVien" Type="Self.ThuVien" Multiplicity="*" />
           <ReferentialConstraint>
@@ -573,8 +643,8 @@ error 6004: The table 'Web_Truyen.dbo.TheoDoi_Truyen' is referenced by a relatio
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Truyen__TheLoaiI__7E37BEF6">
-          <End Role="TheLoai" Type="Self.TheLoai" Multiplicity="0..1" />
+        <Association Name="FK__Truyen__TheLoaiI__3DB3258D">
+          <End Role="TheLoai" Type="Self.TheLoai" Multiplicity="1" />
           <End Role="Truyen" Type="Self.Truyen" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="TheLoai">
@@ -585,7 +655,7 @@ error 6004: The table 'Web_Truyen.dbo.TheoDoi_Truyen' is referenced by a relatio
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__TheoDoi_N__Nguoi__160F4887">
+        <Association Name="FK__TheoDoi_N__Nguoi__5772F790">
           <End Role="Users" Type="Self.Users" Multiplicity="1" />
           <End Role="TheoDoi_NguoiDung" Type="Self.TheoDoi_NguoiDung" Multiplicity="*" />
           <ReferentialConstraint>
@@ -597,7 +667,7 @@ error 6004: The table 'Web_Truyen.dbo.TheoDoi_Truyen' is referenced by a relatio
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__TheoDoi_N__TheoD__151B244E">
+        <Association Name="FK__TheoDoi_N__TheoD__567ED357">
           <End Role="Users" Type="Self.Users" Multiplicity="1" />
           <End Role="TheoDoi_NguoiDung" Type="Self.TheoDoi_NguoiDung" Multiplicity="*" />
           <ReferentialConstraint>
@@ -609,8 +679,32 @@ error 6004: The table 'Web_Truyen.dbo.TheoDoi_Truyen' is referenced by a relatio
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__ThongBao__userId__19DFD96B">
-          <End Role="Users" Type="Self.Users" Multiplicity="0..1" />
+        <Association Name="FK__TheoDoi_T__truye__52AE4273">
+          <End Role="Truyen" Type="Self.Truyen" Multiplicity="1" />
+          <End Role="TheoDoi_Truyen" Type="Self.TheoDoi_Truyen" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Truyen">
+              <PropertyRef Name="truyenId" />
+            </Principal>
+            <Dependent Role="TheoDoi_Truyen">
+              <PropertyRef Name="truyenId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__TheoDoi_T__userI__51BA1E3A">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="TheoDoi_Truyen" Type="Self.TheoDoi_Truyen" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="userId" />
+            </Principal>
+            <Dependent Role="TheoDoi_Truyen">
+              <PropertyRef Name="userId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__ThongBao__userId__5B438874">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
           <End Role="ThongBao" Type="Self.ThongBao" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Users">
@@ -621,7 +715,7 @@ error 6004: The table 'Web_Truyen.dbo.TheoDoi_Truyen' is referenced by a relatio
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__ThuVien__TruyenI__1F98B2C1">
+        <Association Name="FK__ThuVien__TruyenI__60FC61CA">
           <End Role="Truyen" Type="Self.Truyen" Multiplicity="1" />
           <End Role="ThuVien" Type="Self.ThuVien" Multiplicity="*" />
           <ReferentialConstraint>
@@ -633,7 +727,7 @@ error 6004: The table 'Web_Truyen.dbo.TheoDoi_Truyen' is referenced by a relatio
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__ThuVien__UserID__1EA48E88">
+        <Association Name="FK__ThuVien__UserID__60083D91">
           <End Role="Users" Type="Self.Users" Multiplicity="1" />
           <End Role="ThuVien" Type="Self.ThuVien" Multiplicity="*" />
           <ReferentialConstraint>
@@ -645,8 +739,8 @@ error 6004: The table 'Web_Truyen.dbo.TheoDoi_Truyen' is referenced by a relatio
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Truyen__userId__7D439ABD">
-          <End Role="Users" Type="Self.Users" Multiplicity="0..1" />
+        <Association Name="FK__Truyen__userId__3CBF0154">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
           <End Role="Truyen" Type="Self.Truyen" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Users">
@@ -657,65 +751,75 @@ error 6004: The table 'Web_Truyen.dbo.TheoDoi_Truyen' is referenced by a relatio
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityContainer Name="Web_TruyenEntities2" annotation:LazyLoadingEnabled="true">
+        <EntityContainer Name="Web_TruyenEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="BaoCao" EntityType="Self.BaoCao" />
           <EntitySet Name="BinhLuan" EntityType="Self.BinhLuan" />
           <EntitySet Name="Chuong" EntityType="Self.Chuong" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" />
           <EntitySet Name="TheLoai" EntityType="Self.TheLoai" />
           <EntitySet Name="TheoDoi_NguoiDung" EntityType="Self.TheoDoi_NguoiDung" />
+          <EntitySet Name="TheoDoi_Truyen" EntityType="Self.TheoDoi_Truyen" />
           <EntitySet Name="ThongBao" EntityType="Self.ThongBao" />
           <EntitySet Name="ThuVien" EntityType="Self.ThuVien" />
           <EntitySet Name="Truyen" EntityType="Self.Truyen" />
           <EntitySet Name="Users" EntityType="Self.Users" />
-          <AssociationSet Name="FK__BaoCao__NguoiBao__25518C17" Association="Self.FK__BaoCao__NguoiBao__25518C17">
+          <AssociationSet Name="FK__BaoCao__NguoiBao__66B53B20" Association="Self.FK__BaoCao__NguoiBao__66B53B20">
             <End Role="Users" EntitySet="Users" />
             <End Role="BaoCao" EntitySet="BaoCao" />
           </AssociationSet>
-          <AssociationSet Name="FK__BinhLuan__Chuong__0D7A0286" Association="Self.FK__BinhLuan__Chuong__0D7A0286">
+          <AssociationSet Name="FK__BinhLuan__Chuong__4DE98D56" Association="Self.FK__BinhLuan__Chuong__4DE98D56">
             <End Role="Chuong" EntitySet="Chuong" />
             <End Role="BinhLuan" EntitySet="BinhLuan" />
           </AssociationSet>
-          <AssociationSet Name="FK__BinhLuan__truyen__0C85DE4D" Association="Self.FK__BinhLuan__truyen__0C85DE4D">
+          <AssociationSet Name="FK__BinhLuan__truyen__4CF5691D" Association="Self.FK__BinhLuan__truyen__4CF5691D">
             <End Role="Truyen" EntitySet="Truyen" />
             <End Role="BinhLuan" EntitySet="BinhLuan" />
           </AssociationSet>
-          <AssociationSet Name="FK__BinhLuan__userId__0B91BA14" Association="Self.FK__BinhLuan__userId__0B91BA14">
+          <AssociationSet Name="FK__BinhLuan__userId__4C0144E4" Association="Self.FK__BinhLuan__userId__4C0144E4">
             <End Role="Users" EntitySet="Users" />
             <End Role="BinhLuan" EntitySet="BinhLuan" />
           </AssociationSet>
-          <AssociationSet Name="FK__Chuong__truyenId__06CD04F7" Association="Self.FK__Chuong__truyenId__06CD04F7">
+          <AssociationSet Name="FK__Chuong__truyenId__46486B8E" Association="Self.FK__Chuong__truyenId__46486B8E">
             <End Role="Truyen" EntitySet="Truyen" />
             <End Role="Chuong" EntitySet="Chuong" />
           </AssociationSet>
-          <AssociationSet Name="FK__ThuVien__ChuongD__208CD6FA" Association="Self.FK__ThuVien__ChuongD__208CD6FA">
+          <AssociationSet Name="FK__ThuVien__ChuongD__61F08603" Association="Self.FK__ThuVien__ChuongD__61F08603">
             <End Role="Chuong" EntitySet="Chuong" />
             <End Role="ThuVien" EntitySet="ThuVien" />
           </AssociationSet>
-          <AssociationSet Name="FK__Truyen__TheLoaiI__7E37BEF6" Association="Self.FK__Truyen__TheLoaiI__7E37BEF6">
+          <AssociationSet Name="FK__Truyen__TheLoaiI__3DB3258D" Association="Self.FK__Truyen__TheLoaiI__3DB3258D">
             <End Role="TheLoai" EntitySet="TheLoai" />
             <End Role="Truyen" EntitySet="Truyen" />
           </AssociationSet>
-          <AssociationSet Name="FK__TheoDoi_N__Nguoi__160F4887" Association="Self.FK__TheoDoi_N__Nguoi__160F4887">
+          <AssociationSet Name="FK__TheoDoi_N__Nguoi__5772F790" Association="Self.FK__TheoDoi_N__Nguoi__5772F790">
             <End Role="Users" EntitySet="Users" />
             <End Role="TheoDoi_NguoiDung" EntitySet="TheoDoi_NguoiDung" />
           </AssociationSet>
-          <AssociationSet Name="FK__TheoDoi_N__TheoD__151B244E" Association="Self.FK__TheoDoi_N__TheoD__151B244E">
+          <AssociationSet Name="FK__TheoDoi_N__TheoD__567ED357" Association="Self.FK__TheoDoi_N__TheoD__567ED357">
             <End Role="Users" EntitySet="Users" />
             <End Role="TheoDoi_NguoiDung" EntitySet="TheoDoi_NguoiDung" />
           </AssociationSet>
-          <AssociationSet Name="FK__ThongBao__userId__19DFD96B" Association="Self.FK__ThongBao__userId__19DFD96B">
+          <AssociationSet Name="FK__TheoDoi_T__truye__52AE4273" Association="Self.FK__TheoDoi_T__truye__52AE4273">
+            <End Role="Truyen" EntitySet="Truyen" />
+            <End Role="TheoDoi_Truyen" EntitySet="TheoDoi_Truyen" />
+          </AssociationSet>
+          <AssociationSet Name="FK__TheoDoi_T__userI__51BA1E3A" Association="Self.FK__TheoDoi_T__userI__51BA1E3A">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="TheoDoi_Truyen" EntitySet="TheoDoi_Truyen" />
+          </AssociationSet>
+          <AssociationSet Name="FK__ThongBao__userId__5B438874" Association="Self.FK__ThongBao__userId__5B438874">
             <End Role="Users" EntitySet="Users" />
             <End Role="ThongBao" EntitySet="ThongBao" />
           </AssociationSet>
-          <AssociationSet Name="FK__ThuVien__TruyenI__1F98B2C1" Association="Self.FK__ThuVien__TruyenI__1F98B2C1">
+          <AssociationSet Name="FK__ThuVien__TruyenI__60FC61CA" Association="Self.FK__ThuVien__TruyenI__60FC61CA">
             <End Role="Truyen" EntitySet="Truyen" />
             <End Role="ThuVien" EntitySet="ThuVien" />
           </AssociationSet>
-          <AssociationSet Name="FK__ThuVien__UserID__1EA48E88" Association="Self.FK__ThuVien__UserID__1EA48E88">
+          <AssociationSet Name="FK__ThuVien__UserID__60083D91" Association="Self.FK__ThuVien__UserID__60083D91">
             <End Role="Users" EntitySet="Users" />
             <End Role="ThuVien" EntitySet="ThuVien" />
           </AssociationSet>
-          <AssociationSet Name="FK__Truyen__userId__7D439ABD" Association="Self.FK__Truyen__userId__7D439ABD">
+          <AssociationSet Name="FK__Truyen__userId__3CBF0154" Association="Self.FK__Truyen__userId__3CBF0154">
             <End Role="Users" EntitySet="Users" />
             <End Role="Truyen" EntitySet="Truyen" />
           </AssociationSet>
@@ -766,7 +870,7 @@ error 6004: The table 'Web_Truyen.dbo.TheoDoi_Truyen' is referenced by a relatio
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-        <EntityContainerMapping StorageEntityContainer="Web_TruyenModelStoreContainer" CdmEntityContainer="Web_TruyenEntities2">
+        <EntityContainerMapping StorageEntityContainer="Web_TruyenModelStoreContainer" CdmEntityContainer="Web_TruyenEntities">
           <EntitySetMapping Name="BaoCao">
             <EntityTypeMapping TypeName="Web_TruyenModel.BaoCao">
               <MappingFragment StoreEntitySet="BaoCao">
@@ -794,12 +898,26 @@ error 6004: The table 'Web_Truyen.dbo.TheoDoi_Truyen' is referenced by a relatio
           <EntitySetMapping Name="Chuong">
             <EntityTypeMapping TypeName="Web_TruyenModel.Chuong">
               <MappingFragment StoreEntitySet="Chuong">
+                <ScalarProperty Name="TrangThaiDuyet" ColumnName="TrangThaiDuyet" />
                 <ScalarProperty Name="ChuongId" ColumnName="ChuongId" />
                 <ScalarProperty Name="truyenId" ColumnName="truyenId" />
                 <ScalarProperty Name="TieuDe" ColumnName="TieuDe" />
                 <ScalarProperty Name="NoiDung" ColumnName="NoiDung" />
                 <ScalarProperty Name="NgayTao" ColumnName="NgayTao" />
                 <ScalarProperty Name="DaDang" ColumnName="DaDang" />
+                <ScalarProperty Name="ThuTu" ColumnName="ThuTu" />
+                <ScalarProperty Name="LuotDoc" ColumnName="LuotDoc" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sysdiagrams">
+            <EntityTypeMapping TypeName="Web_TruyenModel.sysdiagrams">
+              <MappingFragment StoreEntitySet="sysdiagrams">
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="definition" ColumnName="definition" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -816,6 +934,15 @@ error 6004: The table 'Web_Truyen.dbo.TheoDoi_Truyen' is referenced by a relatio
               <MappingFragment StoreEntitySet="TheoDoi_NguoiDung">
                 <ScalarProperty Name="TheoDoiNguoiDungId" ColumnName="TheoDoiNguoiDungId" />
                 <ScalarProperty Name="NguoiTheoDoiId" ColumnName="NguoiTheoDoiId" />
+                <ScalarProperty Name="NgayTheoDoi" ColumnName="NgayTheoDoi" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TheoDoi_Truyen">
+            <EntityTypeMapping TypeName="Web_TruyenModel.TheoDoi_Truyen">
+              <MappingFragment StoreEntitySet="TheoDoi_Truyen">
+                <ScalarProperty Name="userId" ColumnName="userId" />
+                <ScalarProperty Name="truyenId" ColumnName="truyenId" />
                 <ScalarProperty Name="NgayTheoDoi" ColumnName="NgayTheoDoi" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -872,6 +999,7 @@ error 6004: The table 'Web_Truyen.dbo.TheoDoi_Truyen' is referenced by a relatio
                 <ScalarProperty Name="NgaySinh" ColumnName="NgaySinh" />
                 <ScalarProperty Name="VaiTro" ColumnName="VaiTro" />
                 <ScalarProperty Name="avt" ColumnName="avt" />
+                <ScalarProperty Name="TrangThai" ColumnName="TrangThai" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

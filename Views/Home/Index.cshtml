@@ -1,27 +1,113 @@
-﻿
+﻿@using Web_truyen.App_Start
+
 @{
+    ViewBag.Title = "Home";
     Layout = "~/Views/Share/_LayoutPage.cshtml";
 }
 <link href="~/Assets/css/Home.css" rel="stylesheet" />
 @section svg{
-    <svg viewBox="0 0 1665 800" preserveAspectRatio="none">
-        <defs>
-            <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="0%">
-                <stop offset="0%" class="graphy o0" />
-                <stop offset="50%" class="graphy o1" />
-                <stop offset="100%" class="graphy o2" />
-            </linearGradient>
-        </defs>
-        <path class="st0 w0" d="M0.5,3.5h1800v400c0,0-531-130-900,0s-900,0-900,0V3.5z" />
-        <path class="st0 w1" d="M0.5-0.5h1800v400c0,0-432.9-139-789,23c-378,172-1011-23-1011-23V-0.5z" />
-        <path class="st0 w2" d="M0.5-0.5h1800v400c0,0-724.7-154.9-1084,0c-399,172-716,33-716,33V-0.5z" />
-        <path class="st0 w3" d="M0.5-0.5h1800v440c0,0-351-190-900-40c-408.8,111.7-900,0-900,0V-0.5z" />
-    </svg>
+    @Html.Partial("~/Areas/Admin/Views/Shared/_Svg.cshtml")
 }
-@*@section home {
-    <h2>Home Section Content</h2>
-    <p>This is some content for the home section.</p>
-}*@
-<body>
 
-</body>
+<div class="container">
+    @*<div class="slideshow-container">
+            <div class="slide fade">
+                <img src="~/Assets/Admin/img/img1.jpeg" alt="Ảnh 1" />
+            </div>
+            <div class="slide fade">
+                <img src="~/Assets/Admin/img/img2.jpg" alt="Ảnh 2" />
+            </div>
+            <div class="slide fade">
+                <img src="~/Assets/Admin/img/img3.jpg" alt="Ảnh 3">
+            </div>
+            <a class="prev" onclick="plusSlides(-1)">❮</a>
+            <a class="next" onclick="plusSlides(1)">❯</a>
+        </div>*@
+
+    <aside class="sidebar right">
+        <button class="post-story" onclick="location.href='@Url.Action("ThemMoi", "Truyen", new { area = "Admin" })'">
+            <i class="fas fa-plus"></i>
+            Đăng Truyện
+        </button>
+        <ul class="list_menu">
+            <li>
+                <a href="@Url.Action("DanhSach", "Truyen", new { area = "Admin" })">
+                    <div class="icon-box">
+                        <i class="fas fa-book"></i> <!-- Icon thư viện -->
+                    </div>
+                </a>
+                <h4>Thư viện</h4>
+            </li>
+
+            <li>
+                <a href="@Url.Action("TruyenCuaToi", "User", new { area = "Admin" })">
+                    <div class="icon-box">
+                        <i class="fas fa-pencil-alt"></i> <!-- Icon tác phẩm cá nhân -->
+                    </div>
+                </a>
+                <h4>Truyện của tôi</h4>
+            </li>
+            <li>
+                @if (SessionConfig.GetUser() != null)
+                {
+                    <a href="@Url.Action("HoSoCaNhan", "User", new { area = "Admin", useId = SessionConfig.GetUser().userId })">
+                        <div class="icon-box">
+                            <i class="fas fa-user-circle"></i> <!-- Icon hồ sơ người dùng -->
+                        </div>
+                    </a>
+                    <h4>Profile</h4>
+                }
+                else
+                {
+                    <a href="@Url.Action("Login", "Account", new { area = "" })">
+                        <div class="icon-box">
+                            <i class="fas fa-user-circle"></i> <!-- Icon hồ sơ người dùng -->
+                        </div>
+                    </a>
+                    <h4>Profile</h4>
+                }
+            </li>
+
+        </ul>
+    </aside>
+</div>
+<div class="container_main_1">
+    <!-- Phần truyện bán chạy -->
+    <div class="section">
+        <h2>Truyện mới</h2>
+        <div class="book-list slideshow">
+            @foreach (var item in ViewBag.NewBooks)
+            {
+                <a href="@Url.Action("ChiTiet", "Truyen", new { area = "Admin", id = item.truyenId })">
+                    <div class="book fade">
+                        <img src="@Url.Content(string.IsNullOrEmpty(item.AnhBia) ? "~/Assets/img/user1.png" : "~/Assets/img/" + item.AnhBia)" alt="@item.TieuDe" />
+                        <p class="book-title">@item.TieuDe</p>
+                    </div>
+                </a>
+            }
+
+        </div>
+    </div>
+
+
+
+    <!-- Phần tác giả nổi bật -->
+    <div class="sidebar_author">
+        <h2>Tác giả nổi bật</h2>
+        <div class="author-list">
+            @foreach (var author in ViewBag.Authors)
+            {
+                <a href="@Url.Action("HoSoCaNhan", "User", new { area = "Admin", useId = author.userId })">
+                    <div class="author">
+                        <img src="@Url.Content(string.IsNullOrEmpty(author.avt) ? "~/Assets/img/usermacdinh.jpg" : "~/Assets/img/" + author.avt)" alt="Tác giả" class="author-image" />
+                        <p class="author-name">@author.Username</p>
+                    </div>
+                </a>
+            }
+
+        </div>
+    </div>
+</div>
+
+<script src="~/Assets/Admin/js/homeAdmin.js"></script>
+

@@ -1,0 +1,84 @@
+﻿.container_head {
+    background-color: rgba(255, 255, 255, 0.95);
+    height: 90px;
+    width: 100%;
+    display: flex;
+    gap: 50px;
+    align-items: center;
+    padding-left: 20px;
+    color: black;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+.containes-text {
+    display: flex;
+    gap: 20px;
+    align-items:center;
+    cursor: pointer;
+}
+    .containes-text:hover {
+        background-color: #f0f0f0; /* Màu nền khi hover */
+    }
+.title-author {
+    display: flex;
+    flex-direction: column;
+}
+
+.toggle-icon {
+    font-size: 16px;
+    color: gray;
+    transition: transform 0.3s ease;
+}
+
+#back,
+.btn-back {
+    border: none;
+    background: none;
+    outline: none;
+    box-shadow: none;
+    padding: 0;
+    margin: 0;
+    cursor: pointer;
+}
+.text-title {
+    white-space: nowrap; 
+    overflow: hidden; 
+    text-overflow: ellipsis; 
+    max-width: 300px; 
+    display: inline-block; 
+}
+.text-center {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 300px;
+    display: inline-block;
+}
+
+
+.btn_link {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    margin-left: auto;
+    margin-right: 30px;
+}
+
+.btn {
+    border: none;
+    padding: 10px 20px;
+    border-radius: 14px;
+    font-size: 16px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+}
+.btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 2px 5px 15px rgba(0, 0, 0, 0.2);
+    opacity: 0.9;
+}
+.btn:active {
+    transform: translateY(1px);
+    box-shadow: none;
+}

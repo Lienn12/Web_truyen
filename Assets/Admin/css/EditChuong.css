@@ -1,0 +1,181 @@
+﻿.btn1 {
+    color: black;
+}
+.btn3 {
+    background-color: var(--button);
+    color: white;
+}
+.chapter-form-wrapper {
+    padding: 20px;
+    background-color: #fdfdfd;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    margin: auto;
+    overflow: hidden;
+}
+
+.chapter-title-input {
+    display: block;
+    margin: 0 auto;
+    width: 70%;
+    font-size: 2rem;
+    text-align: center;
+    overflow-wrap: break-word;
+    white-space: pre-wrap;
+    resize: none;
+    min-height: 60px;
+    box-sizing: border-box;
+    font-family: var(--font);
+    font-weight:700;
+    border: none;
+    border-radius: 8px;
+    padding: 12px 16px;
+    background-color: #fff
+}
+    .chapter-title-input:focus {
+        outline: none;
+    }
+
+.chapter-status {
+    margin-top: 10px;
+    font-style: italic;
+    color: #888;
+}
+
+.char-count {
+    font-size: 12px;
+    color: #999;
+    margin-top: 5px;
+}
+#quillEditor {
+    border-radius: 5px;
+    padding: 10px;
+}
+.ql-tooltip {
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s ease-in-out;
+}
+
+    .ql-tooltip.ql-editing,
+    .ql-tooltip.ql-active {
+        opacity: 1 !important;
+        pointer-events: auto;
+    }
+.ql-editor {
+    padding: 10px 15px 10px 15px !important;
+    font-family: var(--font);
+    font-size: 16px;
+    font-weight: 500;
+    overflow: visible;
+    height: auto !important;
+}
+    .ql-editor img {
+        width: 50%;
+        height: 50%;
+        display: block;
+        margin: 12px auto; 
+    }
+#quillEditor {
+    border-radius: 5px;
+    padding: 10px;
+    min-height: 100px; 
+    height: auto; 
+    background-color: #fff;
+
+}
+
+#plus-button {
+    position: absolute;
+    z-index: 9999;
+    background: var(--button);
+    color: #fff;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    text-align: center;
+    line-height: 30px;
+    font-size: 20px;
+    cursor: pointer;
+    display: block;
+    top: 390px;
+    left:8px;
+}
+    #plus-button:hover {
+        background: var(--button_hover);
+    }
+
+    #insert-menu {
+        position: absolute;
+        background-color: #fff;
+        border: 1px solid #ccc;
+        border-radius: 6px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        padding: 8px;
+        display: none;
+        z-index: 999;
+        left:0;
+
+    }
+
+    #insert-menu button {
+        display: block;
+        width: 100%;
+        padding: 6px 12px;
+        margin-bottom: 6px;
+        background-color: #f1f1f1;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+        #insert-menu button i {
+            font-size: 20px; 
+            margin-right: 8px;
+        }
+
+
+        #insert-menu button:hover {
+            background-color: #e0e0e0;
+        }
+
+
+#videoModal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    display: none;
+    z-index: 10000;
+}
+
+
+#videoUrl {
+    width: 80%;
+    margin: 10px 0;
+    padding: 8px;
+    font-size: 16px;
+}
+
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 10000;
+}
+
+.modal-content {
+    background-color: #fff;
+    margin: 10% auto;
+    border-radius: 8px;
+    width: 60%;
+    position: relative;
+    z-index: 10001;
+}

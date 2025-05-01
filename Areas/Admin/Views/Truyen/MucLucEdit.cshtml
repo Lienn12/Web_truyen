@@ -1,0 +1,53 @@
+﻿@model List<Web_truyen.Models.Chuong>
+@{
+    ViewBag.Title = "MucLucEdit";
+}
+<!-- Container chính -->
+<div class="container">
+    <!-- Danh sách chương -->
+    <ul class="chapter-list">
+        @foreach (var chuong in Model)
+        {
+            <li class="chapter">
+                <div class="chapter-info">
+                    <span class="title">@chuong.TieuDe</span>
+                    <span class="status">
+                        <span class="status-text @(chuong.DaDang ? "status-published" : "status-draft")">
+                            @((chuong.DaDang ? "Đã đăng" : "Bản thảo"))
+                        </span> -  @chuong.NgayTao.ToString("dd/MM/yyyy")
+                    </span>
+
+                </div>
+
+                <div class="chapter-icons">
+                    @if (chuong.DaDang)
+                    {
+                        <span><i class="fa-solid fa-eye"></i> @chuong.LuotDoc</span>
+                        <span><i class="fa-solid fa-comment"></i> @(chuong.BinhLuan?.Count ?? 0)</span>
+                    }
+                    else
+                    {
+                        <span>Chưa có thống kê nào</span>
+                    }
+                </div>
+
+
+                <!-- Nút ba chấm -->
+                <div class="options-btn" onclick="toggleMenu(this)">
+                    <i class="fa-solid fa-ellipsis"></i>
+                </div>
+                <!-- Menu ẩn -->
+                <div class="options-menu">
+                    <button class="preview-btn"><i class="fa-solid fa-eye"></i> Xem trước</button>
+                    @if (chuong.DaDang)
+                    {
+                        <button class="unpublish-btn"><i class="fa-solid fa-ban"></i> Dừng đăng tải</button>
+                    }
+                    <button class="delete-btn"><i class="fa-solid fa-trash"></i> Xóa chương</button>
+                </div>
+            </li>
+        }
+    </ul>
+</div>
+
+<script src="~/Assets/Admin/js/truyen/MucLucEdit.js"></script>

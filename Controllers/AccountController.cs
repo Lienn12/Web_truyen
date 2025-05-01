@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Data.Entity.Validation;
 using System.Linq;
+using System.Net.Mail;
+using System.Net;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,13 +14,14 @@ using System.Web.Security;
 using Web_truyen.App_Start;
 using Web_truyen.Models;
 using Web_truyen.ViewModel;
+using System.Configuration;
 
 namespace Web_truyen.Controllers
 {
     public class AccountController : Controller
     {
         // GET: Login
-        Web_TruyenEntities2 db = new Web_TruyenEntities2();
+        Web_TruyenEntities db = new Web_TruyenEntities();
         public ActionResult Login()
         {
             return View();
@@ -26,27 +29,53 @@ namespace Web_truyen.Controllers
         [HttpPost]
         public ActionResult Login(loginViewModel model)
         {
-            //Kiểm tra đăng nhập
+            // Kiểm tra đăng nhập
             if (ModelState.IsValid)
             {
                 model.Password = HashPassword(model.Password);
-                //Thêm mã hóa bảo mật để kiểm tra 
+                // Kiểm tra thông tin đăng nhập
                 Users check = db.Users.FirstOrDefault(m => m.Username == model.Username && m.Password == model.Password);
-                // Kiểm tra đăng nhập
+
                 if (check != null)
                 {
+                    if (string.IsNullOrEmpty(check.VaiTro))
+                    {
+                        ModelState.AddModelError("", "Tài khoản đã bị khóa");
+                        return View(model);
+                    }
+
                     SessionConfig.SetUser(check);
                     var us = SessionConfig.GetUser();
-                    return RedirectToAction("Index", "HomeAdmin", new { area = "Admin" });
+
+                    if (TempData["ReturnUrl"] != null)
+                    {
+                        string returnUrl = TempData["ReturnUrl"].ToString();
+                        System.Diagnostics.Debug.WriteLine("ReturnUrl: " + returnUrl);
+                        return Redirect(returnUrl);
+                    }
+
+                    if (check.VaiTro == "admin")
+                    {
+                        return RedirectToAction("Index", "HomeAdmin", new { area = "Admin" });
+                    }
+                    else if (check.VaiTro == "user" || check.VaiTro == "author")
+                    {
+                        return RedirectToAction("Index", "Home");
+                    }
+                    else
+                    {
+                        ModelState.AddModelError("", "Quyền truy cập không hợp lệ");
+                    }
                 }
                 else
                 {
-                    ModelState.AddModelError("", "Tài khoản và mật khẩu không đúng ");
+                    ModelState.AddModelError("", "Tài khoản và mật khẩu không đúng");
                 }
             }
 
             return View(model);
         }
+
         public ActionResult Signup()
         {
             return View();
@@ -62,30 +91,36 @@ namespace Web_truyen.Controllers
                     return View(model);
                 }
 
-                Users user = new Users
-                {
-                    Username = model.Username,
-                    Email = model.Email,
-                    Password = HashPassword(model.Password)
-                };
-
-                if (db.Users.Any(u => u.Username == user.Username))
+                if (db.Users.Any(u => u.Username == model.Username))
                 {
                     ModelState.AddModelError("Username", "Tên người dùng đã được sử dụng.");
                     return View(model);
                 }
 
-                if (db.Users.Any(u => u.Email == user.Email))
+                if (db.Users.Any(u => u.Email == model.Email))
                 {
                     ModelState.AddModelError("Email", "Email đã được sử dụng.");
                     return View(model);
                 }
+
+                Users user = new Users
+                {
+                    Username = model.Username,
+                    Email = model.Email,
+                    Password = HashPassword(model.Password),
+                    VaiTro = "user",
+                    GioiTinh = "Khác", 
+                    NgaySinh = DateTime.Now, 
+                    avt = "usermacdinh.jpg", 
+                    TrangThai = true
+                };
 
                 try
                 {
                     db.Configuration.ValidateOnSaveEnabled = false;
                     db.Users.Add(user);
                     db.SaveChanges();
+                    Session["SuccessMessage"] = "Đăng ký thành công!";
                     return RedirectToAction("Login");
                 }
                 catch (DbEntityValidationException ex)
@@ -108,13 +143,15 @@ namespace Web_truyen.Controllers
                 }
             }
 
+            Session["ErrorMessage"] = "Đăng ký không thành công!";
             return View(model);
         }
 
 
+
         public string HashPassword(string password)
         {
-            if (string.IsNullOrEmpty(password))  
+            if (string.IsNullOrEmpty(password))
             {
                 throw new ArgumentNullException(nameof(password), "Password cannot be null or empty.");
             }
@@ -126,7 +163,7 @@ namespace Web_truyen.Controllers
             }
         }
 
-        public ActionResult VerifyEmail ()
+        public ActionResult VerifyEmail()
         {
             return View();
         }
@@ -135,33 +172,69 @@ namespace Web_truyen.Controllers
         {
             if (ModelState.IsValid)
             {
-                var checkUser  = db.Users.FirstOrDefault(u => u.Email == model.Email);
-                if (checkUser == null)
+                var user = db.Users.SingleOrDefault(u => u.Email == model.Email);
+                if (user != null)
                 {
-                    ModelState.AddModelError("Email", "Email không tồn tại.");
-                    return View(model);
+                    string code = Guid.NewGuid().ToString().Substring(0, 6); // Ví dụ 6 ký tự
+                    Session["ResetCode"] = code;
+                    Session["ResetEmail"] = user.Email;
+                    Session["Username"] = user.Username; // Lưu Username vào Session
+
+                    SendResetEmail(user.Email, code);
+
+                    return RedirectToAction("EnterResetCode");
                 }
-                else
-                {
-                    return RedirectToAction("ChangePassword", "Account", new { username = checkUser.Username });
-                }
+
+                ModelState.AddModelError("", "Email không tồn tại.");
             }
             return View(model);
         }
-        public ActionResult ChangePassword(string username)
+
+        public ActionResult EnterResetCode()
         {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult EnterResetCode(string code)
+        {
+            if (code == (string)Session["ResetCode"])
+            {
+                return RedirectToAction("ChangePassword");
+            }
+
+            // Nếu mã không đúng, thông báo lỗi và hiển thị lại form
+            ViewBag.ErrorMessage = "Mã không đúng";
+            return View();
+        }
+
+        public ActionResult ChangePassword()
+        {
+            // Lấy Username từ Session
+            var username = Session["Username"] as string;
             if (string.IsNullOrEmpty(username))
             {
                 return RedirectToAction("VerifyEmail", "Account");
             }
+
             return View(new ChangePasswordViewModel { Username = username });
         }
+
+
         [HttpPost]
         public ActionResult ChangePassword(ChangePasswordViewModel model)
         {
             if (ModelState.IsValid)
             {
-                var checkUser = db.Users.FirstOrDefault(u => u.Username == model.Username);
+                // Lấy Username từ Session
+                var username = Session["Username"] as string;
+
+                if (string.IsNullOrEmpty(username))
+                {
+                    return RedirectToAction("VerifyEmail", "Account");
+                }
+
+                var checkUser = db.Users.FirstOrDefault(u => u.Username == username);
                 if (checkUser != null)
                 {
                     checkUser.Password = HashPassword(model.NewPassword);
@@ -170,7 +243,7 @@ namespace Web_truyen.Controllers
                 }
                 else
                 {
-                    ModelState.AddModelError("", "Không tìm thấy tài khoản với email này.");
+                    ModelState.AddModelError("", "Không tìm thấy tài khoản với username này.");
                     return View(model);
                 }
             }
@@ -180,10 +253,37 @@ namespace Web_truyen.Controllers
                 return View(model);
             }
         }
+
+        private void SendResetEmail(string email, string code)
+        {
+            var fromAddress = new MailAddress("liennguyen4221@gmail.com", "JellyCo");
+            var toAddress = new MailAddress(email);
+            const string fromPassword = "tauf iyzk qulq rbtw";  // Đây là mật khẩu của bạn
+            const string subject = "Reset your password";
+            string body = $"Mã xác nhận của bạn là: {code}";
+
+            var smtp = new SmtpClient
+            {
+                Host = "smtp.gmail.com",
+                Port = 587,  // Cổng SMTP của Gmail
+                EnableSsl = true,  // Bật SSL
+                DeliveryMethod = SmtpDeliveryMethod.Network,
+                UseDefaultCredentials = false,
+                Credentials = new NetworkCredential(fromAddress.Address, fromPassword)
+            };
+            using (var message = new MailMessage(fromAddress, toAddress)
+            {
+                Subject = subject,
+                Body = body
+            })
+            {
+                smtp.Send(message);
+            }
+        }
         public ActionResult Logout()
         {
             SessionConfig.SetUser(null);
-            return RedirectToAction("Index", "Home",new {area=""});
+            return RedirectToAction("Index", "Home", new { area = "" });
         }
 
     }

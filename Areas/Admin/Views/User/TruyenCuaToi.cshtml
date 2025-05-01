@@ -1,0 +1,90 @@
+﻿@model PagedList.IPagedList<Web_truyen.Areas.Admin.Models.ListTruyenViewModel>
+
+@using PagedList
+@using PagedList.Mvc
+@{
+    ViewBag.Title = "Truyện Của Tôi";
+    ViewBag.TitlePage = "Quản lý truyện của tôi";
+    Layout = "~/Views/Share/_LayoutPage.cshtml";
+}
+<link href="~/Assets/Admin/css/truyen/DsTruyen.css" rel="stylesheet" />
+
+
+<p>
+    <a href="@Url.Action("ThemMoi", "Truyen", new { area = "Admin" })" class="btn btn-primary">
+        <i class="fa fa-plus"></i> Thêm mới
+    </a>
+</p>
+
+<div class="container_story">
+    <form method="get" action="@Url.Action("TruyenCuaToi", "Truyen", new { area = "Admin" })" class="search-bar">
+        <input type="text" name="searchTerm" placeholder="Nhập tiêu đề hoặc tác giả..." value="@ViewBag.SearchTerm" />
+        <select name="statusFilter">
+            <option value="">-- Chọn trạng thái --</option>
+            <option value="true" @(ViewBag.StatusFilter != null && ViewBag.StatusFilter == true ? "selected" : "")>Hoàn thành</option>
+            <option value="false" @(ViewBag.StatusFilter != null && ViewBag.StatusFilter == false ? "selected" : "")>Đang viết</option>
+        </select>
+        <button type="submit"><i class="fa fa-search"></i> Tìm kiếm</button>
+    </form>
+
+    <div class="container_table">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Truyện ID</th>
+                    <th>Ảnh Bìa</th>
+                    <th>Tiêu Đề</th>
+                    <th>Tác giả</th>
+                    <th>Ngày Tạo</th>
+                    <th>Trạng Thái</th>
+                    <th>Hoạt động</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@Html.DisplayFor(modelItem => item.TruyenId)</td>
+                        <td>
+                            @if (!string.IsNullOrEmpty(item.AnhBia))
+                            {<img src="~/Assets/img/@item.AnhBia" alt="Ảnh bìa" width="100" />
+                            }
+                        </td>
+                        <td>@Html.DisplayFor(modelItem => item.TieuDe)</td>
+                        <td>@item.Username</td>
+                        <td>@(item.NgayTao.HasValue ? item.NgayTao.Value.ToString("dd/MM/yyyy") : "")</td>
+                        <td>
+                            @if (item.TrangThai == false)
+                            {
+                                <span class="badge badge-dangviet">Đang viết</span>
+                            }
+                            else
+                            {
+                                <span class="badge badge-hoanthanh">Hoàn thành</span>
+                            }
+                        </td>
+                        <td class="action-buttons">
+                            @Html.Raw($"<a href='/Admin/Truyen/Edit/{item.TruyenId}' class='btn-view'><i class='fa fa-eye'></i></a>")
+                            <a href="@Url.Action("Delete", "Truyen", new { id = item.TruyenId })" class="btn-delete" onclick="return confirm('Bạn có chắc chắn muốn xóa không?');">
+                                <i class="fas fa-trash-alt"></i>
+                            </a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+        <!-- Pagination -->
+        <div class="pagination-container text-center">
+            @Html.PagedListPager(Model, page => Url.Action("TruyenCuaToi", new { page, searchTerm = ViewBag.SearchTerm, statusFilter = ViewBag.StatusFilter }),
+                new PagedListRenderOptions
+                {
+                    MaximumPageNumbersToDisplay = 5,
+                    UlElementClasses = new[] { "pagination" },
+                    LiElementClasses = new[] { "page-item" },
+                })
+        </div>
+    </div>
+</div>
+
+<script src="~/Assets/Admin/js/truyen/dsTruyen.js"></script>

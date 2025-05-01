@@ -1,0 +1,136 @@
+﻿@model Web_truyen.Areas.Admin.Models.ChuongViewModel
+
+@{
+    ViewBag.Title = "Edit chương";
+    Layout = "~/Views/Share/_LayoutPage.cshtml";
+}
+<link href="https://cdn.jsdelivr.net/npm/quill@2.0.0/dist/quill.bubble.css" rel="stylesheet">
+<link href="~/Assets/Admin/css/EditChuong.css" rel="stylesheet" />
+<link href="~/Assets/Admin/css/_head.css" rel="stylesheet" />
+<link href="~/Assets/Admin/css/truyen/ThemTruyen.css" rel="stylesheet" />
+
+@section top {
+    <div class="container_head">
+        <button id="back" onclick="history.back()" class="btn-back">
+            <i class="fas fa-chevron-left fa-2x" style="color: gray"></i>
+        </button>
+        <div class="containes-text" id="toggleMucLuc">
+            <div class="title-author">
+                <h4 class="text-center" style="color:gray">@ViewBag.TieuDeTruyen</h4>
+                <h2 class="text-title">@ViewBag.TieuDeChuong</h2>
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <h4 class="text-check" style="color:gray; margin: 0;">@ViewBag.TrangThaiChuong</h4>
+                    <p id="charCount" class="char-count" style="margin: 0;">(0)</p>
+                    <span id="saveSuccess" style="display:none; color: green; font-weight: bold;">✓ Đã lưu</span>
+                    <span id="saveNotSaved" style="display:none; color: red; font-weight: bold;">✗ Chưa lưu</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="btn_link">
+            @if (!Model.Chuong.DaDang)
+            {
+                <button type="button" id="btnLuu" class="btn btn1" style="background-color: gray; color:white"> 
+                    Lưu
+                </button>
+
+                <button type="button" id="btnSubmit" class="btn btn3">
+                    Đăng tải
+                </button>
+
+                <button id="btnPreview" class="btn btn2" style="background-color: gray"
+                        data-url="@Url.Action("DocChuong", "Chuong", new { area = "Admin", id = Model.Chuong.ChuongId })">
+                    Xem trước
+                </button>
+            }
+            else
+            {
+                <button id="btnDangThayDoi" class="btn btn3"
+                        data-url="@Url.Action("DocChuong", "Chuong", new { area = "Admin", id = Model.Chuong.ChuongId })">
+                    Đăng các thay đổi
+                </button>
+                <button id="btnCancel" class="btn btn2"
+                        data-url="@Url.Action("ChiTietTruyen", "Truyen", new { area = "Admin", id = Model.Chuong.truyenId })">
+                    Hủy
+                </button>
+            }
+        </div>
+
+    </div>
+    @{
+        ViewBag.IsDocChuong = false;
+        ViewBag.HienThiNutThemChuong = true;
+    }
+    @Html.Partial("MucLuc", new Tuple<List<Web_truyen.Models.Chuong>, int>(Model.DanhSachChuong, ViewBag.ChuongDangChon ?? 0))
+}
+
+@using (Html.BeginForm("Edit", "Chuong", FormMethod.Post, new { area = "Admin", id = "formSuaChuong" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(model => model.Chuong.ChuongId)
+    @Html.HiddenFor(model => model.Chuong.truyenId)
+    @Html.HiddenFor(model => model.Chuong.DaDang, new { id = "isPublished" })
+    @Html.HiddenFor(model => model.Chuong.NoiDung, new { id = "NoiDung" })
+    @Html.HiddenFor(model => model.Chuong.TrangThaiDuyet, new { id = "TrangThaiDuyet" })
+    <div class="chapter-form-wrapper">
+        <div class="chapter-meta">
+            @Html.TextAreaFor(model => model.Chuong.TieuDe, new
+            {
+                @class = "chapter-title-input",
+                placeholder = "Nhập tên chương...",
+                rows = "2",
+                style = "overflow:hidden;",
+                oninput = "adjustHeight(this)"
+            })
+        </div>
+        <hr style="width: 95%; margin: 0 auto;">
+        <div class="chapter-content mt-4">
+            <div id="quillEditor" style="min-height: 400px;">
+                @Html.Raw(Model.Chuong.NoiDung)
+            </div>
+        </div>
+
+        <div id="plus-button">+</div>
+        <div id="insert-menu" style="display:none;">
+            <button id="insertImageButton" type="button"> <i class="fa fa-image"></i></button>
+            <button id="insertVideoButton" type="button"><i class="fa fa-video"></i></button>
+        </div>
+        <div id="videoModal" style="display:none;">
+            <div class="modal-content">
+                <label for="videoUrl">Nhập URL video:</label>
+                <input type="text" id="videoUrl" placeholder="Nhập URL video (YouTube, Vimeo)">
+                <button onclick="insertVideo()">Chèn video</button>
+                <button onclick="closeVideoModal()">Đóng</button>
+            </div>
+        </div>
+
+    </div>
+}
+<!-- Modal sửa thông tin truyện -->
+<div id="editTruyenModal" class="modal" style="display:none;">
+    <!-- Đặt dữ liệu vào các thuộc tính data-* -->
+    <div id="data-container"
+         data-ten-truyen="@Model.Chuong.Truyen.TieuDe"
+         data-the-loai="@Model.Chuong.Truyen.TheLoaiId">
+    </div>
+    
+    <div class="modal-content" style="margin-top:130px;">
+        <div class="container_head " style="border-radius:8px 8px 0 0">
+            <div class="containes-text">
+                <div class="title-author">
+                    <h4 class="text-center" style="color:gray;">Thêm truyện mới</h4>
+                    <h2 class="text-title">Truyện chưa có tiêu đề</h2>
+                </div>
+            </div>
+            <div class="btn_link mt-4">
+                <button type="button" id="btnCancel" class="btn btn1" data-url="@Url.Action("DanhSach", "Truyen", new { area = "Admin" })">Huỷ</button>
+                <button type="button" id="btnSaveAndNext" class="btn btn2">Tiếp tục</button>
+            </div>
+
+        </div>
+        @Html.Partial("~/Areas/Admin/Views/Truyen/_themTruyen.cshtml", Model.Chuong.Truyen)
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/quill@2.0.0/dist/quill.min.js"></script>
+<script src="~/Assets/Admin/js/EditChuong.js"></script>

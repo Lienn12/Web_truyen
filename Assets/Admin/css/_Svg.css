@@ -35,3 +35,33 @@ svg {
     stroke: #1a002a00;
     stroke-width: 0;
 }
+/*.w0 {
+    opacity: 0.6;
+}
+
+.w1 {
+    opacity: 0.4;
+}
+
+.w2 {
+    opacity: 0.3;
+}
+
+.w3 {
+    opacity: 0.2;
+}
+
+.w4 {
+    opacity: 0.1;
+}*/
+.flip-x {
+    transform: scaleX(-1);
+    transform-origin: center;
+}
+.waves.flip-y {
+    transform: scaleY(-1);
+    width: 100%;
+    height: auto;
+    display: block;
+}
+

@@ -11,5 +11,6 @@ namespace Web_truyen.ViewModel
         [Required(ErrorMessage = "Email không được để trống")]
         [EmailAddress]
         public string Email { get; set; }
+
     }
 }

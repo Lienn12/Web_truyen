@@ -21,6 +21,7 @@ namespace Web_truyen.Models
             this.BinhLuan = new HashSet<BinhLuan>();
             this.TheoDoi_NguoiDung = new HashSet<TheoDoi_NguoiDung>();
             this.TheoDoi_NguoiDung1 = new HashSet<TheoDoi_NguoiDung>();
+            this.TheoDoi_Truyen = new HashSet<TheoDoi_Truyen>();
             this.ThongBao = new HashSet<ThongBao>();
             this.ThuVien = new HashSet<ThuVien>();
             this.Truyen = new HashSet<Truyen>();
@@ -31,9 +32,10 @@ namespace Web_truyen.Models
         public string Email { get; set; }
         public string Password { get; set; }
         public string GioiTinh { get; set; }
-        public Nullable<System.DateTime> NgaySinh { get; set; }
+        public System.DateTime NgaySinh { get; set; }
         public string VaiTro { get; set; }
         public string avt { get; set; }
+        public bool TrangThai { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<BaoCao> BaoCao { get; set; }
@@ -43,6 +45,8 @@ namespace Web_truyen.Models
         public virtual ICollection<TheoDoi_NguoiDung> TheoDoi_NguoiDung { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<TheoDoi_NguoiDung> TheoDoi_NguoiDung1 { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<TheoDoi_Truyen> TheoDoi_Truyen { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ThongBao> ThongBao { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

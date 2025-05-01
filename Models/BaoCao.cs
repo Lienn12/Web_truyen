@@ -15,11 +15,11 @@ namespace Web_truyen.Models
     public partial class BaoCao
     {
         public int BaoCaoId { get; set; }
-        public Nullable<int> NguoiBaoCaoId { get; set; }
+        public int NguoiBaoCaoId { get; set; }
         public string LoaiBaoCao { get; set; }
         public int DoiTuongId { get; set; }
         public string LyDo { get; set; }
-        public Nullable<System.DateTime> NgayBaoCao { get; set; }
+        public System.DateTime NgayBaoCao { get; set; }
     
         public virtual Users Users { get; set; }
     }

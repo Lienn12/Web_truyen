@@ -15,10 +15,10 @@ namespace Web_truyen.Models
     public partial class ThongBao
     {
         public int ID_ThongBao { get; set; }
-        public Nullable<int> userId { get; set; }
+        public int userId { get; set; }
         public string NoiDung { get; set; }
-        public Nullable<bool> DaXem { get; set; }
-        public Nullable<System.DateTime> NgayTao { get; set; }
+        public bool DaXem { get; set; }
+        public System.DateTime NgayTao { get; set; }
     
         public virtual Users Users { get; set; }
     }

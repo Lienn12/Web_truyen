@@ -15,10 +15,10 @@ namespace Web_truyen.Models
     using System.Data.Entity.Core.Objects;
     using System.Linq;
     
-    public partial class Web_TruyenEntities2 : DbContext
+    public partial class Web_TruyenEntities : DbContext
     {
-        public Web_TruyenEntities2()
-            : base("name=Web_TruyenEntities2")
+        public Web_TruyenEntities()
+            : base("name=Web_TruyenEntities")
         {
         }
     
@@ -30,8 +30,10 @@ namespace Web_truyen.Models
         public virtual DbSet<BaoCao> BaoCao { get; set; }
         public virtual DbSet<BinhLuan> BinhLuan { get; set; }
         public virtual DbSet<Chuong> Chuong { get; set; }
+        public virtual DbSet<sysdiagrams> sysdiagrams { get; set; }
         public virtual DbSet<TheLoai> TheLoai { get; set; }
         public virtual DbSet<TheoDoi_NguoiDung> TheoDoi_NguoiDung { get; set; }
+        public virtual DbSet<TheoDoi_Truyen> TheoDoi_Truyen { get; set; }
         public virtual DbSet<ThongBao> ThongBao { get; set; }
         public virtual DbSet<ThuVien> ThuVien { get; set; }
         public virtual DbSet<Truyen> Truyen { get; set; }
