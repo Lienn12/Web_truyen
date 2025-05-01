@@ -1,0 +1,41 @@
+﻿@model List<Web_truyen.Models.Truyen>
+
+@{
+    ViewBag.Title = "Thư viện";
+    ViewBag.TitlePage = "Thư viện của tôi";
+    Layout = "~/Views/Share/_LayoutPage.cshtml";
+}
+
+<link href="~/Assets/css/Thuvien.css" rel="stylesheet" />
+
+<div class="library-wrapper">
+    <!-- Tabs -->
+    <div class="tab-menu">
+        <div class="filter-item @(ViewBag.CurrentTab == "theodoi" ? "active" : "")">
+            <a href="@Url.Action("Thuvien", "Thuvien", new { tab = "theodoi" })">Theo dõi truyện</a>
+        </div>
+        <div class="filter-item @(ViewBag.CurrentTab == "ganDay" ? "active" : "")">
+            <a href="@Url.Action("Thuvien", "Thuvien", new { tab = "ganDay" })">Gần đây</a>
+        </div>
+    </div>
+
+    <!-- Grid hiển thị truyện -->
+    <div class="library-container">
+        @if (Model != null && Model.Any())
+        {
+            foreach (var truyen in Model)
+            {
+                <div class="story-card">
+                    <a href="@Url.Action("ChiTiet", "Truyen", new { id = truyen.truyenId })">
+                        <img src="@Url.Content(string.IsNullOrEmpty(truyen.AnhBia) ? "~/Assets/img/user1.png" : "~/Assets/img/" + truyen.AnhBia)" alt="@truyen.TieuDe" />
+                    </a>
+                    <div class="story-title">@truyen.TieuDe</div>
+                </div>
+            }
+        }
+        else
+        {
+            <p style="padding: 20px;">Không có truyện nào trong mục này.</p>
+        }
+    </div>
+</div>
