@@ -13,6 +13,7 @@ namespace Web_truyen.Controllers
     {
         Web_TruyenEntities db = new Web_TruyenEntities();
         // GET: Thuvien
+        
         public ActionResult Thuvien(string tab = "theodoi")
         {
             var user = SessionConfig.GetUser();
