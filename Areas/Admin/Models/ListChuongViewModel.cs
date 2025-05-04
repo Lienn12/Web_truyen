@@ -7,5 +7,6 @@ namespace Web_truyen.Areas.Admin.Models
     {
         public Chuong Chuong { get; set; }
         public List<Chuong> DanhSachChuong { get; set; }
+        public List<BinhLuan> DanhSachBinhLuan { get;set; }
     }
 }

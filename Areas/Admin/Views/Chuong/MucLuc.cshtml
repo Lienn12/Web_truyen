@@ -1,9 +1,11 @@
 ﻿@model Tuple<List<Web_truyen.Models.Chuong>, int>
+@{
+    var permission = (Web_truyen.Areas.Admin.Models.UserPermissionViewModel)ViewBag.Permission;
+}
 <link href="~/Assets/Admin/css/MucLuc.css" rel="stylesheet" />
 
 <div id="mucLucContainer" class="muc-luc-container">
     <h3 class="muc-luc-title">Mục Lục</h3>
-
     <ul class="muc-luc-list">
         @foreach (var chuong in Model.Item1)
         {
@@ -16,21 +18,57 @@
                    class="chapter-title">
                     @chuong.TieuDe
                 </a>
-
-                <span class="status">
-                    @if (ViewBag.IsDocChuong == true)
-                    {
-                        @(chuong.DaDang ? "" : "Bản thảo")
-                    }
-                    else
-                    {
-                        @: @(chuong.DaDang ? "Đã đăng" : "Bản thảo")
-                        if (chuong.NgayTao != null)
+                @if (ViewBag.laTacGia == true)
+                {
+                    <span class="status">
+                        @if (ViewBag.IsDocChuong == true)
                         {
-                            @: - @chuong.NgayTao.ToString("dd/MM/yyyy")
-                        }}
-                </span>
-            </li>
+                            if (chuong.TrangThaiDuyet == "chờ duyệt")
+                            {
+                                <span style="color: green; font-weight: 700">Chờ duyệt</span>
+                            }
+                            else if (chuong.TrangThaiDuyet == "Từ chối")
+                            {
+                                <span style="color:red; font-weight:700">Từ chối</span>
+                            }
+                            else
+                            {
+                                if (!chuong.DaDang)
+                                {
+                                    <span>Bản thảo</span>
+                                }
+                            }
+                        }
+                        else
+                        {
+                            if (chuong.TrangThaiDuyet == "chờ duyệt")
+                            {
+                                <span style="color: green; font-weight: 700">Chờ duyệt</span>
+                            }
+                            else if (chuong.TrangThaiDuyet == "Từ chối")
+                            {
+                                <span style="color: red; font-weight: 700">Từ chối</span>
+                            }
+                            else
+                            {
+                                if (chuong.DaDang)
+                                {
+                                    <span style="color: var(--button); font-weight: 700">Đã đăng</span>
+                                }
+                                else
+                                {
+                                    <span>Bản thảo</span>
+                                }
+                            }
+
+                            if (chuong.NgayTao != null)
+                            {
+                                @: - @chuong.NgayTao.ToString("dd/MM/yyyy")
+                            }
+                        }
+                    </span>
+                }
+                </li>
         }
     </ul>
 

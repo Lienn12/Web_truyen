@@ -11,7 +11,8 @@ namespace Web_truyen.Models
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.ComponentModel.DataAnnotations.Schema;
+
     public partial class BinhLuan
     {
         public int BinhLuanId { get; set; }
@@ -20,7 +21,10 @@ namespace Web_truyen.Models
         public int ChuongId { get; set; }
         public string NoiDung { get; set; }
         public System.DateTime NgayTao { get; set; }
-    
+        public Nullable<int> BinhLuanChaId { get; set; }
+        [ForeignKey("BinhLuanChaId")]
+        public virtual BinhLuan BinhLuanCha { get; set; }
+        public virtual ICollection<BinhLuan> TraLoi { get; set; } = new List<BinhLuan>();
         public virtual Chuong Chuong { get; set; }
         public virtual Truyen Truyen { get; set; }
         public virtual Users Users { get; set; }

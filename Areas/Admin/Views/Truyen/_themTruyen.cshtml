@@ -1,15 +1,21 @@
 ﻿@model Web_truyen.Models.Truyen
 @using Web_truyen.App_Start
-
-@using (Html.BeginForm(Model.truyenId == 0 ? "ThemMoi" : "EditTruyen", "Truyen", FormMethod.Post, new { enctype = "multipart/form-data", id = Model.truyenId == 0 ? "ThemMoi" : "EditTruyen" }))
+@using (Html.BeginForm(
+    Model.truyenId == 0 ? "ThemMoi" : "Edit",
+    "Truyen",
+    Model.truyenId == 0 ? null : new { id = Model.truyenId },
+    FormMethod.Post,
+    new { enctype = "multipart/form-data", id = Model.truyenId == 0 ? "ThemMoi" : "EditTruyen" }
+))
 {
-
     @Html.AntiForgeryToken()
     @Html.HiddenFor(model => model.NgayTao)
     @Html.HiddenFor(model => model.NgayCapNhap)
     @Html.HiddenFor(model => model.TrangThai, new { @Value = false })
     @Html.HiddenFor(model => model.DaDang, new { @Value = false })
+    @Html.HiddenFor(model => model.truyenId)
 
+    <input type="hidden" name="NextAction" id="NextAction" value="Edit" />
     <div class="them-truyen-wrapper">
         <div class="left-panel">
             <img id="previewImage"
@@ -25,20 +31,27 @@
 
             <div class="form-group">
                 <label>Tiêu đề</label>
-                @Html.TextBoxFor(model => model.TieuDe, new { @class = "form-control", placeholder = "Tiêu đề truyện" })
-                @Html.ValidationMessageFor(model => model.TieuDe, "", new { @class = "text-danger" })
+                @Html.TextBoxFor(model => model.TieuDe, new
+                {
+                    @class = "form-control",
+                    placeholder = "Tiêu đề truyện",
+                    id = "TieuDe",
+                    @Value = Model.TieuDe == "Truyện chưa có tiêu đề" ? "" : Model.TieuDe
+                })
+                <span id="TieuDeError" class="text-danger" style="display:none; color:red">Vui lòng nhập tiêu đề truyện.</span>
             </div>
 
             <div class="form-group">
                 <label>Mô tả</label>
-                @Html.TextAreaFor(model => model.MoTa, 4, 50, new { @class = "form-control", placeholder = "Mô tả truyện" })
-                @Html.ValidationMessageFor(model => model.MoTa, "", new { @class = "text-danger" })
+                <textarea name="MoTa" id="MoTa" class="form-control"
+                          placeholder="Mô tả truyện">@(Model.MoTa == "Mô tả chưa có" ? "" : Model.MoTa)</textarea>
+                <span id="MoTaError" class="text-danger" style="display: none; color: red">Vui lòng nhập mô tả truyện.</span>
             </div>
 
             <div class="form-group">
                 <label>Thể loại</label>
-                @Html.DropDownListFor(model => model.TheLoaiId, ViewBag.TheLoai as SelectList, new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.TheLoaiId, "", new { @class = "text-danger" })
+                @Html.DropDownListFor(model => model.TheLoaiId, ViewBag.TheLoai as SelectList, new { @class = "form-control", id = "TheLoaiId" })
+                <span id="TheLoaiError" class="text-danger" style="display: none; color: red">Vui lòng chọn thể loại truyện.</span>
             </div>
 
             <div class="form-check">
@@ -48,3 +61,4 @@
         </div>
     </div>
 }
+

@@ -2,13 +2,13 @@
     background-color: #ffffff;
     border: 1px solid #ddd;
     border-radius: 12px;
-    padding:20px;
+    padding: 0 20px 20px 20px;
     margin-top: 5px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
     width: 300px;
     margin-left: 20px;
     margin-right: 40px;
-    max-height: 500px; 
+    max-height: 500px;
     overflow-y: auto;
 }
     .muc-luc-container::-webkit-scrollbar {
@@ -75,6 +75,11 @@
     color: var(--button);
     display: block;
     text-decoration: none;
+    white-space: nowrap; 
+    overflow: hidden; 
+    text-overflow: ellipsis; 
+    display: block; 
+    max-width: 250px;
 }
 
 .status {

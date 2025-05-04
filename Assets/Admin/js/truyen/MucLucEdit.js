@@ -12,6 +12,28 @@ document.addEventListener("click", function (event) {
         }
     });
 });
+document.addEventListener("DOMContentLoaded", function () {
+    var canEdit = window.canEdit;
+    var isAdminNotAuthor = window.isAdminNotAuthor;
+
+    var chapters = document.querySelectorAll('.chapter');
+
+    var editTemplate = document.getElementById("editUrlTemplate").value;
+    var docTemplate = document.getElementById("docUrlTemplate").value;
+    console.log("canEdit:", canEdit);
+    console.log("isAdminNotAuthor:", isAdminNotAuthor);
+    chapters.forEach(function (chapter) {
+        chapter.addEventListener('click', function () {
+            var chapterId = this.getAttribute('data-id');
+            var editUrl = editTemplate.replace("__chapterId__", chapterId);
+            var docUrl = docTemplate.replace("__chapterId__", chapterId);
+
+            window.location.href = canEdit ? editUrl : docUrl;
+        });
+    });
+});
+
+
 
 
 

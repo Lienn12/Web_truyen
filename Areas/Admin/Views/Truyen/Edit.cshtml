@@ -4,6 +4,14 @@
     ViewBag.Title = "Sửa chi tiết truyện";
     ViewBag.TitleStory = Model.TieuDe;
     Layout = "~/Views/Share/_LayoutPage.cshtml";
+    var user = Web_truyen.App_Start.SessionConfig.GetUser();
+    var userRole = Web_truyen.App_Start.SessionConfig.GetUser().VaiTro;
+    var isAdmin = userRole == "admin";
+    var isAuthor = userRole == "author";
+    var truyenId = ViewBag.TruyenId;
+
+    var isAdminNotAuthor = isAdmin && !ViewBag.IsAuthor;
+    var canEdit = (isAdmin && ViewBag.IsAuthor) || isAuthor;
 }
 
 <link href="~/Assets/Admin/css/truyen/EditTruyen.css" rel="stylesheet" />
@@ -11,9 +19,13 @@
 <link href="~/Assets/Admin/css/truyen/MucLucEdit.css" rel="stylesheet" />
 @section top {
     <div class="container_head">
-        <button id="back" onclick="history.back()" class="btn-back">
+        <button id="back" class="btn-back"
+                data-admin-url="@Url.Action("DanhSach", "Truyen", new { area = "Admin" })"
+                data-user-url="@Url.Action("TruyenCuaToi", "User", new { area = "" })">
             <i class="fas fa-chevron-left fa-2x" style="color: gray"></i>
         </button>
+
+        <input type="hidden" id="userRole" value="@user.VaiTro" />
         <div class="containes-text">
             <div class="title-author">
                 <h4 class="text-center" style="color:gray;">@ViewBag.Title</h4>
@@ -26,81 +38,93 @@
                         </span>
                     }
                 </div>
-
-
             </div>
         </div>
-        <div class="btn_link mt-4">
-            <button type="button" id="btnCancel" class="btn btn1" data-url="@Url.Action("DanhSach", "Truyen", new { area = "Admin" })">Huỷ</button>
-            <button type="submit" form="formEdit" class="btn btn2">Lưu</button>
-        </div>
+        @if (canEdit)
+        {
+            <div class="btn_link mt-4">
+                <button type="button" id="btnCancel" class="btn btn1" data-url="@Url.Action("DanhSach", "Truyen", new { area = "Admin" })">Huỷ</button>
+                <button type="submit" form="formEdit" class="btn btn2">Lưu</button>
+            </div>
+         }
+        
     </div>
 }
 
 
-    <div class="story-container">
-        <div class="story-content">
-            <!-- Ảnh bìa -->
-            <div class="story-image">
-                <img id="previewImage" src="~/Assets/img/@Model.AnhBia" alt="Ảnh bìa" class="preview-image" />
+<div class="story-container">
+    <div class="story-content">
+        <!-- Ảnh bìa -->
+        <div class="story-image">
+            <img id="previewImage" src="~/Assets/img/@Model.AnhBia" alt="Ảnh bìa" class="preview-image" />
+            @if (canEdit)
+            {
                 <label class="btn-edit">
                     <i class="fas fa-pencil-alt"></i>
                     <input type="file" name="AnhBiaFile" id="AnhBiaFile" style="display:none;" />
                 </label>
-            </div>
-            <button type="button" id="btn-preview" class="btn-preview" data-url="@Url.Action("ChiTiet", "Truyen", new { area = "Admin" , id = Model.truyenId})">Xem trước</button>
-        </div>
-
-        <!-- Nội dung -->
-        <div class="story-info">
-            <div class="tab-menu">
-                <button class="tab-btn active" type="button" onclick="showSection('story-details', this)">Chi tiết truyện</button>
-                <button class="tab-btn" type="button" onclick="showSection('chapter-section', this)">Mục lục</button>
-            </div>
-
-            @using (Html.BeginForm("Create", "Chuong", new { area = "Admin", truyenId = ViewBag.TruyenId }, FormMethod.Post, new { id = "formCreate" }))
-            {
-                @Html.AntiForgeryToken()
-                <input type="hidden" name="truyenId" value="@Model.truyenId" />
-                <button type="submit" id="addChapterBtn" class="add-btn" style="display: none;">+ Chương mới</button>
             }
-
-            @using (Html.BeginForm("Edit", "Truyen", FormMethod.Post, new { enctype = "multipart/form-data", id = "formEdit" }))
-            {
-                @Html.HiddenFor(m => m.truyenId)
-                @Html.HiddenFor(model => model.NgayCapNhap)
-                <input type="hidden" id="AnhBiaHidden" name="AnhBiaFileName" value="@Model.AnhBia" />
-                <!-- Chi tiết truyện -->
-                <div id="story-details" class="section">
-                    <label>Tiêu đề:</label>
-                    @Html.TextBoxFor(m => m.TieuDe, new { @class = "form-control" })
-
-                    <label>Mô tả:</label>
-                    @Html.TextAreaFor(m => m.MoTa, new { @class = "form-control" })
-
-                    <label>Thể loại:</label>
-                    @Html.DropDownList("TheLoaiId", null, new { @class = "form-control" })
-
-                    <div class="checkbox">
-                        <label>Tác giả:</label>
-                        <label>@Model.Users.Username</label>
-                    </div>
-
-                    <div class="checkbox">
-                        <label>Trạng thái:</label>
-                        @Html.CheckBoxFor(m => m.TrangThai, new { @class = "form-control" })
-                    </div>
-
-                </div>
-            }
-
-            <!-- Mục lục -->
-            <div id="chapter-section" class="section" style="display: none;">
-                @Html.Action("MucLucEdit", "Truyen", new { truyenId = Model.truyenId })
             </div>
-        </div>
 
+        <button type="button" id="btn-preview" class="btn-preview" data-url="@Url.Action("ChiTiet", "Truyen", new { area = "Admin" , id = Model.truyenId})">Xem trước</button>
     </div>
 
+    <!-- Nội dung -->
+    <div class="story-info">
+        <div class="tab-menu">
+            <button class="tab-btn active" type="button" onclick="showSection('story-details', this)">Chi tiết truyện</button>
+            <button class="tab-btn" type="button" onclick="showSection('chapter-section', this)">Mục lục</button>
+        </div>
 
+        @using (Html.BeginForm("Create", "Chuong", new { area = "Admin", truyenId = ViewBag.TruyenId }, FormMethod.Post, new { id = "formCreate" }))
+        {
+            @Html.AntiForgeryToken()
+            <input type="hidden" name="truyenId" value="@Model.truyenId" />
+            if (!isAdminNotAuthor)
+            {
+                <button type="submit" id="addChapterBtn" class="add-btn" style="display: none;">+ Chương mới</button>
+            }
+        }
+
+
+        @using (Html.BeginForm("Edit", "Truyen", FormMethod.Post, new { enctype = "multipart/form-data", id = "formEdit" }))
+        {
+            @Html.HiddenFor(m => m.truyenId)
+            @Html.HiddenFor(model => model.NgayCapNhap)
+            <input type="hidden" id="canEditValue" value="@canEdit.ToString().ToLower()" />
+            <input type="hidden" id="AnhBiaHidden" name="AnhBiaFileName" value="@Model.AnhBia" />
+            <div id="story-details" class="section">
+                <label>Tiêu đề:</label>
+                @Html.TextBoxFor(m => m.TieuDe, new { @class = "form-control", id = "TieuDe" })
+
+                <label>Mô tả:</label>
+                @Html.TextAreaFor(m => m.MoTa, new { @class = "form-control", id = "MoTa" })
+
+                <label>Thể loại:</label>
+                @Html.DropDownList("TheLoaiId", null, new { @class = "form-control", id = "TheLoaiId" })
+
+                <div class="checkbox">
+                    <label>Tác giả:</label>
+                    <label>@Model.Users.Username</label>
+                </div>
+
+                <div class="checkbox">
+                    <label>Trạng thái:</label>
+                    @Html.CheckBoxFor(m => m.TrangThai, new { @class = "form-control", id = "TrangThai" })
+                </div>
+
+            </div>
+        }
+
+        <!-- Mục lục -->
+        <div id="chapter-section" class="section" style="display: none;">
+            @Html.Action("MucLucEdit", "Truyen", new { truyenId = Model.truyenId })
+        </div>
+    </div>
+
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="~/Assets/Admin/js/truyen/EditTruyen.js"></script>
+
+

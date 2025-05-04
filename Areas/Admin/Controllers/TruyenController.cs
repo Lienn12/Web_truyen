@@ -35,7 +35,7 @@ namespace Web_truyen.Areas.Admin.Controllers
                 DaDang = t.DaDang,
                 SoChuongChoDuyet = db.Chuong.Count(c => c.truyenId == t.truyenId && c.TrangThaiDuyet == "Chờ duyệt")
             }).AsQueryable();
-            danhSach = danhSach.Where(t => t.DaDang == true);
+            danhSach = danhSach.Where(t => db.Chuong.Any(c => c.truyenId == t.TruyenId && c.TrangThaiDuyet != null));
             ViewBag.CurrentFilter = filter;
             ViewBag.SearchTerm = searchTerm;
             ViewBag.StatusFilter = statusFilter;
@@ -58,17 +58,17 @@ namespace Web_truyen.Areas.Admin.Controllers
             switch (filter)
             {
                 case "donggop":
-                    danhSach = danhSach.Where(t => t.Username == "author" && t.DaDang == true );
+                    danhSach = danhSach.Where(t =>
+                        t.VaiTro == "author" &&
+                        db.Chuong.Any(c => c.truyenId == t.TruyenId && c.TrangThaiDuyet != null)
+                    );
                     break;
                 case "bibaocao":
                     danhSach = danhSach.Where(t => db.BaoCao.Any(b => b.DoiTuongId == t.TruyenId && b.LoaiBaoCao == "truyen") && t.DaDang == true);
                     break;
                 default:
-                    //danhSach = danhSach.Where(t => t.DaDang == true); 
                     break;
             }
-
-
             var pagedList = danhSach.OrderByDescending(t => t.NgayTao).ToPagedList(pageNumber, pageSize);
             return View(pagedList);
         }
@@ -162,22 +162,40 @@ namespace Web_truyen.Areas.Admin.Controllers
             {
                 return HttpNotFound();
             }
-            var goiY = db.Truyen
-            .Where(t => t.truyenId != id && t.DaDang == true)  
-            .OrderBy(r => Guid.NewGuid()) 
-            .Take(6)  
-            .ToList();
 
+            var goiY = db.Truyen
+                .Where(t => t.truyenId != id && t.DaDang == true)
+                .OrderBy(r => r.NgayTao) 
+                .Take(6)
+                .ToList();
             ViewBag.TruyenGoiY = goiY;
 
-            var chapters = db.Chuong.Where(c => c.truyenId == id).ToList();
-            ViewBag.DanhSachChuong = chapters;
-            ViewBag.TruyenId = id;
+            var currentUser = Web_truyen.App_Start.SessionConfig.GetUser();
+            var permission = new UserPermissionViewModel();
+
+            if (currentUser != null)
+            {
+                permission.VaiTro = currentUser.VaiTro;
+                permission.IsAuthorOfTruyen = truyen != null && truyen.userId == currentUser.userId;
+            }
+
+            ViewBag.Permission = permission;
+
+            if (!permission.IsAuthorOfTruyen)
+            {
+                var chapters = db.Chuong
+                    .Where(c => c.truyenId == id && (permission.IsAuthorOfTruyen || c.DaDang == true))
+                    .ToList();
+                ViewBag.DanhSachChuong = chapters;
+                ViewBag.TongSoChuong = chapters.Count;
+            }
             ViewBag.ChuongDangChon = 0;
-            ViewBag.TongSoChuong = chapters.Count;
+            ViewBag.TruyenId = id;
             ViewBag.TheLoaiId = new SelectList(db.TheLoai, "TheLoaiId", "TenTheLoai", truyen.TheLoaiId);
+
             return View(truyen);
         }
+
         // GET: Admin/Truyen/Edit/5
         [RoleUser]
         public ActionResult Edit(int id)
@@ -189,6 +207,11 @@ namespace Web_truyen.Areas.Admin.Controllers
             if (truyen == null)
             {
                 return HttpNotFound();
+            }
+            var userId = Web_truyen.App_Start.SessionConfig.GetUser().userId;
+            if (truyen != null)
+            {
+                ViewBag.IsAuthor = truyen.userId == userId;
             }
             var chapters = db.Chuong.Where(c => c.truyenId == id).ToList();
             ViewBag.TruyenId = id;
@@ -224,6 +247,11 @@ namespace Web_truyen.Areas.Admin.Controllers
 
                 db.Entry(truyen).State = EntityState.Modified;
                 db.SaveChanges();
+                var nextAction = Request["NextAction"] ?? "Edit";
+                if (nextAction == "DocChuong")
+                {
+                    return RedirectToAction("DocChuong","Chuong", new {area="Admin", id = TempData["ChuongId"] });
+                }
                 TempData["SuccessMessage"] = "Cập nhật truyện thành công!";
                 return RedirectToAction("Edit", new { id = model.truyenId });
             }
@@ -236,15 +264,22 @@ namespace Web_truyen.Areas.Admin.Controllers
             if (truyenId <= 0)
             {
                 ViewBag.ErrorMessage = "Truyện không hợp lệ!";
-                return View("Error"); // Hoặc chuyển đến trang lỗi khác
+                return View("Error"); 
             }
 
             var chuongs = db.Chuong
                 .Where(c => c.truyenId == truyenId)
                 .OrderBy(c => c.NgayTao)
-                .ToList(); 
+                .ToList();
 
-
+            var userId = Web_truyen.App_Start.SessionConfig.GetUser().userId;
+            var truyen = db.Truyen
+               .Include(t => t.Users)
+               .FirstOrDefault(t => t.truyenId == truyenId);
+            if (truyen != null)
+            {
+                ViewBag.IsAuthor = truyen.userId == userId;
+            }
 
             if (!chuongs.Any())
             {

@@ -189,12 +189,14 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\SessionConfig.cs" />
     <Compile Include="Areas\Admin\AdminAreaRegistration.cs" />
+    <Compile Include="Areas\Admin\Controllers\BinhLuanController.cs" />
     <Compile Include="Areas\Admin\Controllers\ChuongController.cs" />
     <Compile Include="Areas\Admin\Controllers\HomeAdminController.cs" />
     <Compile Include="Areas\Admin\Controllers\TheLoaiController.cs" />
     <Compile Include="Areas\Admin\Controllers\TheoDoiNguoiDungController.cs" />
     <Compile Include="Areas\Admin\Controllers\TruyenController.cs" />
-    <Compile Include="Areas\Admin\Controllers\UserController.cs" />
+    <Compile Include="Areas\Admin\Models\UserPermissionViewModel.cs" />
+    <Compile Include="ViewModel\UserController.cs" />
     <Compile Include="Areas\Admin\Models\ListChuongViewModel.cs" />
     <Compile Include="Areas\Admin\Models\ListTruyenViewModel.cs" />
     <Compile Include="Areas\Admin\Models\ListUserViewModel.cs" />
@@ -282,9 +284,9 @@
     <Content Include="Areas\Admin\Views\Chuong\DocChuong.cshtml" />
     <Content Include="Areas\Admin\Views\Truyen\Edit.cshtml" />
     <Content Include="Areas\Admin\Views\Truyen\MucLucEdit.cshtml" />
-    <Content Include="Areas\Admin\Views\User\DanhSachUser.cshtml" />
-    <Content Include="Areas\Admin\Views\User\HoSoCaNhan.cshtml" />
-    <Content Include="Areas\Admin\Views\User\TruyenCuaToi.cshtml" />
+    <Content Include="Views\User\DanhSachUser.cshtml" />
+    <Content Include="Views\User\HoSoCaNhan.cshtml" />
+    <Content Include="Views\User\TruyenCuaToi.cshtml" />
     <EntityDeploy Include="Models\Connect.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>Connect.Designer.cs</LastGenOutput>
@@ -310,6 +312,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Areas\Admin\Views\BinhLuan\" />
     <Folder Include="Areas\Admin\Views\TheoDoiNguoiDung\" />
     <Folder Include="Assets\Uploads\" />
   </ItemGroup>

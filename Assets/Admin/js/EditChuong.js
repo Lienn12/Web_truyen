@@ -1,4 +1,22 @@
-﻿let quill;
+﻿document.addEventListener('DOMContentLoaded', function () {
+    const input = document.getElementById('AnhBiaFileInput');
+    const preview = document.getElementById('previewImage');
+
+    if (input) {
+        input.addEventListener('change', function (event) {
+            const file = event.target.files[0];
+            if (file && preview) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    preview.src = e.target.result;
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+    }
+});
+
+let quill;
 
 document.addEventListener("DOMContentLoaded", function () {
     // 1. Khởi tạo Quill editor
@@ -124,6 +142,27 @@ document.addEventListener("DOMContentLoaded", function () {
             insertMenu.style.display = 'none';
         }
     });
+    window.addEventListener("load", function () {
+        const savedStatus = localStorage.getItem("savedStatus");
+
+        if (savedStatus === "true") {
+            document.getElementById("saveSuccess").style.display = "inline";
+            document.getElementById("saveNotSaved").style.display = "none";
+        } else {
+            document.getElementById("saveSuccess").style.display = "none";
+            document.getElementById("saveNotSaved").style.display = "inline";
+        }
+    });
+
+
+    quill.on('text-change', function (delta, oldDelta, source) {
+        if (!isChanged) {
+            document.getElementById("saveNotSaved").style.display = "inline";
+            isChanged = true;
+            localStorage.setItem("savedStatus", "false");
+            document.getElementById("saveSuccess").style.display = "none";
+        }
+    });
     let isSaved = false;
     let isChanged = false;
     document.getElementById("btnLuu")?.addEventListener("click", function () {
@@ -141,50 +180,30 @@ document.addEventListener("DOMContentLoaded", function () {
 
         form.submit();
     });
-
+  
     document.getElementById("btnDangThayDoi")?.addEventListener("click", function () {
         const form = document.getElementById("formSuaChuong");
         document.getElementById("NoiDung").value = quill.root.innerHTML;
         localStorage.setItem("savedStatus", "true");
         form.submit();
     });
-    window.addEventListener("load", function () {
-        const savedStatus = localStorage.getItem("savedStatus");
-
-        if (savedStatus === "true") {
-            document.getElementById("saveSuccess").style.display = "inline";
-            document.getElementById("saveNotSaved").style.display = "none";
-        } else {
-            document.getElementById("saveSuccess").style.display = "none";
-            document.getElementById("saveNotSaved").style.display = "inline";
-        }
-    });
-
-
-    quill.on('text-change', function (delta, oldDelta, source) {
-        if (!isChanged) { 
-            document.getElementById("saveNotSaved").style.display = "inline";
-            isChanged = true;
-            localStorage.setItem("savedStatus", "false");
-            document.getElementById("saveSuccess").style.display = "none";
-        }
-    });
-
-    function closeEditTruyenModal() {
-        document.getElementById("editTruyenModal").style.display = "none";
-    }
+    
     document.getElementById("saveNotSaved").style.display = "none";  
+
     document.getElementById("btnSubmit")?.addEventListener("click", function () {
         const form = document.getElementById("formSuaChuong");
         document.getElementById("NoiDung").value = quill.root.innerHTML;
+
         const dataContainer = document.getElementById("data-container");
         var tenTruyen = dataContainer.getAttribute("data-ten-truyen").trim();
         var theLoai = dataContainer.getAttribute("data-the-loai").trim();
+        var role = dataContainer.getAttribute("data-role")?.trim().toLowerCase();
+
         if (!tenTruyen || tenTruyen === "Truyện chưa có tiêu đề" || !theLoai) {
             document.getElementById("editTruyenModal").style.display = "block";
             document.getElementById("menu").style.zIndex = "-1";
         } else {
-            let isPublishedInput = form.querySelector("input[name='isPublished']");
+            let isPublishedInput = form.querySelector("input[name='Chuong.DaDang']");
             if (!isPublishedInput) {
                 isPublishedInput = document.createElement("input");
                 isPublishedInput.type = "hidden";
@@ -192,21 +211,30 @@ document.addEventListener("DOMContentLoaded", function () {
                 form.appendChild(isPublishedInput);
             }
 
-            let trangThaiDuyetInput = document.querySelector("input[name='Chuong.TrangThaiDuyet']");
+            let trangThaiDuyetInput = form.querySelector("input[name='Chuong.TrangThaiDuyet']");
             if (!trangThaiDuyetInput) {
                 trangThaiDuyetInput = document.createElement("input");
                 trangThaiDuyetInput.type = "hidden";
                 trangThaiDuyetInput.name = "Chuong.TrangThaiDuyet";
                 form.appendChild(trangThaiDuyetInput);
             }
-            trangThaiDuyetInput.value = "chờ duyệt";
-            document.getElementById("isPublished").value = "true";
+
+            if (role === "admin") {
+                isPublishedInput.value = "true";
+                trangThaiDuyetInput.value = "Đã duyệt";
+            } else {
+                isPublishedInput.value = "false";
+                trangThaiDuyetInput.value = "chờ duyệt";
+            }
+
             form.submit();
+
             setTimeout(function () {
                 window.location.href = "DocChuong";
             }, 1000);
         }
     });
+
 
 
     // 10. Xem trước chương
@@ -218,6 +246,12 @@ document.addEventListener("DOMContentLoaded", function () {
     });
     document.getElementById("btnCancel")?.addEventListener("click", function () {
         const url = this.getAttribute("data-url");
+        if (url) {
+            window.location.href = url;
+        }
+    });
+    document.getElementById("back").addEventListener("click", function () {
+        var url = this.getAttribute("data-url");
         if (url) {
             window.location.href = url;
         }
@@ -237,4 +271,51 @@ document.addEventListener("DOMContentLoaded", function () {
         }
         return `https://www.youtube.com/embed/${videoId}`;
     }
+});
+function closeEditTruyenModal() {
+    document.getElementById("editTruyenModal").style.display = "none";
+    document.getElementById("menu").style.zIndex = "999";
+}   
+$(document).ready(function () {
+    $("#EditTruyen").submit(function (event) {
+        var isValid = true;
+
+        var tieuDe = $("#TieuDe").val().trim();
+        if (tieuDe === "" || tieuDe === "Truyện chưa có tiêu đề") {
+            $("#TieuDeError").show();
+            isValid = false;
+        } else {
+            $("#TieuDeError").hide();
+        }
+
+        var moTa = $("#MoTa").val().trim();
+        if (moTa === "" || moTa === "Mô tả chưa có") {
+            $("#MoTaError").show();
+            isValid = false;
+        } else {
+            $("#MoTaError").hide();
+        }
+
+        var theLoaiId = $("#TheLoaiId").val();
+        if (theLoaiId === "" || theLoaiId == 2) {
+            $("#TheLoaiError").show();
+            isValid = false;
+        } else {
+            $("#TheLoaiError").hide();
+        }
+
+        if (!isValid) {
+            event.preventDefault();
+        }
+    });
+});
+
+$(document).ready(function () {
+    $('#btnEdit').on('click', function () {
+        $('#TrangThaiDuyet').val('Chờ duyệt');
+        document.getElementById('NextAction').value = 'DocChuong';
+        $('#formSuaChuong').submit();
+        $('#EditTruyen').submit();
+        console.log("Đã nhấn nút #btnEdit");
+    });
 });

@@ -127,6 +127,11 @@
 .form-check-input {
     margin-right: 10px;
 }
+#MoTa {
+    width: 100%;
+    height: 150px; 
+    resize: vertical; 
+}
 
 .btn-submit {
     background-color: #007bff;
