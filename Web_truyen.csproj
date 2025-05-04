@@ -182,6 +182,14 @@
       <DependentUpon>Connect.edmx</DependentUpon>
       <LastGenOutput>Connect.cs</LastGenOutput>
     </Content>
+    <Content Include="Models\models\Connect.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>Connect.Context1.cs</LastGenOutput>
+    </Content>
+    <Content Include="Models\models\Connect.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>Connect1.cs</LastGenOutput>
+    </Content>
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
@@ -196,6 +204,65 @@
     <Compile Include="Areas\Admin\Controllers\TheoDoiNguoiDungController.cs" />
     <Compile Include="Areas\Admin\Controllers\TruyenController.cs" />
     <Compile Include="Areas\Admin\Models\UserPermissionViewModel.cs" />
+    <Compile Include="Models\models\BaoCao.cs">
+      <DependentUpon>Connect.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\models\BinhLuan.cs">
+      <DependentUpon>Connect.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\models\Chuong.cs">
+      <DependentUpon>Connect.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\models\Connect.Context.cs" />
+    <Compile Include="Models\models\Connect.Context1.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Connect.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\models\Connect.cs" />
+    <Compile Include="Models\models\Connect.Designer.cs">
+      <DependentUpon>Connect.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Models\models\Connect1.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Connect.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\models\Connect1.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Connect.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="Models\models\sp_helpdiagramdefinition_Result.cs">
+      <DependentUpon>Connect.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\models\sp_helpdiagrams_Result.cs">
+      <DependentUpon>Connect.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\models\sysdiagrams.cs">
+      <DependentUpon>Connect.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\models\TheLoai.cs">
+      <DependentUpon>Connect.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\models\TheoDoi_NguoiDung.cs">
+      <DependentUpon>Connect.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\models\TheoDoi_Truyen.cs">
+      <DependentUpon>Connect.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\models\ThongBao.cs">
+      <DependentUpon>Connect.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\models\ThuVien.cs">
+      <DependentUpon>Connect.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\models\Truyen.cs">
+      <DependentUpon>Connect.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\models\Users.cs">
+      <DependentUpon>Connect.tt</DependentUpon>
+    </Compile>
     <Compile Include="ViewModel\UserController.cs" />
     <Compile Include="Areas\Admin\Models\ListChuongViewModel.cs" />
     <Compile Include="Areas\Admin\Models\ListTruyenViewModel.cs" />
@@ -295,6 +362,13 @@
       <DependentUpon>Connect.edmx</DependentUpon>
     </Content>
     <Content Include="Areas\Admin\Views\Truyen\_themTruyen.cshtml" />
+    <EntityDeploy Include="Models\models\Connect.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>Connect1.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <Content Include="Models\models\Connect.edmx.diagram">
+      <DependentUpon>Connect.edmx</DependentUpon>
+    </Content>
     <None Include="packages.config" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Account\Login.cshtml" />
