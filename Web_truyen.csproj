@@ -196,7 +196,7 @@
     <Compile Include="Areas\Admin\Controllers\TheoDoiNguoiDungController.cs" />
     <Compile Include="Areas\Admin\Controllers\TruyenController.cs" />
     <Compile Include="Areas\Admin\Models\UserPermissionViewModel.cs" />
-    <Compile Include="ViewModel\UserController.cs" />
+    <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Areas\Admin\Models\ListChuongViewModel.cs" />
     <Compile Include="Areas\Admin\Models\ListTruyenViewModel.cs" />
     <Compile Include="Areas\Admin\Models\ListUserViewModel.cs" />
@@ -204,6 +204,8 @@
     <Compile Include="Areas\Admin\Models\TruyenWithCountViewModel.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\TheoDoiTruyenController.cs" />
+    <Compile Include="Controllers\ThuvienController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -303,6 +305,7 @@
     <Content Include="Views\Account\Signup.cshtml" />
     <Content Include="Views\Share\_LayoutPage.cshtml" />
     <Content Include="Views\Account\EnterResetCode.cshtml" />
+    <Content Include="Views\Thuvien\Thuvien.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
