@@ -8,6 +8,7 @@ using Web_truyen.Models;
 
 namespace Web_truyen.Areas.Admin.Controllers
 {
+    [RoleUser]
     public class TheoDoiNguoiDungController : Controller
     {
         private Web_TruyenEntities db = new Web_TruyenEntities();
@@ -30,9 +31,7 @@ namespace Web_truyen.Areas.Admin.Controllers
                 db.TheoDoi_NguoiDung.Add(theoDoi);
                 db.SaveChanges();
             }
-            return RedirectToAction("HoSoCaNhan", "User", new { area = "Admin", useId = idNguoiDuocTheoDoi });
-
-
+            return Redirect(Request.UrlReferrer.ToString());
         }
         [HttpPost]
         public ActionResult HuyTheoDoiNguoiDung(int idNguoiDuocHuy)
@@ -48,7 +47,7 @@ namespace Web_truyen.Areas.Admin.Controllers
                 db.SaveChanges();
             }
 
-            return RedirectToAction("HoSoCaNhan", "User", new { area = "Admin", useId = idNguoiDuocHuy });
+            return Redirect(Request.UrlReferrer.ToString());
         }
 
     }

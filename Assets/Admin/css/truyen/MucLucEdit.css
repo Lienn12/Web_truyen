@@ -29,8 +29,13 @@
     margin-top: 5px;
     border-radius: 5px;
     position: relative;
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease; 
 }
 
+    .chapter:hover {
+        background-color: #f0f0f0; 
+    }
 .chapter-info {
     display:flex;
     flex-direction:column;
@@ -38,7 +43,12 @@
 }   
     .chapter-info .title{
         font-size:18px;
-        font-weight:500
+        font-weight:500;
+        white-space: nowrap; 
+        overflow: hidden; 
+        text-overflow: ellipsis; 
+        width: 250px; 
+        display: inline-block;
     }
 .chapter-icons {
     display: flex;

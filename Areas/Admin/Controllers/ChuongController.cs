@@ -22,24 +22,14 @@ namespace Web_truyen.Areas.Admin.Controllers
             {
                 var truyen = db.Truyen.Find(truyenId);
                 if (truyen == null) return HttpNotFound();
-
                 var user = Web_truyen.App_Start.SessionConfig.GetUser();
                 var laTacGia = user != null && truyen.userId == user.userId;
-                IQueryable<Chuong> chuongsQuery = db.Chuong
-                                                    .Where(c => c.truyenId == truyenId);
-
-                if (!laTacGia)
-                {
-                    chuongsQuery = chuongsQuery.Where(c => c.DaDang == true);
-                }
-
-                var chuongList = chuongsQuery.OrderBy(c => c.NgayTao).ToList();
-
+                var chuongList = db.Chuong.Where(c => c.truyenId == truyenId)
+                                        .OrderBy(c => c.NgayTao).ToList();
                 if (chuongList.Count == 0)
                 {
                     TempData["ErrorMessage"] = "Không tìm thấy chương nào!";
                 }
-
                 ViewBag.laTacGia = laTacGia;
                 ViewBag.IsDocChuong = !laTacGia; 
                 ViewBag.HienThiNutThemChuong = laTacGia;
@@ -57,8 +47,6 @@ namespace Web_truyen.Areas.Admin.Controllers
                 return PartialView("MucLuc", Tuple.Create(new List<Chuong>(), 0));
             }
         }
-
-
 
         [RoleUser]
         [HttpPost]
@@ -91,47 +79,58 @@ namespace Web_truyen.Areas.Admin.Controllers
             return RedirectToAction("Edit", "Chuong", new { area = "Admin", id = chuongMoi.ChuongId });
         }
 
-        [RoleUser]
-        public ActionResult Edit(int id)
-        {
-            var chuong = db.Chuong.Find(id);
-            if (chuong == null)
+            [RoleUser]
+            public ActionResult Edit(int id)
             {
-                return HttpNotFound();
-            }
-            var truyen = db.Truyen.Find(chuong.truyenId);
-            ViewBag.TieuDeTruyen = truyen != null && truyen.TieuDe != null ? truyen.TieuDe : "Chưa có tiêu đề";
-            ViewBag.TieuDeChuong = chuong.TieuDe ?? "Không có tiêu đề";
-            ViewBag.TrangThaiChuong = chuong.DaDang ? "Đã đăng" : "Bản thảo"; 
-            ViewBag.ChuongDangChon = chuong.ChuongId;
-            var viewModel = new ChuongViewModel
-            {
-                Chuong = chuong,
-                DanhSachChuong = db.Chuong
-                    .Where(c => c.truyenId == chuong.truyenId)
-                    .OrderBy(c => c.ChuongId)
-                    .ToList()
-            };
-            var danhSachTheLoai = db.TheLoai.ToList();
+                var chuong = db.Chuong.Find(id);
+                if (chuong == null)
+                {
+                    return HttpNotFound();
+                }
+                var truyen = db.Truyen.Find(chuong.truyenId);
+                ViewBag.TieuDeTruyen = truyen != null && truyen.TieuDe != null ? truyen.TieuDe : "Chưa có tiêu đề";
+                ViewBag.TieuDeChuong = chuong.TieuDe ?? "Không có tiêu đề";
+                if (chuong.TrangThaiDuyet == "chờ duyệt")
+                {
+                    ViewBag.TrangThaiChuong = "Chờ duyệt";
+                }
+                else if (chuong.TrangThaiDuyet == "Từ chối")
+                {
+                    ViewBag.TrangThaiChuong = "Từ chối";
+                }
+                else
+                {
+                    ViewBag.TrangThaiChuong = chuong.DaDang ? "Đã đăng" : "Bản thảo";
+                }
 
-            // Truyền danh sách thể loại vào ViewBag
-            ViewBag.TheLoai = new SelectList(danhSachTheLoai, "TheLoaiId", "TenTheLoai", truyen.TheLoaiId);
+                    ViewBag.ChuongDangChon = chuong.ChuongId;
+                var viewModel = new ChuongViewModel
+                {
+                    Chuong = chuong,
+                    DanhSachChuong = db.Chuong
+                        .Where(c => c.truyenId == chuong.truyenId)
+                        .OrderBy(c => c.ChuongId)
+                        .ToList()
+                };
+                var danhSachTheLoai = db.TheLoai.ToList();
 
-            var currentUser = SessionConfig.GetUser();
-            if (currentUser != null)
-            {
-                ViewBag.CurrentUserId = currentUser.userId;
-            }
-            else
-            {
-                ViewBag.CurrentUserId = null; 
-            }
+                ViewBag.TheLoai = new SelectList(danhSachTheLoai, "TheLoaiId", "TenTheLoai", truyen.TheLoaiId);
 
+                var currentUser = SessionConfig.GetUser();
+                if (currentUser != null)
+                {
+                    ViewBag.CurrentUserId = currentUser.userId;
+                }
+                else
+                {
+                    ViewBag.CurrentUserId = null; 
+                }
+            TempData["ChuongId"] = chuong.ChuongId;
 
             ViewBag.TruyenId = chuong.truyenId;
 
-            return View(viewModel);
-        }
+                return View(viewModel);
+            }
 
 
         [RoleUser]
@@ -140,6 +139,7 @@ namespace Web_truyen.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit(ChuongViewModel viewModel)
         {
+
             if (ModelState.IsValid)
             {
                 var chuongCanSua = db.Chuong.Find(viewModel.Chuong.ChuongId);
@@ -148,10 +148,12 @@ namespace Web_truyen.Areas.Admin.Controllers
                     TempData["ErrorMessage"] = "Chương không tồn tại.";
                     return RedirectToAction("Index", "Chuong");
                 }
+
                 chuongCanSua.TrangThaiDuyet = viewModel.Chuong.TrangThaiDuyet;
                 chuongCanSua.TieuDe = viewModel.Chuong.TieuDe;
                 chuongCanSua.NoiDung = viewModel.Chuong.NoiDung;
                 chuongCanSua.DaDang = viewModel.Chuong.DaDang;
+
                 try
                 {
                     db.SaveChanges();
@@ -202,44 +204,114 @@ namespace Web_truyen.Areas.Admin.Controllers
                 .Include(c => c.Truyen)
                 .Include(c => c.Truyen.Users)
                 .FirstOrDefault(c => c.ChuongId == id);
-
             if (chuong == null)
             {
                 return HttpNotFound();
             }
-
-            var danhSachChuong = db.Chuong
-                .Where(c => c.truyenId == chuong.truyenId)
-                .OrderBy(c => c.ChuongId)
+            var currentUser = Web_truyen.App_Start.SessionConfig.GetUser();
+            var truyen = db.Truyen.Include(t => t.Users).FirstOrDefault(t => t.truyenId == chuong.truyenId);
+            var permission = new UserPermissionViewModel();
+            if (currentUser != null)
+            {
+                permission.VaiTro = currentUser.VaiTro;
+                permission.IsAuthorOfTruyen = truyen != null && truyen.userId == currentUser.userId;
+            }
+            bool daTheoDoi = false;
+            if (currentUser != null && chuong.Truyen?.Users != null)
+            {
+                daTheoDoi = db.TheoDoi_NguoiDung.Any(td =>
+                    td.NguoiTheoDoiId == currentUser.userId &&
+                    td.TheoDoiNguoiDungId == chuong.Truyen.Users.userId
+                );
+            }
+            ViewBag.DaTheoDoiTacGia = daTheoDoi;
+            ViewBag.Permission = permission;
+            List<Chuong> danhSachChuong;
+            if (permission.IsAdmin)
+            {
+                danhSachChuong = db.Chuong
+                    .Where(c => c.truyenId == chuong.truyenId && c.TrangThaiDuyet != null)
+                    .OrderBy(c => c.ChuongId)
+                    .ToList();
+            }
+            else if (!permission.IsAdmin && !permission.IsAuthorOfTruyen)
+            {
+                danhSachChuong = db.Chuong
+                    .Where(c => c.truyenId == chuong.truyenId && c.DaDang)
+                    .OrderBy(c => c.ChuongId)
+                    .ToList();
+            }
+            else
+            {
+                danhSachChuong = db.Chuong
+                    .Where(c => c.truyenId == chuong.truyenId)
+                    .OrderBy(c => c.ChuongId)
+                    .ToList();
+            }
+            var danhSachBinhLuan = db.BinhLuan
+                .Include(b => b.Users)
+                .Where(b => b.ChuongId == chuong.ChuongId && b.BinhLuanChaId == null)
+                .OrderByDescending(b => b.NgayTao)
                 .ToList();
+
+            var viewModel = new ChuongViewModel
+            {
+                Chuong = chuong,
+                DanhSachChuong = danhSachChuong,
+                DanhSachBinhLuan = danhSachBinhLuan
+            };
 
             int index = danhSachChuong.FindIndex(c => c.ChuongId == id);
             ViewBag.IsDocChuong = true;
             ViewBag.ChuongTruocId = (index > 0) ? (int?)danhSachChuong[index - 1].ChuongId : null;
             ViewBag.ChuongSauId = (index < danhSachChuong.Count - 1) ? (int?)danhSachChuong[index + 1].ChuongId : null;
             ViewBag.TieuDeTruyen = chuong.Truyen?.TieuDe ?? "Chưa có tiêu đề";
+            ViewBag.TruyenId = chuong.Truyen?.truyenId;
             ViewBag.TacGia = chuong.Truyen?.Users?.Username ?? "Không có tiêu đề";
             ViewBag.TrangThaiChuong = chuong.DaDang ? "Đã đăng" : "Bản thảo";
             ViewBag.ChuongDangChon = chuong.ChuongId;
-
-            var viewModel = new ChuongViewModel
-            {
-                Chuong = chuong,
-                DanhSachChuong = danhSachChuong
-            };
-
+            ViewBag.TacGiaId = chuong.Truyen?.Users?.userId;
+            ViewBag.Avatar = chuong.Truyen?.Users?.avt;
             return View(viewModel);
         }
         [HttpPost]
-        public ActionResult DocChuong(int id, ChuongViewModel model)
+        public ActionResult DangTai(ChuongViewModel model)
         {
+            var id = model.Chuong.ChuongId;
             var chuong = db.Chuong.FirstOrDefault(c => c.ChuongId == id);
             if (chuong == null)
             {
                 return HttpNotFound();
             }
             chuong.DaDang = true;
+            chuong.TrangThaiDuyet = "Đã duyệt";
+            var cacChuongDaDang = db.Chuong
+                .Where(c => c.truyenId == chuong.truyenId && c.DaDang && c.ChuongId != id)
+                .ToList();
+            if (cacChuongDaDang.Count == 0)
+            {
+                var truyen = db.Truyen.FirstOrDefault(t => t.truyenId == chuong.truyenId);
+                if (truyen != null)
+                {
+                    truyen.DaDang = true;
+                }
+            }
             db.SaveChanges();
+            return RedirectToAction("DocChuong", new { id = chuong.ChuongId });
+        }
+        [HttpPost]
+        public ActionResult TuChoi(ChuongViewModel model)
+        {
+            var id = model.Chuong.ChuongId;
+            var chuong = db.Chuong.FirstOrDefault(c => c.ChuongId == id);
+            if (chuong == null)
+            {
+                return HttpNotFound();
+            }
+            chuong.DaDang = false;
+            chuong.TrangThaiDuyet = "Từ chối";
+            db.SaveChanges();
+
             return RedirectToAction("DocChuong", new { id = chuong.ChuongId });
         }
 

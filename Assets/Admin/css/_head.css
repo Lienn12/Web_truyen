@@ -15,9 +15,7 @@
     align-items:center;
     cursor: pointer;
 }
-    .containes-text:hover {
-        background-color: #f0f0f0; /* Màu nền khi hover */
-    }
+
 .title-author {
     display: flex;
     flex-direction: column;
@@ -39,12 +37,14 @@
     margin: 0;
     cursor: pointer;
 }
+   
 .text-title {
     white-space: nowrap; 
     overflow: hidden; 
     text-overflow: ellipsis; 
     max-width: 300px; 
     display: inline-block; 
+    color: var(--button)
 }
 .text-center {
     white-space: nowrap;

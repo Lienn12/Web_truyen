@@ -4,6 +4,11 @@
     ViewBag.Title = "Edit chương";
     Layout = "~/Views/Share/_LayoutPage.cshtml";
 }
+
+@{
+    var returnTo = (string)(ViewBag.ReturnTo ?? "danhsach");
+}
+
 <link href="https://cdn.jsdelivr.net/npm/quill@2.0.0/dist/quill.bubble.css" rel="stylesheet">
 <link href="~/Assets/Admin/css/EditChuong.css" rel="stylesheet" />
 <link href="~/Assets/Admin/css/_head.css" rel="stylesheet" />
@@ -11,9 +16,10 @@
 
 @section top {
     <div class="container_head">
-        <button id="back" onclick="history.back()" class="btn-back">
+        <button id="back" class="btn-back" data-url="@Url.Action("Edit", "Truyen", new { area = "Admin", id = Model.Chuong.truyenId })">
             <i class="fas fa-chevron-left fa-2x" style="color: gray"></i>
         </button>
+
         <div class="containes-text" id="toggleMucLuc">
             <div class="title-author">
                 <h4 class="text-center" style="color:gray">@ViewBag.TieuDeTruyen</h4>
@@ -30,7 +36,7 @@
         <div class="btn_link">
             @if (!Model.Chuong.DaDang)
             {
-                <button type="button" id="btnLuu" class="btn btn1" style="background-color: gray; color:white"> 
+                <button type="button" id="btnLuu" class="btn btn1" style="background-color: gray; color:white">
                     Lưu
                 </button>
 
@@ -49,8 +55,8 @@
                         data-url="@Url.Action("DocChuong", "Chuong", new { area = "Admin", id = Model.Chuong.ChuongId })">
                     Đăng các thay đổi
                 </button>
-                <button id="btnCancel" class="btn btn2"
-                        data-url="@Url.Action("ChiTietTruyen", "Truyen", new { area = "Admin", id = Model.Chuong.truyenId })">
+                <button id="btnCancel" class="btn btn2 " style="background-color: gray; color:white"
+                        data-url="@Url.Action("Edit", "Truyen", new { area = "Admin", id = Model.Chuong.truyenId })">
                     Hủy
                 </button>
             }
@@ -108,12 +114,12 @@
 }
 <!-- Modal sửa thông tin truyện -->
 <div id="editTruyenModal" class="modal" style="display:none;">
-    <!-- Đặt dữ liệu vào các thuộc tính data-* -->
     <div id="data-container"
          data-ten-truyen="@Model.Chuong.Truyen.TieuDe"
-         data-the-loai="@Model.Chuong.Truyen.TheLoaiId">
+         data-the-loai="@Model.Chuong.Truyen.TheLoaiId"
+         data-role="@Web_truyen.App_Start.SessionConfig.GetUser().VaiTro">
     </div>
-    
+
     <div class="modal-content" style="margin-top:130px;">
         <div class="container_head " style="border-radius:8px 8px 0 0">
             <div class="containes-text">
@@ -123,14 +129,16 @@
                 </div>
             </div>
             <div class="btn_link mt-4">
-                <button type="button" id="btnCancel" class="btn btn1" data-url="@Url.Action("DanhSach", "Truyen", new { area = "Admin" })">Huỷ</button>
-                <button type="button" id="btnSaveAndNext" class="btn btn2">Tiếp tục</button>
+                <button type="button" id="btnCancel" class="btn btn1" onclick="closeEditTruyenModal()">Đóng</button>
+                <button type="submit" id="btnEdit"form="EditTruyen" class="btn btn2">Đăng tải</button>
+
             </div>
 
         </div>
         @Html.Partial("~/Areas/Admin/Views/Truyen/_themTruyen.cshtml", Model.Chuong.Truyen)
     </div>
 </div>
-
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/quill@2.0.0/dist/quill.min.js"></script>
 <script src="~/Assets/Admin/js/EditChuong.js"></script>
+

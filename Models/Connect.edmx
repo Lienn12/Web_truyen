@@ -26,6 +26,7 @@
           <Property Name="ChuongId" Type="int" Nullable="false" />
           <Property Name="NoiDung" Type="nvarchar(max)" Nullable="false" />
           <Property Name="NgayTao" Type="datetime" Nullable="false" />
+          <Property Name="BinhLuanChaId" Type="int" />
         </EntityType>
         <EntityType Name="Chuong">
           <Key>
@@ -442,6 +443,7 @@
           <NavigationProperty Name="Chuong" Relationship="Self.FK__BinhLuan__Chuong__4DE98D56" FromRole="BinhLuan" ToRole="Chuong" />
           <NavigationProperty Name="Truyen" Relationship="Self.FK__BinhLuan__truyen__4CF5691D" FromRole="BinhLuan" ToRole="Truyen" />
           <NavigationProperty Name="Users" Relationship="Self.FK__BinhLuan__userId__4C0144E4" FromRole="BinhLuan" ToRole="Users" />
+          <Property Name="BinhLuanChaId" Type="Int32" />
         </EntityType>
         <EntityType Name="Chuong">
           <Key>
@@ -886,6 +888,7 @@
           <EntitySetMapping Name="BinhLuan">
             <EntityTypeMapping TypeName="Web_TruyenModel.BinhLuan">
               <MappingFragment StoreEntitySet="BinhLuan">
+                <ScalarProperty Name="BinhLuanChaId" ColumnName="BinhLuanChaId" />
                 <ScalarProperty Name="BinhLuanId" ColumnName="BinhLuanId" />
                 <ScalarProperty Name="userId" ColumnName="userId" />
                 <ScalarProperty Name="truyenId" ColumnName="truyenId" />

@@ -1,20 +1,51 @@
 ﻿@model List<Web_truyen.Models.Chuong>
 @{
     ViewBag.Title = "MucLucEdit";
+    var userRole = Web_truyen.App_Start.SessionConfig.GetUser().VaiTro;
+    var isAdmin = userRole == "admin";
+    var isAuthor = userRole == "author";
+    var truyenId = ViewBag.TruyenId;
+    var canEdit = (isAdmin && ViewBag.IsAuthor) || isAuthor;
+    var isAdminNotAuthor = isAdmin && !ViewBag.IsAuthor;
 }
+<input type="hidden" id="editUrlTemplate" value="@Url.Action("Edit", "Chuong", new { area="Admin", id = "__chapterId__" })" />
+<input type="hidden" id="docUrlTemplate" value="@Url.Action("DocChuong", "Chuong", new { area="Admin", id = "__chapterId__" })" />
+
 <!-- Container chính -->
 <div class="container">
     <!-- Danh sách chương -->
     <ul class="chapter-list">
         @foreach (var chuong in Model)
         {
-            <li class="chapter">
+            if (isAdminNotAuthor && chuong.TrangThaiDuyet == null)
+            {
+                continue;
+            }
+            <li class="chapter" data-id="@chuong.ChuongId">
                 <div class="chapter-info">
                     <span class="title">@chuong.TieuDe</span>
                     <span class="status">
-                        <span class="status-text @(chuong.DaDang ? "status-published" : "status-draft")">
-                            @((chuong.DaDang ? "Đã đăng" : "Bản thảo"))
-                        </span> -  @chuong.NgayTao.ToString("dd/MM/yyyy")
+                        <span class="status-text">
+                            @if (chuong.TrangThaiDuyet == "chờ duyệt")
+                            {
+                                <span style="color: green; font-weight: 700">Chờ duyệt</span>
+                            }
+                            else if (chuong.TrangThaiDuyet == "Từ chối")
+                            {
+                                <span style="color: red; font-weight: 700">Từ chối</span>
+                            }
+                            else
+                            {
+                                if (chuong.DaDang)
+                                {
+                                    <span style="color: var(--button); font-weight: 700">Đã đăng</span>
+                                }
+                                else
+                                {
+                                    <span>Bản thảo</span>
+                                }
+                            }
+                        </span> - @chuong.NgayTao.ToString("dd/MM/yyyy")
                     </span>
 
                 </div>
@@ -31,23 +62,56 @@
                     }
                 </div>
 
-
-                <!-- Nút ba chấm -->
                 <div class="options-btn" onclick="toggleMenu(this)">
                     <i class="fa-solid fa-ellipsis"></i>
                 </div>
-                <!-- Menu ẩn -->
+
                 <div class="options-menu">
                     <button class="preview-btn"><i class="fa-solid fa-eye"></i> Xem trước</button>
-                    @if (chuong.DaDang)
+
+                    @if (isAdmin && ViewBag.IsAuthor)
                     {
-                        <button class="unpublish-btn"><i class="fa-solid fa-ban"></i> Dừng đăng tải</button>
+                        if (chuong.DaDang)
+                        {
+                            <button class="unpublish-btn"><i class="fa-solid fa-ban"></i> Dừng đăng tải</button>
+                        }
+                        else
+                        {
+                            <button class="publish-btn"><i class="fa-solid fa-upload"></i> Đăng tải</button>
+                        }
+                        <button class="delete-btn"><i class="fa-solid fa-trash"></i> Xóa chương</button>
                     }
-                    <button class="delete-btn"><i class="fa-solid fa-trash"></i> Xóa chương</button>
+                    else if (isAdmin)
+                    {
+                        if (chuong.DaDang)
+                        {
+                            <button class="unpublish-btn"><i class="fa-solid fa-ban"></i> Dừng đăng tải</button>
+                        }
+                        else
+                        {
+                            <button class="publish-btn"><i class="fa-solid fa-upload"></i> Đăng tải</button>
+                            <button class="reject-btn"><i class="fa-solid fa-ban"></i> Từ chối</button>
+                        }
+                    }
+                    else
+                    {
+                        if (!chuong.DaDang)
+                        {
+                            <button class="publish-btn"><i class="fa-solid fa-upload"></i> Đăng tải</button>
+                        }
+                        else
+                        {
+                            <button class="unpublish-btn"><i class="fa-solid fa-ban"></i> Dừng đăng tải</button>
+                        }
+                        <button class="delete-btn"><i class="fa-solid fa-trash"></i> Xóa chương</button>
+                    }
                 </div>
             </li>
         }
     </ul>
 </div>
-
+<script>
+    window.canEdit = @(canEdit.ToString().ToLower());
+    window.isAdminNotAuthor = @(isAdminNotAuthor.ToString().ToLower());
+</script>
 <script src="~/Assets/Admin/js/truyen/MucLucEdit.js"></script>
