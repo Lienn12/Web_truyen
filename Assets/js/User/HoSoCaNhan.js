@@ -10,6 +10,13 @@
     });
     button.classList.add('active');
 }
+document.querySelectorAll('.popup-trigger').forEach(el => {
+    el.addEventListener('click', function () {
+        const truyenId = this.getAttribute('data-id');
+        document.getElementById('popup-truyenId').value = truyenId;
+        // Hiển thị popup, set các thông tin khác...
+    });
+});
 
 document.addEventListener("DOMContentLoaded", function () {
     const firstBtn = document.querySelector(".toggle-btn");
@@ -41,6 +48,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 readMoreLink.style.display = 'none';
             }
             document.getElementById('popup-detail-link').href = `/Admin/Truyen/ChiTiet/?id=${trigger.dataset.id}`;
+
             updatePopupStatus(trigger.dataset.status);
             document.getElementById('popup-views').textContent = trigger.dataset.views;
             document.getElementById('popup-chapters').textContent = trigger.dataset.chapters;
@@ -58,6 +66,7 @@ document.addEventListener('DOMContentLoaded', function () {
             popup.style.display = 'none';
         }
     });
+
 });
 function updatePopupStatus(statusText) {
     const statusEl = document.getElementById('popup-status');
@@ -67,7 +76,7 @@ function updatePopupStatus(statusText) {
 
     if (statusText.toLowerCase().includes('hoàn thành')) {
         statusEl.classList.add('status-complete');
-        statusEl.innerHTML = statusText + ' <i class="fa-solid fa-circle-check"></i>';
+        statusEl.innerHTML = statusText + '<i class="fa-solid fa-circle-check"></i>';
     } else {
         statusEl.classList.add('status-writing');
     }

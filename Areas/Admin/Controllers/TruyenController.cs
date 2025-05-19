@@ -176,8 +176,10 @@ namespace Web_truyen.Areas.Admin.Controllers
             {
                 permission.VaiTro = currentUser.VaiTro;
                 permission.IsAuthorOfTruyen = truyen != null && truyen.userId == currentUser.userId;
+                bool isFollowing = db.TheoDoi_Truyen.Any(t => t.truyenId == id && t.userId == currentUser.userId);
+                ViewBag.IsFollowing = isFollowing;
             }
-
+            
             ViewBag.Permission = permission;
             List<Chuong> chapters;
 
@@ -204,7 +206,6 @@ namespace Web_truyen.Areas.Admin.Controllers
             ViewBag.ChuongDangChon = 0;
             ViewBag.TruyenId = id;
             ViewBag.TheLoaiId = new SelectList(db.TheLoai, "TheLoaiId", "TenTheLoai", truyen.TheLoaiId);
-
             return View(truyen);
         }
 

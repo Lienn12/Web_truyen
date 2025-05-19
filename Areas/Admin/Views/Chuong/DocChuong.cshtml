@@ -3,15 +3,24 @@
     ViewBag.Title = "Đọc chương";
     Layout = "~/Views/Share/_LayoutPage.cshtml";
     var permission = (Web_truyen.Areas.Admin.Models.UserPermissionViewModel)ViewBag.Permission;
-
+    int chuongId = Model.Chuong.ChuongId;
+    int truyenId = Model.Chuong.truyenId;
 }
-
 
 <link href="~/Assets/Admin/css/_head.css" rel="stylesheet" />
 <link href="~/Assets/Admin/css/DocChuong.css" rel="stylesheet" />
 
+<!-- Dữ liệu cho JavaScript -->
+<div id="dataLuotDoc" data-chuongid="@Model.Chuong.ChuongId" data-truyenid="@Model.Chuong.truyenId"></div>
+
+<!-- Biểu mẫu riêng để chứa AntiForgeryToken -->
+<form id="antiForgeryForm">
+    @Html.AntiForgeryToken()
+</form>
+
 @section top {
     <div class="container_head">
+        <!-- Nút quay lại -->
         @if (!permission.IsAdminNotAuthor)
         {
             <button id="btnback" class="btn-back"
@@ -26,8 +35,9 @@
                 <i class="fas fa-chevron-left fa-2x" style="color: gray"></i>
             </button>
         }
-        <div class="containes-text" id="toggleMucLuc">
 
+        <!-- Tiêu đề và tác giả -->
+        <div class="containes-text" id="toggleMucLuc">
             <div class="containes-text">
                 <div class="title-author">
                     <a href="@Url.Action("ChiTiet", "Truyen", new { area = "Admin", id = ViewBag.TruyenId })">
@@ -40,6 +50,8 @@
                 <i class="fa-solid fa-chevron-down toggle-icon"></i>
             </div>
         </div>
+
+        <!-- Trạng thái chương -->
         @if (permission.CanEdit || permission.IsAdminNotAuthor)
         {
             <span class="status">
@@ -63,11 +75,12 @@
                         {
                             <span style="color: var(--button); font-weight: 700">Đã đăng</span>
                         }
-
                     }
                 }
             </span>
         }
+
+        <!-- Nút chỉnh sửa và quản lý -->
         <div class="btn_link">
             @if (permission.IsAuthorOfTruyen)
             {
@@ -101,17 +114,20 @@
             }
         </div>
     </div>
+
+    <!-- Mục lục -->
     @{
         ViewBag.ActionName = "DocChuong";
         ViewBag.HienThiNutThemChuong = false;
-
     }
     @Html.Partial("MucLuc", new Tuple<List<Web_truyen.Models.Chuong>, int>(Model.DanhSachChuong, ViewBag.ChuongDangChon ?? 0))
 }
+
 <div class="wrapper">
     <div class="wrapper_left">
+        <!-- Thông tin tác giả -->
         <aside class="author-info">
-            <img class="author-avatar" src="@Url.Content("~/Assets/img/"+ViewBag.Avatar)" alt="Avatar" />
+            <img class="author-avatar" src="@Url.Content("~/Assets/img/" + ViewBag.Avatar)" alt="Avatar" />
             <p class="author-text">bởi <strong>@ViewBag.TacGia</strong></p>
             @if (!ViewBag.DaTheoDoiTacGia)
             {
@@ -133,17 +149,19 @@
     </div>
 
     <div class="wrapper_right">
+        <!-- Nội dung chương -->
         <main class="chapter-body">
             <h2 class="chapter-heading">@Model.Chuong.TieuDe</h2>
             <div class="chapter-meta">
-                <i class="fa-regular fa-eye"></i> 10
-                <i class="fa-regular fa-comment"></i> 2
+                <i class="fa-regular fa-eye"></i> @ViewBag.LuotDoc
+                <i class="fa-regular fa-comment"></i> @ViewBag.SoBinhLuan
             </div>
             <div class="chapter-content">
                 @Html.Raw(Model.Chuong.NoiDung)
             </div>
         </main>
 
+        <!-- Điều hướng chương -->
         <div class="chapter-navigation">
             @if (ViewBag.ChuongTruocId != null)
             {
@@ -154,20 +172,20 @@
                 <a class="btn btn-next" href="@Url.Action("DocChuong", "Chuong", new { id = ViewBag.ChuongSauId })">Phần tiếp theo</a>
             }
         </div>
+
+        <!-- Bình luận -->
         <div class="comment-box">
             <div class="comment-input-wrapper">
                 @using (Html.BeginForm("Them", "BinhLuan", FormMethod.Post, new { area = "Admin" }))
                 {
+                    @Html.AntiForgeryToken()
                     <input type="hidden" name="truyenId" value="@Model.Chuong.truyenId" />
                     <input type="hidden" name="chuongId" value="@Model.Chuong.ChuongId" />
-
                     <textarea name="noiDung" placeholder="Nhập bình luận của bạn..."></textarea>
                     <button type="submit">
-                        <i class="fas fa-paper-plane"></i> 
+                        <i class="fas fa-paper-plane"></i>
                     </button>
                 }
-
-
             </div>
 
             @foreach (var binhLuan in Model.DanhSachBinhLuan)
@@ -195,15 +213,17 @@
                 {
                     hienThiThoiGian = binhLuan.NgayTao.ToString("dd/MM/yyyy");
                 }
+
                 <div class="comment">
                     <span class="author">@binhLuan.Users.Username:</span> @binhLuan.NoiDung
                 </div>
-
-                <span class="time">@hienThiThoiGian</span><div class="reply-btn" data-comment-id="@binhLuan.BinhLuanId" data-username="@binhLuan.Users.Username">Trả lời</div>
+                <span class="time">@hienThiThoiGian</span>
+                <div class="reply-btn" data-comment-id="@binhLuan.BinhLuanId" data-username="@binhLuan.Users.Username">Trả lời</div>
 
                 <div class="comment-input-wrapper" id="reply-form-@binhLuan.BinhLuanId" style="display:none;">
                     @using (Html.BeginForm("TraLoi", "BinhLuan", FormMethod.Post, new { id = binhLuan.BinhLuanId }))
                     {
+                        @Html.AntiForgeryToken()
                         @Html.Hidden("commentId", binhLuan.BinhLuanId)
                         <textarea name="noiDung" id="reply-textarea-@binhLuan.BinhLuanId" class="reply-textarea" placeholder="Viết câu trả lời..."></textarea>
                         <button type="submit" class="submit-reply-btn" data-comment-id="@binhLuan.BinhLuanId">Gửi</button>
@@ -213,7 +233,6 @@
                 if (binhLuan.TraLoi.Any())
                 {
                     <div class="toggle-reply" onclick="toggleReplies(this, @binhLuan.BinhLuanId)">Xem @binhLuan.TraLoi.Count trả lời</div>
-
                     <div class="reply-wrapper" id="replies-@binhLuan.BinhLuanId" style="display: none; margin-left: 20px;">
                         @foreach (var traLoi in binhLuan.TraLoi)
                         {
@@ -246,16 +265,11 @@
                                 <div class="time" style="margin-top: 5px;">@hienThi</div>
                             </div>
                         }
-
                     </div>
-
                 }
             }
-
         </div>
-
     </div>
-
 </div>
 
 <script src="~/Assets/Admin/js/DocChuong.js"></script>

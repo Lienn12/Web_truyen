@@ -89,12 +89,6 @@
     justify-content: space-between;
 }
 
-.story-title {
-    font-size: 18px;
-    font-weight: bold;
-    margin: 0 0 4px;
-}
-
 .story-status,
 .story-update {
     font-size: 14px;

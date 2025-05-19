@@ -4,6 +4,14 @@
     ViewBag.Title = "Chi tiết truyện";
     Layout = "~/Views/Share/_LayoutPage.cshtml";
 }
+@if (TempData["NotifyMessage"] != null)
+{
+    <div id="notifyMessage" class="alert alert-success">
+        @TempData["NotifyMessage"]
+    </div>
+}
+
+
 <link href="~/Assets/Admin/css/truyen/ChiTiet.css" rel="stylesheet" />
 <div class="container">
     <!-- Phần ảnh & thông tin truyện -->
@@ -20,7 +28,7 @@
                 </thead>
                 <tbody>
                     <tr>
-                        <td>10</td>
+                        <td>@Model.LuotDoc</td>
                         <td>@ViewBag.TongSoChuong</td>
                     </tr>
                 </tbody>
@@ -34,8 +42,13 @@
                 }
                 <form action="/TheoDoiTruyen/AddThuvien" method="post">
                     <input type="hidden" name="truyenId" value="@Model.truyenId" />
-                    <button type="submit" class="plus-btn">+</button>
+                    <button type="submit"
+                            class="plus-btn @(ViewBag.IsFollowing == true || ViewBag.IsFollowing!=null  ? "followed" : "")"
+                            title="Theo dõi truyện">
+                        +
+                    </button>
                 </form>
+
             </div>
 
         </div>
@@ -105,7 +118,7 @@
                                     }
                                 </div>
                             </div>
-                            
+
                         </a>
                     </div>
                 }

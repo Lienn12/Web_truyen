@@ -49,7 +49,6 @@ document.addEventListener("DOMContentLoaded", function () {
             window.location.href = url;
         });
     }
-    // Lắng nghe sự kiện nhấp vào nút "Gửi"
     const submitButtons = document.querySelectorAll('.submit-reply-btn');
     submitButtons.forEach(function (btn) {
         btn.addEventListener('click', function () {
@@ -64,7 +63,6 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
 
-    // Toggle Mục Lục
     const toggle = document.getElementById('toggleMucLuc');
     if (toggle) {
         const icon = toggle.querySelector('.toggle-icon');
@@ -74,7 +72,6 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    // Tự động điều chỉnh chiều cao của textarea
     const textarea = document.getElementById('noiDung');
     if (textarea) {
         textarea.style.height = textarea.scrollHeight + 'px';
@@ -83,4 +80,51 @@ document.addEventListener("DOMContentLoaded", function () {
             this.style.height = this.scrollHeight + 'px';
         });
     }
+});
+function capNhatLuotDoc(chuongId, truyenId, token) {
+    if (!chuongId || !truyenId || !token) {
+        console.error('Thiếu tham số bắt buộc:', { chuongId, truyenId, token });
+        return;
+    }
+    const formData = new URLSearchParams();
+    formData.append('chuongId', chuongId);
+    formData.append('truyenId', truyenId);
+    formData.append('__RequestVerificationToken', token);
+
+    fetch('/Admin/Chuong/CapNhatLuotDoc', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        body: formData.toString()
+    })
+        .catch(err => {
+            console.error('Lỗi fetch:', err);
+        });
+}
+
+document.addEventListener('DOMContentLoaded', function () {
+    const dataDiv = document.getElementById('dataLuotDoc');
+    if (!dataDiv) {
+        console.error('Không tìm thấy phần tử dataLuotDoc');
+        return;
+    }
+
+    const chuongId = dataDiv.getAttribute('data-chuongid');
+    const truyenId = dataDiv.getAttribute('data-truyenid');
+    const tokenInput = document.querySelector('#antiForgeryForm input[name="__RequestVerificationToken"]');
+    const token = tokenInput ? tokenInput.value : null;
+
+
+    if (!chuongId || !truyenId || !token) {
+        console.error('Thiếu dữ liệu bắt buộc:', { chuongId, truyenId, token });
+        return;
+    }
+    const timeoutId = setTimeout(() => {
+        capNhatLuotDoc(chuongId, truyenId, token);
+    }, 3000); 
+
+    window.addEventListener('beforeunload', () => {
+        clearTimeout(timeoutId);
+    });
 });

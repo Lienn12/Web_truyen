@@ -205,7 +205,7 @@
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Areas\Admin\Models\ListChuongViewModel.cs" />
     <Compile Include="Areas\Admin\Models\ListTruyenViewModel.cs" />
-    <Compile Include="Areas\Admin\Models\ListUserViewModel.cs" />
+    <Compile Include="ViewModel\ListUserViewModel.cs" />
     <Compile Include="Areas\Admin\Models\TaoAnhBiaMacDinh.cs" />
     <Compile Include="Areas\Admin\Models\TruyenWithCountViewModel.cs" />
     <Compile Include="Controllers\HomeController.cs" />

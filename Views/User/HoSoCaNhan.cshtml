@@ -12,6 +12,9 @@
 
 
 <link href="~/Assets/css/User/HoSoCaNhan.css" rel="stylesheet" />
+@section top {
+    @Html.Partial("~/Views/Share/_MenuHeadU.cshtml")
+}
 <div class="profile-container">
     <!-- Phần tiêu đề -->
     <div class="profile-header">
@@ -163,7 +166,12 @@
             <a id="popup-detail-link" href="#">
                 Đọc truyện
             </a>
-            <button id="popup-follow-btn">+</button>
+
+            @using (Html.BeginForm("AddThuvien", "TheoDoiTruyen",new {area="" }, FormMethod.Post))
+            {
+                <input type="hidden" name="truyenId" id="popup-truyenId" value="" />
+                <button type="submit" id="popup-follow-btn"> <i class="fa fa-plus"></i></button>
+            }
             <p id="popup-description">
                 <span id="popup-short-desc"></span>
                 <a id="popup-read-more" href="#" style="display: none; color: var(--button); margin-left: 5px;">xem thêm</a>

@@ -12,5 +12,6 @@ namespace Web_truyen.Areas.Admin.Models
         public int SoTacPham { get; set; }
         public string VaiTro { get; set; }
         public bool TrangThai {  get; set; }
+        public string Avt { get; set; }
     }
 }

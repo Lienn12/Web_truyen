@@ -169,7 +169,36 @@ namespace Web_truyen.Areas.Admin.Controllers
             }
             return View(model);
         }
+        [RoleUser]
+        public ActionResult DanhSachUser(string search, int? page = 1)
+        {
+            int pageSize = 10;
+            int pageNumber = page ?? 1;
 
+            var users = db.Users.AsQueryable();
+
+            if (!string.IsNullOrEmpty(search))
+            {
+                users = users.Where(u => u.Username.Contains(search));
+            }
+
+            var model = users
+            .OrderByDescending(u => u.userId)
+            .Select(u => new ListUserViewModel
+            {
+                UserId = u.userId,
+                UserName = u.Username,
+                SoTacPham = db.Truyen.Count(t => t.userId == u.userId),
+                VaiTro = u.VaiTro,
+                TrangThai = u.TrangThai,
+                Avt = u.avt
+            });
+
+
+            ViewBag.Search = search;
+
+            return View(model.ToPagedList(pageNumber, pageSize));
+        }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
