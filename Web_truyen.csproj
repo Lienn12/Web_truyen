@@ -164,6 +164,7 @@
     <Content Include="Assets\css\Home.css" />
     <Content Include="Assets\css\Layout.css" />
     <Content Include="Assets\css\Style.css" />
+    <Content Include="Assets\css\Thuvien.css" />
     <Content Include="Assets\Admin\css\truyen\DsTruyen.css" />
     <Content Include="Assets\img\user1.png" />
     <Content Include="Assets\img\search.png" />
