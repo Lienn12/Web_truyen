@@ -21,12 +21,17 @@ namespace Web_truyen.Models
             : base("name=Web_TruyenEntities")
         {
         }
-    
+
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
-            throw new UnintentionalCodeFirstException();
+            modelBuilder.Entity<BinhLuan>()
+                .HasMany(b => b.TraLoi)
+                .WithOptional()
+                .HasForeignKey(b => b.BinhLuanChaId);
+
         }
-    
+
+
         public virtual DbSet<BaoCao> BaoCao { get; set; }
         public virtual DbSet<BinhLuan> BinhLuan { get; set; }
         public virtual DbSet<Chuong> Chuong { get; set; }
@@ -38,7 +43,7 @@ namespace Web_truyen.Models
         public virtual DbSet<ThuVien> ThuVien { get; set; }
         public virtual DbSet<Truyen> Truyen { get; set; }
         public virtual DbSet<Users> Users { get; set; }
-    
+
         public virtual int sp_alterdiagram(string diagramname, Nullable<int> owner_id, Nullable<int> version, byte[] definition)
         {
             var diagramnameParameter = diagramname != null ?

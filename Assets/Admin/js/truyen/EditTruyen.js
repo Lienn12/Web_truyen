@@ -22,6 +22,7 @@ document.addEventListener("DOMContentLoaded", function () {
     document.getElementById('TieuDe').readOnly = !canEdit;
     document.getElementById('MoTa').readOnly = !canEdit;
     document.getElementById('TheLoaiId').disabled = !canEdit;
+    document.getElementById('XepLoai').disabled = !canEdit;
     document.getElementById('TrangThai').disabled = !canEdit;
 
     // 2. Nút quay lại theo role
@@ -41,7 +42,6 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     // 3. Nút Cancel và Preview chỉ hoạt động khi canEdit là true
-    if (canEdit) {
         var btnCancel = document.getElementById("btnCancel");
         if (btnCancel) {
             btnCancel.addEventListener("click", function () {
@@ -57,7 +57,6 @@ document.addEventListener("DOMContentLoaded", function () {
                 window.location.href = url;
             });
         }
-    }
 
 
     // 4. Xem trước ảnh bìa

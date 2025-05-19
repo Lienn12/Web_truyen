@@ -149,7 +149,6 @@
 }
 
 .comment-input-wrapper {
-    display: flex;
     align-items: center;
     padding: 10px;
     width: 100%;
@@ -160,7 +159,7 @@
     .comment-input-wrapper textarea {
         width: 100%;
         min-height: 40px;
-        padding: 12px 20px;
+        padding: 12px 50px 12px 20px ;
         font-size: 16px;
         border: 1px solid #ddd;
         outline: none;
@@ -268,3 +267,9 @@
     .submit-reply-btn:hover {
         background-color: #5a4bdf;
     }
+.toggle-reply {
+    cursor: pointer;
+    margin-left:50px;
+    font-size:13px;
+    font-weight:bold
+}

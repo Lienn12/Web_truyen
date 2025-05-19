@@ -57,11 +57,11 @@ namespace Web_truyen.Areas.Admin.Controllers
                 return RedirectToAction("Index", "Truyen");
             }
             var danhSachChuong = db.Chuong
-                .Where(c => c.truyenId == truyenId)
-                .OrderBy(c => c.ChuongId)
-                .ToList();
-            
-            int soThuTuChuong = danhSachChuong.Count > 0 ? danhSachChuong.Count + 1 : 1;
+                   .Where(c => c.truyenId == truyenId)
+                   .OrderBy(c => c.ThuTu) // Đảm bảo theo thứ tự
+                   .ToList();
+
+            int soThuTuChuong = danhSachChuong.Count > 0 ? danhSachChuong.Last().ThuTu + 1 : 1;
 
             var chuongMoi = new Chuong
             {
@@ -70,6 +70,7 @@ namespace Web_truyen.Areas.Admin.Controllers
                 DaDang = false,
                 NoiDung = "",
                 NgayTao = DateTime.Now,
+                ThuTu = soThuTuChuong,
 
             };
             ViewBag.TruyenId = truyenId;
@@ -115,8 +116,16 @@ namespace Web_truyen.Areas.Admin.Controllers
                 var danhSachTheLoai = db.TheLoai.ToList();
 
                 ViewBag.TheLoai = new SelectList(danhSachTheLoai, "TheLoaiId", "TenTheLoai", truyen.TheLoaiId);
-
-                var currentUser = SessionConfig.GetUser();
+            
+            var currentUser = SessionConfig.GetUser();
+            var permission = new UserPermissionViewModel();
+           
+            if (currentUser != null)
+            {
+                permission.VaiTro = currentUser.VaiTro;
+                permission.IsAuthorOfTruyen = truyen != null && truyen.userId == currentUser.userId;
+            }
+            ViewBag.Permission = permission;
                 if (currentUser != null)
                 {
                     ViewBag.CurrentUserId = currentUser.userId;
@@ -249,10 +258,19 @@ namespace Web_truyen.Areas.Admin.Controllers
                     .ToList();
             }
             var danhSachBinhLuan = db.BinhLuan
-                .Include(b => b.Users)
-                .Where(b => b.ChuongId == chuong.ChuongId && b.BinhLuanChaId == null)
-                .OrderByDescending(b => b.NgayTao)
-                .ToList();
+                 .Where(b => b.BinhLuanChaId == null && b.ChuongId == id)  // Lọc theo chương và bình luận gốc (không phải trả lời)
+                 .Include(b => b.Users)
+                 .ToList()
+                 .Select(b =>
+                 {
+                     // Lấy các bình luận trả lời cho bình luận gốc (nếu có)
+                     b.TraLoi = db.BinhLuan
+                         .Where(t => t.BinhLuanChaId == b.BinhLuanId && t.ChuongId == id)  // Lọc theo chương và bình luận trả lời
+                         .Include(t => t.Users)
+                         .ToList();
+                     return b;
+                 })
+                 .ToList();
 
             var viewModel = new ChuongViewModel
             {

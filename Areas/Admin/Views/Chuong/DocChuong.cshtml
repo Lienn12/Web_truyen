@@ -71,7 +71,7 @@
         <div class="btn_link">
             @if (permission.IsAuthorOfTruyen)
             {
-                <button id="btnback" class="btn btn1"
+                <button id="btn_back" class="btn btn1"
                         data-url="@Url.Action("Edit", "Chuong", new { area = "Admin", id = Model.Chuong.ChuongId })">
                     Quay lại phần viết
                 </button>
@@ -155,34 +155,53 @@
             }
         </div>
         <div class="comment-box">
+            <div class="comment-input-wrapper">
+                @using (Html.BeginForm("Them", "BinhLuan", FormMethod.Post, new { area = "Admin" }))
+                {
+                    <input type="hidden" name="truyenId" value="@Model.Chuong.truyenId" />
+                    <input type="hidden" name="chuongId" value="@Model.Chuong.ChuongId" />
+
+                    <textarea name="noiDung" placeholder="Nhập bình luận của bạn..."></textarea>
+                    <button type="submit">
+                        <i class="fas fa-paper-plane"></i> 
+                    </button>
+                }
+
+
+            </div>
+
             @foreach (var binhLuan in Model.DanhSachBinhLuan)
             {
-                    var thoiGianChenhLech = DateTime.Now - binhLuan.NgayTao;
-                    string hienThiThoiGian;
+                var thoiGianChenhLech = DateTime.Now - binhLuan.NgayTao;
+                string hienThiThoiGian;
 
-                    if (thoiGianChenhLech.TotalMinutes < 1)
-                    {
-                        hienThiThoiGian = "Vừa xong";
-                    }
-                    else if (thoiGianChenhLech.TotalMinutes < 60)
-                    {
-                        hienThiThoiGian = $"{(int)thoiGianChenhLech.TotalMinutes} phút trước";
-                    }
-                    else if (thoiGianChenhLech.TotalHours < 24)
-                    {
-                        hienThiThoiGian = $"{(int)thoiGianChenhLech.TotalHours} giờ trước";
-                    }
-                    else
-                    {
-                        hienThiThoiGian = $"{(int)thoiGianChenhLech.TotalDays} ngày trước";
-                    }
+                if (thoiGianChenhLech.TotalMinutes < 1)
+                {
+                    hienThiThoiGian = "Vừa xong";
+                }
+                else if (thoiGianChenhLech.TotalMinutes < 60)
+                {
+                    hienThiThoiGian = $"{(int)thoiGianChenhLech.TotalMinutes} phút trước";
+                }
+                else if (thoiGianChenhLech.TotalHours < 24)
+                {
+                    hienThiThoiGian = $"{(int)thoiGianChenhLech.TotalHours} giờ trước";
+                }
+                else if (thoiGianChenhLech.TotalDays <= 7)
+                {
+                    hienThiThoiGian = $"{(int)thoiGianChenhLech.TotalDays} ngày trước";
+                }
+                else
+                {
+                    hienThiThoiGian = binhLuan.NgayTao.ToString("dd/MM/yyyy");
+                }
                 <div class="comment">
                     <span class="author">@binhLuan.Users.Username:</span> @binhLuan.NoiDung
                 </div>
 
                 <span class="time">@hienThiThoiGian</span><div class="reply-btn" data-comment-id="@binhLuan.BinhLuanId" data-username="@binhLuan.Users.Username">Trả lời</div>
 
-                <div class="reply-form" id="reply-form-@binhLuan.BinhLuanId" style="display:none;">
+                <div class="comment-input-wrapper" id="reply-form-@binhLuan.BinhLuanId" style="display:none;">
                     @using (Html.BeginForm("TraLoi", "BinhLuan", FormMethod.Post, new { id = binhLuan.BinhLuanId }))
                     {
                         @Html.Hidden("commentId", binhLuan.BinhLuanId)
@@ -198,11 +217,38 @@
                     <div class="reply-wrapper" id="replies-@binhLuan.BinhLuanId" style="display: none; margin-left: 20px;">
                         @foreach (var traLoi in binhLuan.TraLoi)
                         {
+                            var thoiGian = DateTime.Now - traLoi.NgayTao;
+                            string hienThi;
+
+                            if (thoiGian.TotalMinutes < 1)
+                            {
+                                hienThi = "Vừa xong";
+                            }
+                            else if (thoiGian.TotalMinutes < 60)
+                            {
+                                hienThi = $"{(int)thoiGian.TotalMinutes} phút trước";
+                            }
+                            else if (thoiGian.TotalHours < 24)
+                            {
+                                hienThi = $"{(int)thoiGian.TotalHours} giờ trước";
+                            }
+                            else if (thoiGian.TotalDays <= 7)
+                            {
+                                hienThi = $"{(int)thoiGian.TotalDays} ngày trước";
+                            }
+                            else
+                            {
+                                hienThi = traLoi.NgayTao.ToString("dd/MM/yyyy");
+                            }
+
                             <div class="comment reply">
                                 <span class="author">@traLoi.Users.Username:</span> @traLoi.NoiDung
+                                <div class="time" style="margin-top: 5px;">@hienThi</div>
                             </div>
                         }
+
                     </div>
+
                 }
             }
 

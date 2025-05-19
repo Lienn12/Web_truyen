@@ -140,7 +140,8 @@
     <Content Include="Assets\Admin\css\truyen\MucLucEdit.css" />
     <Content Include="Assets\Admin\css\truyen\ThemTruyen.css" />
     <Content Include="Assets\Admin\css\truyen\EditTruyen.css" />
-    <Content Include="Assets\Admin\css\User\HoSoCaNhan.css" />
+    <Content Include="Assets\Admin\js\truyen\ChiTiet.js" />
+    <Content Include="Assets\css\User\HoSoCaNhan.css" />
     <Content Include="Assets\Admin\css\_head.css" />
     <Content Include="Assets\Admin\css\_MenuHead.css" />
     <Content Include="Assets\Admin\css\_Svg.css" />
@@ -155,7 +156,9 @@
     <Content Include="Assets\Admin\js\MucLuc.js" />
     <Content Include="Assets\Admin\js\truyen\MucLucEdit.js" />
     <Content Include="Assets\Admin\js\truyen\Themtruyen.js" />
-    <Content Include="Assets\Admin\js\User\HoSoCaNhan.js" />
+    <Content Include="Assets\css\User\SuaHoSo.css" />
+    <Content Include="Assets\css\User\TruyenCuaToi.css" />
+    <Content Include="Assets\js\User\HoSoCaNhan.js" />
     <Content Include="Assets\Admin\js\_MenuHead.js" />
     <Content Include="Assets\css\Account.css" />
     <Content Include="Assets\css\Home.css" />
@@ -169,6 +172,8 @@
     <Content Include="Assets\js\Account.js" />
     <Content Include="Assets\js\Home.js" />
     <Content Include="Assets\js\Layout.js" />
+    <Content Include="Assets\js\User\SuaHoSo.js" />
+    <Content Include="Assets\js\User\TruyenCuaToi.js" />
     <Content Include="Content\PagedList.css" />
     <Content Include="Content\Site.css" />
     <Content Include="Global.asax" />
@@ -267,6 +272,7 @@
     <Compile Include="ViewModel\loginViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModel\SignUpViewModel.cs" />
+    <Compile Include="ViewModel\TruyenCuaToiViewModel.cs" />
     <Compile Include="ViewModel\VerifyRmailViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -306,6 +312,8 @@
     <Content Include="Views\Share\_LayoutPage.cshtml" />
     <Content Include="Views\Account\EnterResetCode.cshtml" />
     <Content Include="Views\Thuvien\Thuvien.cshtml" />
+    <Content Include="Views\User\ChinhSuaUser.cshtml" />
+    <Content Include="Views\Share\_MenuHeadU.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

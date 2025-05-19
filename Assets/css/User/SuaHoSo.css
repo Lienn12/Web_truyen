@@ -1,0 +1,107 @@
+﻿.profile-username-edit {
+    border: 1px solid #ccc;
+    background-color: transparent;
+    font-size: 30px;
+    font-weight: 700;
+    font-family: var(--font);
+    text-align: center;
+
+}
+.profile-avatar-container {
+    position: relative;
+}
+
+.profile-avatar {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.avatar-upload {
+    display: none; /* Ẩn nút chọn ảnh mặc định */
+}
+
+.avatar-icon-overlay {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+    background: rgba(0, 0, 0, 0.5);
+    border-radius: 50%;
+    padding: 10px;
+    cursor: pointer;
+}
+
+    .avatar-icon-overlay i {
+        font-size: 20px;
+    }
+
+.toggle-btn {
+    font-weight: 700;
+    border-bottom: 3px solid var(--button);
+    color: var(--button);
+}
+.profile-mota-edit {
+    resize: none;
+    width: 100%; 
+    height: 200px; 
+    padding: 10px; 
+    border: 1px solid #ccc; 
+    border-radius: 5px; 
+    font-size: 16px; 
+    font-family: var(--font); 
+    background-color: #fff;
+    box-sizing: border-box; 
+}
+input:focus,
+textarea:focus {
+    outline: none; 
+    border: 1px solid var(--button); 
+}
+.profile-header {
+    position: relative;
+}
+
+.action-buttons {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    display: flex;
+    gap: 10px;
+}
+
+.cancel-btn,
+.save-btn-inline {
+    padding: 6px 12px;
+    border-radius: 4px;
+    font-weight: 600;
+    font-size: 14px;
+    border: 1px solid var(--button);
+    transition: all 0.3s ease;
+}
+
+.cancel-btn {
+    background-color: transparent;
+    color: var(--button);
+    text-decoration: none;
+}
+
+    .cancel-btn:hover {
+        color: var(--button_hover);
+    }
+
+.save-btn-inline {
+    background-color: var(--button);
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+    .save-btn-inline:hover {
+        background-color: var(--button_hover); 
+    }
+.text-danger{
+    color:red;
+    font-size: 14px;
+}

@@ -172,7 +172,6 @@ namespace Web_truyen.Areas.Admin.Controllers
 
             var currentUser = Web_truyen.App_Start.SessionConfig.GetUser();
             var permission = new UserPermissionViewModel();
-
             if (currentUser != null)
             {
                 permission.VaiTro = currentUser.VaiTro;
@@ -180,15 +179,28 @@ namespace Web_truyen.Areas.Admin.Controllers
             }
 
             ViewBag.Permission = permission;
+            List<Chuong> chapters;
 
             if (!permission.IsAuthorOfTruyen)
             {
-                var chapters = db.Chuong
-                    .Where(c => c.truyenId == id && (permission.IsAuthorOfTruyen || c.DaDang == true))
+                chapters = db.Chuong
+                    .Where(c => c.truyenId == id && c.DaDang == true) 
                     .ToList();
-                ViewBag.DanhSachChuong = chapters;
-                ViewBag.TongSoChuong = chapters.Count;
             }
+            else
+            {
+                chapters = db.Chuong
+                    .Where(c => c.truyenId == id) 
+                    .ToList();
+            }
+
+            ViewBag.DanhSachChuong = chapters;
+            ViewBag.TongSoChuong = chapters.Count;
+            var chuongDauTien = db.Chuong
+                .Where(c => c.truyenId == truyen.truyenId)
+                .OrderBy(c => c.ThuTu) 
+                .FirstOrDefault();
+            ViewBag.ChuongDauTienId = chuongDauTien.ChuongId;
             ViewBag.ChuongDangChon = 0;
             ViewBag.TruyenId = id;
             ViewBag.TheLoaiId = new SelectList(db.TheLoai, "TheLoaiId", "TenTheLoai", truyen.TheLoaiId);
@@ -238,13 +250,12 @@ namespace Web_truyen.Areas.Admin.Controllers
                     AnhBiaFile.SaveAs(path);
                     truyen.AnhBia = fileName;
                 }
-
                 truyen.TieuDe = model.TieuDe;
                 truyen.MoTa = model.MoTa;
                 truyen.TheLoaiId = model.TheLoaiId;
-                truyen.TrangThai = model.TrangThai;
+                truyen.XepLoai = model.XepLoai;
                 truyen.NgayCapNhap = DateTime.Now;
-
+                truyen.TrangThai = model.TrangThai;
                 db.Entry(truyen).State = EntityState.Modified;
                 db.SaveChanges();
                 var nextAction = Request["NextAction"] ?? "Edit";

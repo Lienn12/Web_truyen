@@ -1,0 +1,66 @@
+﻿@model Web_truyen.Models.Users
+@using Web_truyen.App_Start
+
+@{
+    ViewBag.Title = "Sửa Hồ sơ cá nhân";
+    Layout = "~/Views/Share/_LayoutPage.cshtml";
+}
+
+<link href="~/Assets/css/User/HoSoCaNhan.css" rel="stylesheet" />
+<link href="~/Assets/css/User/SuaHoSo.css" rel="stylesheet" />
+<div class="profile-container">
+    @using (Html.BeginForm("ChinhSuaUser", "User", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        @Html.HiddenFor(m => m.userId)  
+        @Html.AntiForgeryToken()
+    <div class="profile-container">
+        <!-- Phần tiêu đề -->
+        <div class="profile-header">
+            <div class="profile-avatar-container">
+                <img src="@Url.Content(string.IsNullOrEmpty(Model.avt) ? "~/Assets/img/user1.png" : "~/Assets/img/" + Model.avt)" alt="Ảnh đại diện" class="profile-avatar" id="profile-avatar">
+
+                <label for="avatar-upload" class="avatar-icon-overlay">
+                    <i class="fa fa-camera"></i>
+                </label>
+
+                <input type="file" id="avatar-upload" class="avatar-upload" accept="image/*" onchange="previewAvatar(event)" name="avatar" />
+            </div>
+
+            <div class="profile-info">
+                <h1>
+                    <input type="text" id="username" value="@Model.Username" class="profile-username-edit" name="username" />
+                </h1>
+                @Html.ValidationMessageFor(m => m.Username, "", new { @class = "text-danger" }) 
+
+            </div>
+            <div class="action-buttons">
+                <a href="@Url.Action("HoSoCaNhan", "User", new { useId = Model.userId })" class="cancel-btn">Hủy</a>
+                <button type="submit" class="save-btn-inline">Lưu</button>
+            </div>
+        </div>
+
+        <div class="profile-actions">
+            <div class="profile-btn">
+                <button class="toggle-btn" type="button" onclick="showProfileSection('intro-content', this)">Giới thiệu</button>
+            </div>
+            <div class="profile-content">
+                <div id="follow-content" class="profile-section">
+                </div>
+                <div id="intro-content" class="profile-section" style="display: block;">
+                    <div class="mota">
+                        @Html.ValidationMessageFor(m => m.MoTa, "", new { @class = "text-danger" })
+
+                        <textarea id="mota" class="profile-mota-edit" name="mota">@Model.MoTa</textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        
+    </div>
+}
+
+</div>
+
+
+<script src="~/Assets/js/User/SuaHoSo.js"></script>

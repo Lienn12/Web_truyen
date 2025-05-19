@@ -1,96 +1,86 @@
-﻿document.addEventListener("DOMContentLoaded", function () {
-    const btnBack = document.getElementById("btnback");
-    if (btnBack) {
-        btnBack.addEventListener("click", function () {
-            const url = btnBack.getAttribute("data-url");
-            if (url) {
-                window.location.href = url;
-            }
+﻿function toggleReplies(btn, commentId) {
+    const wrapper = document.getElementById('replies-' + commentId);
+    if (wrapper) {
+        wrapper.style.display = (wrapper.style.display === 'none' || wrapper.style.display === '') ? 'block' : 'none';
+        btn.textContent = wrapper.style.display === 'block' ? 'Ẩn trả lời' : 'Xem ' + wrapper.children.length + ' trả lời';
+    }
+}
+document.addEventListener("DOMContentLoaded", function () {
+    const backButton = document.getElementById('btnback');
+
+    if (backButton) {
+        backButton.addEventListener('click', function () {
+            const url = backButton.getAttribute('data-url');
+            window.location.href = url;
         });
     }
-
-    const btnSubmit = document.getElementById("btnSubmit");
-    if (btnSubmit) {
-        btnSubmit.addEventListener("click", function (event) {
-            var existingInput = document.querySelector("input[name='Chuong.DaDang']");
-            if (existingInput) {
-                existingInput.value = "true";  
-            }
-        });
-    }
-
-    const toggle = document.getElementById('toggleMucLuc');
-    const icon = toggle.querySelector('.toggle-icon');
-
-    toggle.addEventListener('click', () => {
-        icon.classList.toggle('fa-chevron-down');
-        icon.classList.toggle('fa-chevron-up');
-    });
 });
+document.addEventListener("DOMContentLoaded", function () {
+    const backButton = document.getElementById('btn_back');
 
-    const textarea = document.getElementById('noiDung');
-    if (textarea) {
-        textarea.style.height = textarea.scrollHeight + 'px';
-
-    textarea.addEventListener('input', function () {
-        this.style.height = 'auto';
-    this.style.height = this.scrollHeight + 'px';
+    if (backButton) {
+        backButton.addEventListener('click', function () {
+            const url = backButton.getAttribute('data-url');
+            window.location.href = url;
         });
     }
+});
 document.addEventListener("DOMContentLoaded", function () {
     const replyButtons = document.querySelectorAll('.reply-btn');
-    const submitButtons = document.querySelectorAll('.submit-reply-btn');
-
-    // Sự kiện cho nút "Trả lời"
     replyButtons.forEach(function (btn) {
         btn.addEventListener('click', function () {
             const commentId = this.getAttribute('data-comment-id');
-            const username = this.getAttribute('data-username'); // Lấy tên người dùng từ data-username
             const form = document.getElementById('reply-form-' + commentId);
             const textarea = document.getElementById('reply-textarea-' + commentId);
-
             if (form && textarea) {
-                form.style.display = 'block';
-                textarea.value = '@' + username + ' '; // Lưu ý: Không thể sử dụng Razor syntax trực tiếp trong JavaScript
-                textarea.focus();
+                form.style.display = (form.style.display === 'none' || form.style.display === '') ? 'block' : 'none';
+                if (form.style.display === 'block') {
+                    const username = this.getAttribute('data-username');
+                    textarea.value = '@' + username + ' ';
+                    textarea.focus();
+                }
             }
         });
     });
-
-    // Sự kiện cho nút "Gửi"
+    const backButton = document.getElementById('btnback');
+    if (backButton) {
+        backButton.addEventListener('click', function () {
+            const url = backButton.getAttribute('data-url');
+            window.location.href = url;
+        });
+    }
+    // Lắng nghe sự kiện nhấp vào nút "Gửi"
+    const submitButtons = document.querySelectorAll('.submit-reply-btn');
     submitButtons.forEach(function (btn) {
         btn.addEventListener('click', function () {
             const commentId = this.getAttribute('data-comment-id');
             const form = document.getElementById('reply-form-' + commentId);
 
             if (form) {
-                if (form.submit) {
-                    form.submit(); 
-                } else {
-                    console.error("Form không hợp lệ hoặc không có phương thức submit.");
-                }
+                form.submit();
+            } else {
+                console.error("Form không hợp lệ hoặc không có phương thức submit.");
             }
         });
     });
-});
-function toggleReplies(button, commentId) {
-    const replyWrapper = document.getElementById('replies-' + commentId);
-    if (replyWrapper.style.display === 'none') {
-        replyWrapper.style.display = 'block';
-        button.innerText = 'Ẩn trả lời';
-    } else {
-        replyWrapper.style.display = 'none';
-        button.innerText = 'Xem trả lời';
-    }
-}
 
-// Hiển thị/ẩn form trả lời
-document.addEventListener('DOMContentLoaded', function () {
-    document.querySelectorAll('.reply-btn').forEach(function (btn) {
-        btn.addEventListener('click', function () {
-            const commentId = this.getAttribute('data-comment-id');
-            const form = document.getElementById('reply-form-' + commentId);
-            form.style.display = form.style.display === 'none' ? 'block' : 'none';
+    // Toggle Mục Lục
+    const toggle = document.getElementById('toggleMucLuc');
+    if (toggle) {
+        const icon = toggle.querySelector('.toggle-icon');
+        toggle.addEventListener('click', function () {
+            icon.classList.toggle('fa-chevron-down');
+            icon.classList.toggle('fa-chevron-up');
         });
-    });
+    }
+
+    // Tự động điều chỉnh chiều cao của textarea
+    const textarea = document.getElementById('noiDung');
+    if (textarea) {
+        textarea.style.height = textarea.scrollHeight + 'px';
+        textarea.addEventListener('input', function () {
+            this.style.height = 'auto';
+            this.style.height = this.scrollHeight + 'px';
+        });
+    }
 });
