@@ -50,5 +50,6 @@ namespace Web_truyen.Areas.Admin.Controllers
             return Redirect(Request.UrlReferrer.ToString());
         }
 
+
     }
 }

@@ -1,4 +1,5 @@
-﻿.container_story {
+﻿
+.container_story {
     background-color: white;
     padding: 20px;
     border-radius: 8px;
@@ -93,6 +94,7 @@
         height: 120px;
         background-color: #a383ff;
         border-radius: 12px;
+        box-shadow: 0 0px 8px rgba(0, 0, 0, 0.3);
     }
 
     .table tr:not(:first-child) {
@@ -136,6 +138,25 @@
     text-decoration: none;
     color: white;
 }
+.btn-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 6px;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+    .btn-link:hover,
+    .btn-link:focus {
+        transform: scale(1.1);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        outline: none;
+    }
+
 .btn-edit {
     background-color: #f8c291; 
 }

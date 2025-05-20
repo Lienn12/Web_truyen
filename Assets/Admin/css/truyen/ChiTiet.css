@@ -174,10 +174,10 @@ a {
     border-radius: 8px;
 }
     .status_story.completed {
-        background-color: var(--completed);
+        background-color: var(--complete);
     }
     .status_story.in-progress {
-        background-color: #27453A;
+        background-color: var(--Writing);
     }
 .muc-luc-container {
     width: 100% !important;

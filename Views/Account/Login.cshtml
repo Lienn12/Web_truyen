@@ -1,17 +1,19 @@
 ﻿@model Web_truyen.ViewModel.loginViewModel
 @{
-    Layout = null;
+    Layout = "~/Views/Share/_LayoutPage.cshtml";
+
 }
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="utf-8" />
-    <title>Login</title>
-    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link href="~/Assets/css/Style.css" rel="stylesheet" />
-    <link href="~/Assets/css/Account.css" rel="stylesheet" />
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
-</head>
+@*<!DOCTYPE html>
+    <html>
+    <head>
+        <meta charset="utf-8" />
+        <title>Login</title>
+        <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
+        <link href="~/Assets/css/Style.css" rel="stylesheet" />
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    </head>*@
+<link href="~/Assets/css/Account.css" rel="stylesheet" />
+
 <body>
     <div class="form-container">
         <h2>Login</h2>
@@ -34,7 +36,7 @@
                 @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
             </div>
             <div class="form-group flex-container">
-                @Html.CheckBox("RememberMe", new { @class = "form-check-input", id = "rememberMe"})
+                @Html.CheckBox("RememberMe", new { @class = "form-check-input", id = "rememberMe" })
                 @Html.DisplayNameFor(m => m.RememberMe)
                 @Html.ActionLink("Forgot password?", "VerifyEmail", "", new { @class = "btnForgot" })
             </div>

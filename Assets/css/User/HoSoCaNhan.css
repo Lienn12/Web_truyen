@@ -115,6 +115,8 @@
 
 .profile-section {
     margin-top: 15px;
+    display:flex;
+    flex-direction:row
 }
 
 .mota {
@@ -282,4 +284,52 @@
     border-radius: 0 16px 16px 0;
     border:none
 }
+.profile-section {
+    overflow: hidden;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: flex-start;
+    padding: 20px;
+}
 
+.user-card {
+    float: left;
+    background: linear-gradient(to bottom, #ffc2e2 50%, #ffe3f3 50%);
+    border-radius: 15px;
+    width: 300px;
+    text-align: center;
+    padding: 20px 10px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    flex-shrink: 0;
+    margin: 30px;
+}
+
+.user-avatar {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 10px;
+}
+
+.user-name {
+    font-weight: bold;
+    margin-bottom: 10px;
+    font-size: 16px;
+}
+
+.follow-btn {
+    background-color: #b28bf4;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 6px 12px;
+    font-size: 14px;
+    cursor: pointer;
+    margin-bottom: 10px;
+}
+
+.info {
+    font-size: 12px;
+    color: #333;
+}

@@ -60,6 +60,9 @@
       <HintPath>packages\HtmlSanitizer.9.0.876\lib\net461\HtmlSanitizer.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>packages\Newtonsoft.Json.13.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="PagedList, Version=1.17.0.0, Culture=neutral, PublicKeyToken=abbb863e9397c5e1, processorArchitecture=MSIL">
       <HintPath>packages\PagedList.1.17.0.0\lib\net40\PagedList.dll</HintPath>
     </Reference>
@@ -140,7 +143,9 @@
     <Content Include="Assets\Admin\css\truyen\MucLucEdit.css" />
     <Content Include="Assets\Admin\css\truyen\ThemTruyen.css" />
     <Content Include="Assets\Admin\css\truyen\EditTruyen.css" />
+    <Content Include="Assets\Admin\css\truyen\ThongKe.css" />
     <Content Include="Assets\Admin\js\truyen\ChiTiet.js" />
+    <Content Include="Assets\Admin\js\truyen\ThongKe.js" />
     <Content Include="Assets\css\User\HoSoCaNhan.css" />
     <Content Include="Assets\Admin\css\_head.css" />
     <Content Include="Assets\Admin\css\_MenuHead.css" />
@@ -201,6 +206,7 @@
     <Compile Include="Areas\Admin\Controllers\TheLoaiController.cs" />
     <Compile Include="Areas\Admin\Controllers\TheoDoiNguoiDungController.cs" />
     <Compile Include="Areas\Admin\Controllers\TruyenController.cs" />
+    <Compile Include="Areas\Admin\Models\ThongKeTruyenViewModel.cs" />
     <Compile Include="Areas\Admin\Models\UserPermissionViewModel.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Areas\Admin\Models\ListChuongViewModel.cs" />
@@ -304,6 +310,7 @@
       <DependentUpon>Connect.edmx</DependentUpon>
     </Content>
     <Content Include="Areas\Admin\Views\Truyen\_themTruyen.cshtml" />
+    <Content Include="Areas\Admin\Views\Truyen\ThongKe.cshtml" />
     <None Include="packages.config" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Account\Login.cshtml" />

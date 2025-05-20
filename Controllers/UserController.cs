@@ -11,6 +11,7 @@ using System.Data.Entity;
 using Web_truyen.App_Start;
 using System.IO;
 using System.Diagnostics;
+using static System.Net.WebRequestMethods;
 namespace Web_truyen.Areas.Admin.Controllers
 {
     
@@ -64,7 +65,6 @@ namespace Web_truyen.Areas.Admin.Controllers
             return View(model.ToPagedList(pageNumber, pageSize));
         }
 
-
         public ActionResult HoSoCaNhan(int useId)
         {
             var user = db.Users.Find(useId);
@@ -72,6 +72,7 @@ namespace Web_truyen.Areas.Admin.Controllers
             {
                 return HttpNotFound();
             }
+
             int soTruyen = db.Truyen.Count(t => t.userId == useId);
             int soNguoiTheoDoi = db.TheoDoi_NguoiDung.Count(td => td.TheoDoiNguoiDungId == useId);
             int soTruyenDaDang = db.Truyen.Count(t => t.userId == useId && t.DaDang);
@@ -90,15 +91,22 @@ namespace Web_truyen.Areas.Admin.Controllers
             var currentUser = SessionConfig.GetUser();
             bool daTheoDoi = false;
             bool isOwner = false;
-            int currentUserId = -1; 
+            int currentUserId = -1;
+
+            List<Users> danhSachNguoiDuocTheoDoi = new List<Users>();
 
             if (currentUser != null)
             {
                 currentUserId = currentUser.userId;
                 isOwner = currentUserId == useId;
-
                 daTheoDoi = db.TheoDoi_NguoiDung.Any(td =>
                     td.NguoiTheoDoiId == currentUserId && td.TheoDoiNguoiDungId == useId);
+
+                // Lấy danh sách người mà user này đang theo dõi (Users1 là người được theo dõi)
+                danhSachNguoiDuocTheoDoi = db.TheoDoi_NguoiDung
+                    .Where(td => td.NguoiTheoDoiId == useId)
+                    .Select(td => td.Users1)
+                    .ToList();
             }
 
             ViewBag.CurrentUserId = currentUserId;
@@ -109,9 +117,12 @@ namespace Web_truyen.Areas.Admin.Controllers
             ViewBag.DanhSachTruyen = danhSachTruyen;
             ViewBag.SoTruyenDaDang = soTruyenDaDang;
             ViewBag.SoTruyenBanThao = soTruyenBanThao;
+            ViewBag.dsFollow = danhSachNguoiDuocTheoDoi;
 
             return View(user);
         }
+
+        [RoleUser]
         public ActionResult ChinhSuaUser(int useId)
         {
             var user = db.Users.Find(useId);  
@@ -169,61 +180,90 @@ namespace Web_truyen.Areas.Admin.Controllers
             }
             return View(model);
         }
+
         [RoleUser]
-        public ActionResult DanhSachUser(string search, int? page = 1)
+
+        public ActionResult DanhSachUser(string filter, string searchTerm, string roleFilter, int? page = 1)
         {
             int pageSize = 10;
             int pageNumber = page ?? 1;
+            ViewBag.CurrentFilter = filter;
+            ViewBag.SearchTerm = searchTerm;
+            ViewBag.RoleFilter = roleFilter;
 
-            var users = db.Users.AsQueryable();
+            var users = db.Users.Where(u => u.VaiTro.ToLower() != "admin").AsQueryable();
 
-            if (!string.IsNullOrEmpty(search))
+            if (filter == "bibaocao")
             {
-                users = users.Where(u => u.Username.Contains(search));
+                var biBaoCaoUserIds = db.BaoCao
+                    .Where(b => b.LoaiBaoCao == "user")
+                    .Select(b => b.DoiTuongId)
+                    .Distinct()
+                    .ToList();
+                users = users.Where(u => biBaoCaoUserIds.Contains(u.userId));
+            }
+
+            if (!string.IsNullOrEmpty(roleFilter))
+            {
+                if (roleFilter == "author")
+                {
+                    users = users.Where(u => u.VaiTro == "author");
+                }
+                else if (roleFilter == "user")
+                {
+                    users = users.Where(u => u.VaiTro == "user");
+                }
+                else if (roleFilter == "block")
+                {
+                    users = users.Where(u => u.TrangThai == false);
+                }
+            }
+
+            if (!string.IsNullOrEmpty(searchTerm))
+            {
+                users = users.Where(u => u.Username.Contains(searchTerm));
             }
 
             var model = users
-            .OrderByDescending(u => u.userId)
-            .Select(u => new ListUserViewModel
-            {
-                UserId = u.userId,
-                UserName = u.Username,
-                SoTacPham = db.Truyen.Count(t => t.userId == u.userId),
-                VaiTro = u.VaiTro,
-                TrangThai = u.TrangThai,
-                Avt = u.avt
-            });
-
-
-            ViewBag.Search = search;
+                .OrderByDescending(u => u.userId)
+                .Select(u => new ListUserViewModel
+                {
+                    UserId = u.userId,
+                    UserName = u.Username,
+                    SoTacPham = db.Truyen.Count(t => t.userId == u.userId),
+                    VaiTro = u.VaiTro,
+                    TrangThai = u.TrangThai,
+                    Avt = u.avt,
+                    BiBaoCao = db.BaoCao.Count(b => b.DoiTuongId == u.userId && b.LoaiBaoCao == "user")
+                });
 
             return View(model.ToPagedList(pageNumber, pageSize));
         }
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        [RoleUser] 
-        public ActionResult KhoaTaiKhoan(int userId)
-        {
-            var user = db.Users.Find(userId);
-            if (user == null)
+            [HttpPost]
+            [ValidateAntiForgeryToken]
+            [RoleUser] 
+            public ActionResult KhoaTaiKhoan(int userId)
             {
-                return HttpNotFound();
-            }
+                var user = db.Users.Find(userId);
+                if (user == null)
+                {
+                    return HttpNotFound();
+                }
 
-            if (user.VaiTro != null && user.VaiTro.ToLower() == "admin")
-            {
-                TempData["ErrorMessage"] = "Không thể khóa tài khoản Admin.";
+                if (user.VaiTro != null && user.VaiTro.ToLower() == "admin")
+                {
+                    TempData["ErrorMessage"] = "Không thể khóa tài khoản Admin.";
+                    return RedirectToAction("DanhSachUser");
+                }
+
+                user.TrangThai = false;
+                db.Entry(user).State = EntityState.Modified;
+                db.SaveChanges();
+
+                TempData["SuccessMessage"] = "Tài khoản đã bị khóa.";
                 return RedirectToAction("DanhSachUser");
             }
-
-            user.TrangThai = false;
-            db.Entry(user).State = EntityState.Modified;
-            db.SaveChanges();
-
-            TempData["SuccessMessage"] = "Tài khoản đã bị khóa.";
-            return RedirectToAction("DanhSachUser");
-        }
 
         [HttpPost]
         [ValidateAntiForgeryToken]

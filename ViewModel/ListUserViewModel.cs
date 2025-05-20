@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace Web_truyen.Areas.Admin.Models
+namespace Web_truyen.ViewModel
 {
     public class ListUserViewModel
     {
@@ -13,5 +13,6 @@ namespace Web_truyen.Areas.Admin.Models
         public string VaiTro { get; set; }
         public bool TrangThai {  get; set; }
         public string Avt { get; set; }
+        public int BiBaoCao { get; set; }
     }
 }

@@ -59,3 +59,37 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 });
+function confirmPause(truyenId) {
+    if (!confirm("Bạn có chắc muốn dừng đăng tải truyện này không?")) return;
+
+    const tokenInput = document.querySelector('input[name="__RequestVerificationToken"]');
+    const token = tokenInput ? tokenInput.value : "";
+
+    fetch(dungDangTaiUrl, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'RequestVerificationToken': token
+        },
+        body: JSON.stringify({ id: truyenId })
+    })
+        .then(response => {
+            if (response.ok) {
+                alert("Đã dừng đăng tải truyện.");
+                location.reload();
+            } else {
+                alert("Lỗi khi dừng đăng tải.");
+            }
+        })
+        .catch(error => {
+            console.error("Lỗi:", error);
+            alert("Có lỗi xảy ra.");
+        });
+}
+
+function confirmDelete(id) {
+    if (confirm('Bạn có chắc chắn muốn xóa truyện này không?')) {
+        const returnUrl = '@Url.Action("TruyenCuaToi", "User", new { userId = userId })';
+        window.location.href = `/Admin/Truyen/Delete?id=${id}&returnUrl=${encodeURIComponent(returnUrl)}`;
+    }
+}

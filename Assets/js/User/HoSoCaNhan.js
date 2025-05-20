@@ -1,20 +1,41 @@
 ﻿function showProfileSection(sectionId, button) {
-    document.querySelectorAll('.profile-section').forEach(function (section) {
+    document.querySelectorAll('.profile-section').forEach(section => {
         section.style.display = 'none';
     });
 
     document.getElementById(sectionId).style.display = 'block';
 
-    document.querySelectorAll('.toggle-btn').forEach(function (btn) {
+    document.querySelectorAll('.toggle-btn').forEach(btn => {
         btn.classList.remove('active');
     });
     button.classList.add('active');
+    localStorage.setItem('activeProfileTab', sectionId);
 }
+
+document.addEventListener("DOMContentLoaded", function () {
+    const savedTab = localStorage.getItem('activeProfileTab');
+
+    if (savedTab) {
+        const button = Array.from(document.querySelectorAll('.toggle-btn'))
+            .find(btn => btn.getAttribute('onclick').includes(savedTab));
+
+        if (button) {
+            showProfileSection(savedTab, button);
+            return;
+        }
+    }
+
+    const firstBtn = document.querySelector(".toggle-btn");
+    if (firstBtn) {
+        showProfileSection(firstBtn.getAttribute('onclick').match(/'([^']+)'/)[1], firstBtn);
+    }
+});
+
+
 document.querySelectorAll('.popup-trigger').forEach(el => {
     el.addEventListener('click', function () {
         const truyenId = this.getAttribute('data-id');
         document.getElementById('popup-truyenId').value = truyenId;
-        // Hiển thị popup, set các thông tin khác...
     });
 });
 
@@ -81,3 +102,23 @@ function updatePopupStatus(statusText) {
         statusEl.classList.add('status-writing');
     }
 }
+document.addEventListener("DOMContentLoaded", function () {
+    document.querySelectorAll(".form-follow").forEach(form => {
+        form.addEventListener("submit", function () {
+            // Delay reload để server xử lý xong (nếu redirect không xảy ra)
+            setTimeout(function () {
+                location.reload();
+            }, 500);
+        });
+    });
+
+    // Nếu dùng form theo dõi ở phần đầu trang
+    const theoDoiForms = document.querySelectorAll('form[action*="TheoDoiNguoiDung"], form[action*="HuyTheoDoiNguoiDung"]');
+    theoDoiForms.forEach(form => {
+        form.addEventListener("submit", function () {
+            setTimeout(function () {
+                location.reload();
+            }, 500);
+        });
+    });
+});

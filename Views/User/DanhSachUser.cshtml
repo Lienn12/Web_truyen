@@ -9,19 +9,19 @@
 }
 <link href="~/Assets/Admin/css/truyen/DsTruyen.css" rel="stylesheet" />
 @section top {
-    @Html.Partial("_MenuHead")
+    @Html.Partial("~/Areas/Admin/Views/Shared/_MenuHead.cshtml")
 }
 
 <div class="container_story">
     <form method="get" action="@Url.Action("DanhSachUser", "User")" class="search-bar">
         <input type="text" name="searchTerm" placeholder="Nhập tên người dùng..." value="@ViewBag.SearchTerm" />
+        <input type="hidden" name="filter" value="@ViewBag.CurrentFilter" />
 
-        <!-- Có thể ẩn nếu không lọc trạng thái người dùng -->
         <select name="roleFilter">
             <option value="">-- Tất cả vai trò --</option>
             <option value="author" @(ViewBag.RoleFilter == "author" ? "selected" : "")>Tác giả</option>
-            <option value="reader" @(ViewBag.RoleFilter == "user" ? "selected" : "")>Độc giả</option>
-            <option value="block" @(ViewBag.RoleFilter == "NULL" ? "selected" : "")>Tài khoản bị khóa</option>
+            <option value="user" @(ViewBag.RoleFilter == "user" ? "selected" : "")>Độc giả</option>
+            <option value="block" @(ViewBag.RoleFilter == "block" ? "selected" : "")>Tài khoản bị khóa</option>
         </select>
 
         <button type="submit"><i class="fa fa-search"></i> Tìm kiếm</button>
@@ -39,7 +39,7 @@
     <div class="container_table">
         <table class="table">
             <tr>
-                <th>User ID</th>
+                <th>Avt</th>
                 <th>Tên đăng nhập</th>
                 <th>Số tác phẩm</th>
                 <th></th>
@@ -48,33 +48,32 @@
             @foreach (var item in Model)
             {
                 <tr>
-                    <td>@item.UserId</td>
+                    <td><img src="~/Assets/img/@item.Avt" alt="Ảnh bìa" width="100" /></td>
                     <td>@item.UserName</td>
                     <td>@item.SoTacPham</td>
                     <td class="action-buttons">
                         @if (item.TrangThai == false)
                         {
-                            using (Html.BeginForm("MoKhoaTaiKhoan", "User", FormMethod.Post, new { @style = "display:inline;" }))
+                            using (Html.BeginForm("MoKhoaTaiKhoan", "User", FormMethod.Post, new { @style = "display:inline;", @class = "form-unlock" }))
                             {
                                 @Html.AntiForgeryToken()
                                 @Html.Hidden("userId", item.UserId)
-                                <button type="submit" class="btn-view" style="display: inline-flex; align-items: center; justify-content: center; margin: 0 6px; width: 40px; height: 40px; border-radius: 50%; box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1); font-size: 16px; transition: all 0.3s ease; text-decoration: none; color: white; background: #28a745 " title="Mở khóa tài khoản">
+                                <button type="submit" class="btn-link" title="Mở khóa tài khoản" style="background-color: #e74c3c;">
                                     <i class="fa fa-unlock"></i>
                                 </button>
                             }
                         }
                         else
                         {
-                            using (Html.BeginForm("KhoaTaiKhoan", "User", FormMethod.Post, new { @style = "display:inline;" }))
+                            using (Html.BeginForm("KhoaTaiKhoan", "User", FormMethod.Post, new { @style = "display:inline;", @class = "form-lock" }))
                             {
                                 @Html.AntiForgeryToken()
                                 @Html.Hidden("userId", item.UserId)
-                                <button type="submit" class="btn-delete" style="display: inline-flex; align-items: center; justify-content: center; margin: 0 6px; width: 40px; height: 40px; border-radius: 50%; box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1); font-size: 16px; transition: all 0.3s ease; text-decoration: none; color: white; background: #e67e22 " title="Khóa tài khoản">
+                                <button type="submit" class="btn-link" title="Khóa tài khoản" style="background-color: #5dade2">
                                     <i class="fa fa-lock"></i>
                                 </button>
                             }
                         }
-
 
                         <!-- Nút xem hồ sơ -->
                         <a href="/Admin/User/HoSoCaNhan?useId=@item.UserId" class="btn-view" title="Xem hồ sơ">

@@ -8,13 +8,19 @@
     bool daTheoDoi = ViewBag.DaTheoDoi != null && (bool)ViewBag.DaTheoDoi;
     ViewBag.TitlePage = "Hồ sơ cá nhân";
     Layout = "~/Views/Share/_LayoutPage.cshtml";
+    var dsFollow = ViewBag.dsFollow as List<Web_truyen.Models.Users>;
+
 }
 
 
 <link href="~/Assets/css/User/HoSoCaNhan.css" rel="stylesheet" />
-@section top {
-    @Html.Partial("~/Views/Share/_MenuHeadU.cshtml")
+@if (ViewBag.IsOwner)
+{
+    @section top {
+        @Html.Partial("~/Views/Share/_MenuHeadU.cshtml")
+    }
 }
+
 <div class="profile-container">
     <!-- Phần tiêu đề -->
     <div class="profile-header">
@@ -79,8 +85,33 @@
             }
         </div>
         <div class="profile-content">
+            
             <div id="follow-content" class="profile-section">
+                @if (dsFollow != null && dsFollow.Any())
+                {
+                    foreach (var user in dsFollow)
+                    {
+                           <div class="user-card">
+                            <img src="~/Assets/img/@user.avt" alt="Ảnh đại diện" class="user-avatar" />
+                            <div class="user-name">@user.Username</div>
 
+                            @using (Html.BeginForm("HuyTheoDoiNguoiDung", "TheoDoiNguoiDung", FormMethod.Post, new { @class = "form-follow" }))
+                            {
+                                @Html.Hidden("idNguoiDuocHuy", user.userId)
+                                <button type="submit" class="follow-btn">Huỷ theo dõi</button>
+                            }
+
+                            <div class="info">@((user.Truyen?.Count() ?? 0)) Tác phẩm</div>
+                            <div class="info">@((user.TheoDoi_NguoiDung1?.Count() ?? 0)) Người theo dõi</div>
+                        </div>
+                    }
+
+
+                }
+                else
+                {
+                    <p>Bạn chưa theo dõi ai.</p>
+                }
             </div>
             <div id="intro-content" class="profile-section" style="display: none;">
                 @if (Model.MoTa != null)
@@ -167,7 +198,7 @@
                 Đọc truyện
             </a>
 
-            @using (Html.BeginForm("AddThuvien", "TheoDoiTruyen",new {area="" }, FormMethod.Post))
+            @using (Html.BeginForm("AddThuvien", "TheoDoiTruyen", new { area = "" }, FormMethod.Post))
             {
                 <input type="hidden" name="truyenId" id="popup-truyenId" value="" />
                 <button type="submit" id="popup-follow-btn"> <i class="fa fa-plus"></i></button>

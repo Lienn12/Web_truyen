@@ -15,19 +15,15 @@ namespace Web_truyen.App_Start
             if (user == null)
             {
                 filterContext.Result = new RedirectToRouteResult(
-                    new RouteValueDictionary( new 
+                    new RouteValueDictionary(new
                     {
                         controller = "Account",
                         action = "Login",
-                        area="",
+                        requireLogin = true
                     }));
                 return;
             }
-            if (string.IsNullOrEmpty(Roles) == false)
-            {
-                //var check = 
-            }
-            return;
         }
+
     }
 }

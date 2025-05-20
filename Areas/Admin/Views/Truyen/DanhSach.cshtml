@@ -93,8 +93,8 @@
                     </td>              
                     <td class="action-buttons">
                         @Html.Raw($"<a href='/Admin/Truyen/Edit/{item.TruyenId}' class='btn-view'><i class='fa fa-eye'></i></a>")
-                        <a href="@Url.Action("Delete", "Truyen", new { id = item.TruyenId })" class="btn-delete" onclick="return confirm('Bạn có chắc chắn muốn xóa không?');">
-                            <i class="fas fa-trash-alt"></i>
+                        <a href="@Url.Action("Delete", "Truyen", new { area = "Admin", id = item.TruyenId, returnUrl = Url.Action("DanhSach") })">
+                        <i class="fas fa-trash-alt"></i>
                         </a>
                     </td>
 

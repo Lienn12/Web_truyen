@@ -11,7 +11,8 @@ using System.Data.Entity;
 using PagedList;
 using System.Data.SqlClient;
 using System.Diagnostics;
-
+using System.Net;
+using Newtonsoft.Json;
 namespace Web_truyen.Areas.Admin.Controllers
 {
 
@@ -301,18 +302,102 @@ namespace Web_truyen.Areas.Admin.Controllers
 
             return View("MucLucEdit", chuongs);
         }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult DungDangTai(int id)
+        {
+            var truyen = db.Truyen.Include(t => t.Chuong).FirstOrDefault(t => t.truyenId == id);
+            if (truyen != null)
+            {
+                truyen.DaDang = false;
+                foreach (var chuong in truyen.Chuong)
+                {
+                    chuong.DaDang = false;
+                }
+                db.SaveChanges();
 
+                TempData["ThongBao"] = "Đã dừng đăng tải truyện.";
+                return RedirectToAction("TruyenCuaToi", "User", new { area = "", userId = truyen.userId });
+            }
+
+            return HttpNotFound("Không tìm thấy truyện");
+        }
+        public ActionResult ThongKe(int id)
+        {
+            try
+            {
+                var truyen = db.Truyen.FirstOrDefault(t => t.truyenId == id);
+                if (truyen == null)
+                    return HttpNotFound();
+
+                var tongLuotDoc = truyen.LuotDoc;
+                var tongChuong = db.Chuong.Count(c => c.truyenId == id);
+                var tongBinhChon = db.TheoDoi_Truyen.Count(td => td.truyenId == id);
+
+                var docGiaMoiNgay = db.Chuong
+                    .Where(c => c.truyenId == id)
+                    .GroupBy(c => DbFunctions.TruncateTime(c.NgayTao))
+                    .Select(g => new
+                    {
+                        Ngay = g.Key,
+                        TongLuotDoc = g.Sum(c => c.LuotDoc)
+                    })
+                    .ToList();
+
+                var binhLuanMoiNgay = db.BinhLuan
+                    .Where(b => b.truyenId == id)
+                    .GroupBy(b => DbFunctions.TruncateTime(b.NgayTao))
+                    .Select(g => new
+                    {
+                        Ngay = g.Key,
+                        SoLuong = g.Count()
+                    })
+                    .ToList();
+
+                var viewModel = new ThongKeTruyenViewModel
+                {
+                    TieuDe = truyen.TieuDe,
+                    TongLuotDoc = tongLuotDoc,
+                    TongChuong = tongChuong,
+                    TongBinhChon = tongBinhChon,
+                    AnhBia = truyen.AnhBia,
+                    DocGiaMoiNgay = docGiaMoiNgay.Select(d => new ThongKeNgay
+                    {
+                        Ngay = d.Ngay ?? DateTime.MinValue,
+                        GiaTri = d.TongLuotDoc
+                    }).ToList(),
+                    BinhLuanMoiNgay = binhLuanMoiNgay.Select(b => new ThongKeNgay
+                    {
+                        Ngay = b.Ngay ?? DateTime.MinValue,
+                        GiaTri = b.SoLuong
+                    }).ToList()
+                };
+
+                ViewBag.DocGiaLabelsJson = JsonConvert.SerializeObject(viewModel.DocGiaMoiNgay.Select(x => x.Ngay.ToString("dd/MM")));
+                ViewBag.DocGiaDataJson = JsonConvert.SerializeObject(viewModel.DocGiaMoiNgay.Select(x => x.GiaTri));
+
+                ViewBag.BinhLuanLabelsJson = JsonConvert.SerializeObject(viewModel.BinhLuanMoiNgay.Select(x => x.Ngay.ToString("dd/MM")));
+                ViewBag.BinhLuanDataJson = JsonConvert.SerializeObject(viewModel.BinhLuanMoiNgay.Select(x => x.GiaTri));
+
+                return View(viewModel);
+            }
+            catch (Exception ex)
+            {
+                System.IO.File.WriteAllText(Server.MapPath("~/Logs/error.log"), $"ThongKe error: {ex}");
+                return new HttpStatusCodeResult(HttpStatusCode.InternalServerError, "Lỗi server.");
+            }
+        }
 
         // GET: Admin/Truyen/Delete/5
         [RoleUser]
-        public ActionResult Delete(int id)
+        public ActionResult Delete(int id, string returnUrl = null)
         {
             var truyen = db.Truyen
-                .Include(t => t.Chuong)               
-                .Include(t => t.BinhLuan)             
-                .Include(t => t.TheoDoi_Truyen)      
-                .Include(t => t.ThuVien)             
-                .FirstOrDefault(t => t.truyenId == id);  
+                .Include(t => t.Chuong)
+                .Include(t => t.BinhLuan)
+                .Include(t => t.TheoDoi_Truyen)
+                .Include(t => t.ThuVien)
+                .FirstOrDefault(t => t.truyenId == id);
 
             if (truyen == null)
             {
@@ -328,18 +413,22 @@ namespace Web_truyen.Areas.Admin.Controllers
                 db.ThuVien.RemoveRange(db.ThuVien.Where(tv => tv.TruyenID == id));
                 db.BaoCao.RemoveRange(db.BaoCao.Where(bc => bc.LoaiBaoCao == "truyen" && bc.DoiTuongId == id));
 
-                // Cuối cùng xóa truyện
                 db.Truyen.Remove(truyen);
                 db.SaveChanges();
-
-                TempData["SuccessMessage"] = "Truyện đã được xóa thành công!";
             }
             catch (Exception ex)
             {
                 TempData["ErrorMessage"] = "Lỗi khi xóa truyện: " + ex.Message;
             }
 
-            return RedirectToAction("DanhSach");
+            if (!string.IsNullOrEmpty(returnUrl) && Url.IsLocalUrl(returnUrl))
+            {
+                return Redirect(returnUrl);
+            }
+            else
+            {
+                return RedirectToAction("DanhSach");
+            }
         }
 
     }

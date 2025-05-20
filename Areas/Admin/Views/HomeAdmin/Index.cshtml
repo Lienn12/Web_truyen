@@ -29,8 +29,16 @@
                 <i class="fas fa-plus"></i>
                 Đăng Truyện
             </button>
-
             <ul class="list_menu">
+                <li>
+                    <a href="@Url.Action("TruyenCuaToi", "User", new { area = "", userId = Web_truyen.App_Start.SessionConfig.GetUser()?.userId })">
+                        <div class="icon-box">
+                            <i class="fas fa-pencil-alt"></i>
+                        </div>
+                    </a>
+                    <h4 class="title-link">Truyện của JellyCo</h4>
+
+                </li>
                 <li>
                     <a href="@Url.Action("DanhSach", "Truyen", new { area = "Admin" })">
                         <div class="icon-box">

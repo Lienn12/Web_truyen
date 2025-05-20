@@ -7,9 +7,10 @@
 <div class="sidebar-menu" id="sidebarMenu">
     <ul>
         <li><a href="@Url.Action("Index", "HomeAdmin", new { area = "Admin" })" class="sidebar-link"><i class="fas fa-home"></i>Trang chủ</a></li>
-        <li><a href="@Url.Action("DanhSach", "TheLoai", new { area = "Admin" })" class="sidebar-link"><i class="fas fa-list-alt"></i>Quản lý thể loại</a></li>
+        <li><a href="@Url.Action("TruyenCuaToi", "User", new { userId = Web_truyen.App_Start.SessionConfig.GetUser()?.userId })" class="sidebar-link"><i class="fas fa-pencil-alt"></i>Truyện của tôi</a></li>
         <li><a href="@Url.Action("DanhSach", "Truyen", new { area = "Admin" })" class="sidebar-link"><i class="fas fa-book"></i>Quản lý truyện</a></li>
-        <li><a href="@Url.Action("DanhSachUser", "User", new { area = "Admin" })" class="sidebar-link"><i class="fas fa-book"></i>Quản lý người dùng </a></li>
+        <li><a href="@Url.Action("DanhSachUser", "User", new { area = "Admin" })" class="sidebar-link"><i class="fas fa-user"></i>Quản lý người dùng </a></li>
+        <li><a href="@Url.Action("DanhSach", "TheLoai", new { area = "Admin" })" class="sidebar-link"><i class="fas fa-list-alt"></i>Quản lý thể loại</a></li>
     </ul>
 </div>
 <script src="~/Assets/Admin/js/_MenuHead.js"></script>
