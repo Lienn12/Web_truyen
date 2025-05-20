@@ -1,6 +1,7 @@
 ﻿@model Tuple<List<Web_truyen.Models.Chuong>, int>
 @{
     var permission = (Web_truyen.Areas.Admin.Models.UserPermissionViewModel)ViewBag.Permission;
+    var areaName = ViewBag.AreaName ?? "Admin";
 }
 <link href="~/Assets/Admin/css/MucLuc.css" rel="stylesheet" />
 
@@ -14,61 +15,60 @@
             var isActive = chuong.ChuongId == Model.Item2;
 
             <li class="@(isActive ? "active-chapter" : "")">
-                <a href="@Url.Action(actionName, controllerName, new { area = "Admin", id = chuong.ChuongId })"
+                <a href="@Url.Action(actionName, controllerName, new { area = areaName, id = chuong.ChuongId })"
                    class="chapter-title">
                     @chuong.TieuDe
                 </a>
-                @if (ViewBag.laTacGia == true)
-                {
-                    <span class="status">
-                        @if (ViewBag.IsDocChuong == true)
+                <span class="status">
+                    @if (permission.IsAuthorOfTruyen || permission.IsAdminNotAuthor)
+                    {
+                        var trangThai = chuong.TrangThaiDuyet;
+                        var daDang = chuong.DaDang;
+                        @* Tác giả: thấy hết *@
+                        if (permission.IsAuthorOfTruyen)
                         {
-                            if (chuong.TrangThaiDuyet == "chờ duyệt")
+                            if (trangThai == "chờ duyệt")
                             {
                                 <span style="color: green; font-weight: 700">Chờ duyệt</span>
                             }
-                            else if (chuong.TrangThaiDuyet == "Từ chối")
+                            else if (trangThai == "Từ chối")
                             {
                                 <span style="color:red; font-weight:700">Từ chối</span>
                             }
+                            else if (daDang)
+                            {
+                                <span style="color: var(--button); font-weight: 700">Đã đăng</span>
+                            }
                             else
                             {
-                                if (!chuong.DaDang)
-                                {
-                                    <span>Bản thảo</span>
-                                }
+                                <span>Bản thảo</span>
                             }
                         }
-                        else
+                        @* Admin không phải tác giả: chỉ hiện nếu có trạng thái duyệt *@
+                        else if (!string.IsNullOrEmpty(trangThai))
                         {
-                            if (chuong.TrangThaiDuyet == "chờ duyệt")
+                            if (trangThai == "chờ duyệt")
                             {
                                 <span style="color: green; font-weight: 700">Chờ duyệt</span>
                             }
-                            else if (chuong.TrangThaiDuyet == "Từ chối")
+                            else if (trangThai == "Từ chối")
                             {
-                                <span style="color: red; font-weight: 700">Từ chối</span>
+                                <span style="color:red; font-weight:700">Từ chối</span>
                             }
-                            else
+                            else if (daDang)
                             {
-                                if (chuong.DaDang)
-                                {
-                                    <span style="color: var(--button); font-weight: 700">Đã đăng</span>
-                                }
-                                else
-                                {
-                                    <span>Bản thảo</span>
-                                }
-                            }
-
-                            if (chuong.NgayTao != null)
-                            {
-                                @: - @chuong.NgayTao.ToString("dd/MM/yyyy")
+                                <span style="color: var(--button); font-weight: 700">Đã đăng</span>
                             }
                         }
-                    </span>
-                }
-                </li>
+                        if (chuong.NgayTao != null)
+                        {
+                            @: - @chuong.NgayTao.ToString("dd/MM/yyyy")
+                        }
+
+
+                    }
+                </span> 
+            </li>
         }
     </ul>
 

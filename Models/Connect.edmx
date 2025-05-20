@@ -129,6 +129,7 @@
           <Property Name="VaiTro" Type="nvarchar" MaxLength="20" Nullable="false" />
           <Property Name="avt" Type="nvarchar" MaxLength="255" Nullable="false" />
           <Property Name="TrangThai" Type="bit" Nullable="false" />
+          <Property Name="MoTa" Type="nvarchar(max)" />
         </EntityType>
         <Association Name="FK__BaoCao__NguoiBao__66B53B20">
           <End Role="Users" Type="Self.Users" Multiplicity="1" />
@@ -572,6 +573,7 @@
           <NavigationProperty Name="ThongBao" Relationship="Self.FK__ThongBao__userId__5B438874" FromRole="Users" ToRole="ThongBao" />
           <NavigationProperty Name="ThuVien" Relationship="Self.FK__ThuVien__UserID__60083D91" FromRole="Users" ToRole="ThuVien" />
           <NavigationProperty Name="Truyen" Relationship="Self.FK__Truyen__userId__3CBF0154" FromRole="Users" ToRole="Truyen" />
+          <Property Name="MoTa" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
         </EntityType>
         <Association Name="FK__BaoCao__NguoiBao__66B53B20">
           <End Role="Users" Type="Self.Users" Multiplicity="1" />
@@ -994,6 +996,7 @@
           <EntitySetMapping Name="Users">
             <EntityTypeMapping TypeName="Web_TruyenModel.Users">
               <MappingFragment StoreEntitySet="Users">
+                <ScalarProperty Name="MoTa" ColumnName="MoTa" />
                 <ScalarProperty Name="userId" ColumnName="userId" />
                 <ScalarProperty Name="Username" ColumnName="Username" />
                 <ScalarProperty Name="Email" ColumnName="Email" />

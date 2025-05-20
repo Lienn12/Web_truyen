@@ -46,11 +46,10 @@ namespace Web_truyen.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
-                // Kiểm tra nếu nội dung trả lời không trống
                 if (string.IsNullOrWhiteSpace(noiDung))
                 {
                     TempData["Error"] = "Nội dung trả lời không được để trống.";
-                    return RedirectToAction("DocChuong", "Chuong", new { truyenId = 0, chuongId = 0 });
+                    return RedirectToAction("DocChuong", "Chuong", new { id = (int?)null }); 
                 }
 
                 var binhLuanCha = db.BinhLuan.Find(commentId);
@@ -58,7 +57,6 @@ namespace Web_truyen.Areas.Admin.Controllers
 
                 if (binhLuanCha != null)
                 {
-                    // Tạo bình luận trả lời mới
                     var traLoi = new BinhLuan
                     {
                         userId = user.userId,
@@ -66,21 +64,26 @@ namespace Web_truyen.Areas.Admin.Controllers
                         ChuongId = binhLuanCha.ChuongId,
                         NoiDung = noiDung,
                         NgayTao = DateTime.Now,
-                        BinhLuanChaId = binhLuanCha.BinhLuanId // Gắn bình luận cha
+                        BinhLuanChaId = binhLuanCha.BinhLuanId 
                     };
 
                     db.BinhLuan.Add(traLoi);
                     db.SaveChanges();
-                    return RedirectToAction("DocChuong", "Chuong", new { truyenId = binhLuanCha.truyenId, chuongId = binhLuanCha.ChuongId });
+
+                    return RedirectToAction("DocChuong", "Chuong", new { id = binhLuanCha.ChuongId });
                 }
                 else
                 {
                     TempData["Error"] = "Bình luận cha không tồn tại.";
+                    return RedirectToAction("DocChuong", "Chuong", new { id = (int?)null }); 
                 }
             }
-            return RedirectToAction("DocChuong", "Chuong", new { truyenId = 0, chuongId = 0 });
+            else
+            {
+                TempData["Error"] = "Có lỗi xảy ra, vui lòng thử lại.";
+                return RedirectToAction("DocChuong", "Chuong", new { id = (int?)null }); 
+            }
         }
-
 
         [HttpPost]
         public ActionResult Xoa(int id)

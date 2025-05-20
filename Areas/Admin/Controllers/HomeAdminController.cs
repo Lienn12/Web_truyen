@@ -7,18 +7,13 @@ using Web_truyen.App_Start;
 
 namespace Web_truyen.Areas.Admin.Controllers
 {
+    [RoleUser]
     public class HomeAdminController : Controller
     {
         // GET: Admin/Home
         public ActionResult Index()
         {
             ViewBag.Tile = "Home Admin";
-            //var user=SessionConfig.GetUser();
-            ////Kiểm tra trạng thái đăng nhâp (role) của người dùng với chức năng authen 
-            //if (user == null )
-            //{
-            //    return RedirectToAction("Login", "Account",new {area=""});
-            //}
             return View();
         }
     }

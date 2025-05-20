@@ -1,0 +1,93 @@
+﻿
+.stat-container {
+    max-width: 900px;
+    margin: 20px auto 40px auto;
+    padding: 0 15px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #2c3e50;
+}
+
+.stat-container h2 {
+    text-align: center;
+    font-size: 2rem;
+    margin-bottom: 30px;
+    font-weight: 700;
+}
+
+.stat-info {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    gap: 30px;
+    flex-wrap: wrap;
+    margin-bottom: 30px;
+}
+
+    .stat-info img {
+        width: 200px;
+        height: auto;
+        border-radius: 10px;
+        box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+        object-fit: cover;
+    }
+
+.stat-text {
+    font-size: 1.125rem;
+    line-height: 1.8;
+    min-width: 200px;
+}
+
+    .stat-text p {
+        margin: 10px 0;
+        font-weight: 500;
+    }
+
+hr {
+    border: none;
+    border-top: 1px solid #ddd;
+    margin: 40px 0;
+}
+
+.chart-section {
+    max-width: 900px;
+    margin: 0 auto 40px auto;
+    padding: 0 15px;
+}
+
+    .chart-section h3 {
+        text-align: center;
+        color: #34495e;
+        font-weight: 600;
+        margin-bottom: 20px;
+        font-size: 1.5rem;
+    }
+
+canvas {
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+    display: block;
+    margin: 0 auto;
+    max-width: 100%;
+    height: 400px !important;
+    width: 900px;
+}
+#binhLuanChart{
+    margin-top:40px;
+}
+@media (max-width: 600px) {
+    .stat-info {
+        flex-direction: column;
+    }
+
+        .stat-info img,
+        .stat-text {
+            width: 100%;
+            max-width: 300px;
+            text-align: center;
+            margin: 0 auto;
+        }
+}
+
+
+

@@ -6,14 +6,19 @@
         sidebarMenu.classList.toggle("active");
     });
 
-    // Đánh dấu mục hiện tại
     var currentPath = window.location.pathname.toLowerCase();
     var links = document.querySelectorAll(".sidebar-link");
 
     links.forEach(function (link) {
         var href = link.getAttribute("href");
-        if (href && currentPath.includes(href.toLowerCase())) {
-            link.classList.add("active-page");
+        if (href) {
+            var hrefPath = href.split('?')[0].toLowerCase();
+            if (
+                (hrefPath !== "/" && currentPath.startsWith(hrefPath)) ||
+                (hrefPath === "/" && currentPath === "/")
+            ) {
+                link.classList.add("active-page");
+            }
         }
     });
 });

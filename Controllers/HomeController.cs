@@ -23,6 +23,7 @@ namespace Web_truyen.Controllers
             ViewBag.Title = "Home";
             var authors = db.Users.Where(nd => nd.VaiTro == "author").Take(5).ToList();
             ViewBag.Authors = authors;
+
             return View();
         }
     }

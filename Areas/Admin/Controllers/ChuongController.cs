@@ -57,11 +57,11 @@ namespace Web_truyen.Areas.Admin.Controllers
                 return RedirectToAction("Index", "Truyen");
             }
             var danhSachChuong = db.Chuong
-                .Where(c => c.truyenId == truyenId)
-                .OrderBy(c => c.ChuongId)
-                .ToList();
-            
-            int soThuTuChuong = danhSachChuong.Count > 0 ? danhSachChuong.Count + 1 : 1;
+                   .Where(c => c.truyenId == truyenId)
+                   .OrderBy(c => c.ThuTu) // Đảm bảo theo thứ tự
+                   .ToList();
+
+            int soThuTuChuong = danhSachChuong.Count > 0 ? danhSachChuong.Last().ThuTu + 1 : 1;
 
             var chuongMoi = new Chuong
             {
@@ -70,6 +70,7 @@ namespace Web_truyen.Areas.Admin.Controllers
                 DaDang = false,
                 NoiDung = "",
                 NgayTao = DateTime.Now,
+                ThuTu = soThuTuChuong,
 
             };
             ViewBag.TruyenId = truyenId;
@@ -115,8 +116,16 @@ namespace Web_truyen.Areas.Admin.Controllers
                 var danhSachTheLoai = db.TheLoai.ToList();
 
                 ViewBag.TheLoai = new SelectList(danhSachTheLoai, "TheLoaiId", "TenTheLoai", truyen.TheLoaiId);
-
-                var currentUser = SessionConfig.GetUser();
+            
+            var currentUser = SessionConfig.GetUser();
+            var permission = new UserPermissionViewModel();
+           
+            if (currentUser != null)
+            {
+                permission.VaiTro = currentUser.VaiTro;
+                permission.IsAuthorOfTruyen = truyen != null && truyen.userId == currentUser.userId;
+            }
+            ViewBag.Permission = permission;
                 if (currentUser != null)
                 {
                     ViewBag.CurrentUserId = currentUser.userId;
@@ -249,10 +258,19 @@ namespace Web_truyen.Areas.Admin.Controllers
                     .ToList();
             }
             var danhSachBinhLuan = db.BinhLuan
-                .Include(b => b.Users)
-                .Where(b => b.ChuongId == chuong.ChuongId && b.BinhLuanChaId == null)
-                .OrderByDescending(b => b.NgayTao)
-                .ToList();
+                 .Where(b => b.BinhLuanChaId == null && b.ChuongId == id)  // Lọc theo chương và bình luận gốc (không phải trả lời)
+                 .Include(b => b.Users)
+                 .ToList()
+                 .Select(b =>
+                 {
+                     // Lấy các bình luận trả lời cho bình luận gốc (nếu có)
+                     b.TraLoi = db.BinhLuan
+                         .Where(t => t.BinhLuanChaId == b.BinhLuanId && t.ChuongId == id)  // Lọc theo chương và bình luận trả lời
+                         .Include(t => t.Users)
+                         .ToList();
+                     return b;
+                 })
+                 .ToList();
 
             var viewModel = new ChuongViewModel
             {
@@ -272,6 +290,10 @@ namespace Web_truyen.Areas.Admin.Controllers
             ViewBag.ChuongDangChon = chuong.ChuongId;
             ViewBag.TacGiaId = chuong.Truyen?.Users?.userId;
             ViewBag.Avatar = chuong.Truyen?.Users?.avt;
+            ViewBag.LuotDoc = chuong.LuotDoc;
+            int tongSoBinhLuan = db.BinhLuan.Count(b => b.ChuongId == id);
+            ViewBag.SoBinhLuan = tongSoBinhLuan;
+
             return View(viewModel);
         }
         [HttpPost]
@@ -333,6 +355,84 @@ namespace Web_truyen.Areas.Admin.Controllers
             db.Chuong.Remove(chuong);
             db.SaveChanges();
             return RedirectToAction("Index");
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult CapNhatLuotDoc(int chuongId, int truyenId)
+        {
+            try
+            {
+                if (chuongId <= 0 || truyenId <= 0)
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest, "ID không hợp lệ.");
+                }
+
+                var chuong = db.Chuong.Find(chuongId);
+                if (chuong == null || chuong.DaDang != true)
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.NotFound, "Không tìm thấy chương hoặc chương chưa đăng.");
+                }
+
+                chuong.LuotDoc += 1;
+
+                var truyen = db.Truyen.Find(truyenId);
+                if (truyen == null)
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.NotFound, "Không tìm thấy truyện.");
+                }
+
+                bool daDoc = false;
+
+                var user = SessionConfig.GetUser();
+                if (user != null && user.userId > 0)
+                {
+                    var thuVien = db.ThuVien.FirstOrDefault(tv => tv.UserID == user.userId && tv.TruyenID == truyenId);
+
+                    if (thuVien == null)
+                    {
+                        db.ThuVien.Add(new ThuVien
+                        {
+                            UserID = user.userId,
+                            TruyenID = truyenId,
+                            ChuongDocGanNhat = chuongId,
+                            ThoiGianDocGanNhat = DateTime.Now,
+                            CoLuu = false,
+                            DocXong = false
+                        });
+                    }
+                    else
+                    {
+                        thuVien.ChuongDocGanNhat = chuongId;
+                        thuVien.ThoiGianDocGanNhat = DateTime.Now;
+                        daDoc = true;
+                    }
+                }
+                else
+                {
+                    // Với người không đăng nhập, dùng Session để kiểm tra
+                    string key = $"Truyen_DaDoc_{truyenId}";
+                    if (Session[key] != null)
+                    {
+                        daDoc = true;
+                    }
+                    else
+                    {
+                        Session[key] = true;
+                    }
+                }
+                if (!daDoc)
+                {
+                    truyen.LuotDoc += 1;
+                }
+
+                db.SaveChanges();
+                return new EmptyResult();
+            }
+            catch (Exception ex)
+            {
+                System.IO.File.WriteAllText("error.log", $"Error in CapNhatLuotDoc: {ex.ToString()}");
+                return new HttpStatusCodeResult(HttpStatusCode.InternalServerError, "Lỗi server.");
+            }
         }
 
         protected override void Dispose(bool disposing)

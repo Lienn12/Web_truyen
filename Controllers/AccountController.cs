@@ -38,7 +38,7 @@ namespace Web_truyen.Controllers
 
                 if (check != null)
                 {
-                    if (string.IsNullOrEmpty(check.VaiTro))
+                    if (check.TrangThai==false)
                     {
                         ModelState.AddModelError("", "Tài khoản đã bị khóa");
                         return View(model);
@@ -109,9 +109,10 @@ namespace Web_truyen.Controllers
                     Email = model.Email,
                     Password = HashPassword(model.Password),
                     VaiTro = "user",
-                    GioiTinh = "Khác", 
-                    NgaySinh = DateTime.Now, 
-                    avt = "usermacdinh.jpg", 
+                    GioiTinh = "Khác",
+                    MoTa = "Không có mô tả",
+                    NgaySinh = DateTime.Now,
+                    avt = "usermacdinh.jpg",
                     TrangThai = true
                 };
 

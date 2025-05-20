@@ -1,90 +1,175 @@
-﻿@model PagedList.IPagedList<Web_truyen.Areas.Admin.Models.ListTruyenViewModel>
-
+﻿@model PagedList.IPagedList<Web_truyen.ViewModel.TruyenCuaToiViewModel>
 @using PagedList
 @using PagedList.Mvc
 @{
-    ViewBag.Title = "Truyện Của Tôi";
-    ViewBag.TitlePage = "Quản lý truyện của tôi";
+    ViewBag.Title = "Truyện của tôi";
+
+    ViewBag.TitlePage = "Truyện của tôi";
     Layout = "~/Views/Share/_LayoutPage.cshtml";
+    var currentUser = Web_truyen.App_Start.SessionConfig.GetUser();
+    var userId = currentUser != null ? currentUser.userId : 0;
+    if (currentUser.VaiTro == "admin")
+    {
+        ViewBag.TitlePage = "Truyện của JellyCo";
+
+    }
+    else
+    {
+        ViewBag.TitlePage = "Truyện của tôi";
+    }
 }
-<link href="~/Assets/Admin/css/truyen/DsTruyen.css" rel="stylesheet" />
+@if (TempData["ThongBao"] != null)
+{
+    <div class="alert alert-success">
+        @TempData["ThongBao"]
+    </div>
+}
 
+<link href="~/Assets/css/User/TruyenCuaToi.css" rel="stylesheet" />
+@if (currentUser.VaiTro == "admin")
+{
+    @section top {
+        @Html.Partial("~/Areas/Admin/Views/Shared/_MenuHead.cshtml")
+    }
+}
+else
+{
+    @section top {
+        @Html.Partial("~/Views/Share/_MenuHeadU.cshtml")
+    }
+}
 
-<p>
-    <a href="@Url.Action("ThemMoi", "Truyen", new { area = "Admin" })" class="btn btn-primary">
+<div class="container_title">
+    @if (currentUser.VaiTro == "admin")
+    {
+        <h2>Truyện của JellyCo</h2>
+    }
+    else
+    {
+        <h2>Truyện của tôi</h2>
+    }
+    =    <a href="@Url.Action("ThemMoi", "Truyen", new { area = "Admin" })" class="new-story">
         <i class="fa fa-plus"></i> Thêm mới
     </a>
-</p>
-
-<div class="container_story">
-    <form method="get" action="@Url.Action("TruyenCuaToi", "Truyen", new { area = "Admin" })" class="search-bar">
-        <input type="text" name="searchTerm" placeholder="Nhập tiêu đề hoặc tác giả..." value="@ViewBag.SearchTerm" />
-        <select name="statusFilter">
-            <option value="">-- Chọn trạng thái --</option>
-            <option value="true" @(ViewBag.StatusFilter != null && ViewBag.StatusFilter == true ? "selected" : "")>Hoàn thành</option>
-            <option value="false" @(ViewBag.StatusFilter != null && ViewBag.StatusFilter == false ? "selected" : "")>Đang viết</option>
-        </select>
-        <button type="submit"><i class="fa fa-search"></i> Tìm kiếm</button>
-    </form>
-
-    <div class="container_table">
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>Truyện ID</th>
-                    <th>Ảnh Bìa</th>
-                    <th>Tiêu Đề</th>
-                    <th>Tác giả</th>
-                    <th>Ngày Tạo</th>
-                    <th>Trạng Thái</th>
-                    <th>Hoạt động</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var item in Model)
-                {
-                    <tr>
-                        <td>@Html.DisplayFor(modelItem => item.TruyenId)</td>
-                        <td>
-                            @if (!string.IsNullOrEmpty(item.AnhBia))
-                            {<img src="~/Assets/img/@item.AnhBia" alt="Ảnh bìa" width="100" />
-                            }
-                        </td>
-                        <td>@Html.DisplayFor(modelItem => item.TieuDe)</td>
-                        <td>@item.Username</td>
-                        <td>@(item.NgayTao.HasValue ? item.NgayTao.Value.ToString("dd/MM/yyyy") : "")</td>
-                        <td>
-                            @if (item.TrangThai == false)
-                            {
-                                <span class="badge badge-dangviet">Đang viết</span>
-                            }
-                            else
-                            {
-                                <span class="badge badge-hoanthanh">Hoàn thành</span>
-                            }
-                        </td>
-                        <td class="action-buttons">
-                            @Html.Raw($"<a href='/Admin/Truyen/Edit/{item.TruyenId}' class='btn-view'><i class='fa fa-eye'></i></a>")
-                            <a href="@Url.Action("Delete", "Truyen", new { id = item.TruyenId })" class="btn-delete" onclick="return confirm('Bạn có chắc chắn muốn xóa không?');">
-                                <i class="fas fa-trash-alt"></i>
-                            </a>
-                        </td>
-                    </tr>
-                }
-            </tbody>
-        </table>
-
-        <!-- Pagination -->
-        <div class="pagination-container text-center">
-            @Html.PagedListPager(Model, page => Url.Action("TruyenCuaToi", new { page, searchTerm = ViewBag.SearchTerm, statusFilter = ViewBag.StatusFilter }),
-                new PagedListRenderOptions
-                {
-                    MaximumPageNumbersToDisplay = 5,
-                    UlElementClasses = new[] { "pagination" },
-                    LiElementClasses = new[] { "page-item" },
-                })
+</div>
+<div class="container">
+    <div class="tab-menu">
+        <div class="filter-item @(ViewBag.CurrentFilter == "all" ? "active" : "")">
+            <a href="@Url.Action("TruyenCuaToi", "User", new { userId = userId, filter = "all" })">Tất cả</a>
+        </div>
+        <div class="filter-item @(ViewBag.CurrentFilter == "dadang" ? "active" : "")">
+            <a href="@Url.Action("TruyenCuaToi", "User", new { userId = userId, filter = "dadang" })">Truyện đã đăng</a>
         </div>
     </div>
-</div>
+    <div class="story-list">
+        @foreach (var item in Model)
+        {
+            <!-- Truyện có chương đã đăng -->
+            <div class="story-card">
+                <div class="story-content">
+                    <div class="story-info">
+                        <img src="@Url.Content("~/Assets/img/" + item.AnhBia)" alt="Ảnh truyện" />
+                        <div class="story-text">
+                            <h2 class="story-title">
+                                <a href="@Url.Action("Edit", "Truyen", new { area = "Admin", id = item.TruyenId })">
+                                    @item.TieuDe
+                                </a>
+                            </h2>
 
-<script src="~/Assets/Admin/js/truyen/dsTruyen.js"></script>
+                            <p class="story-status">
+                                <span>@item.SoChuongDaDang đã đăng</span> - @item.SoBanThao bản thảo
+                            </p>
+
+                            @{
+                                var timeDiff = DateTime.Now - item.NgayCapNhat;
+                                string updateText;
+
+                                if (timeDiff.TotalMinutes < 1)
+                                {
+                                    updateText = "Vừa xong";
+                                }
+                                else if (timeDiff.TotalMinutes < 60)
+                                {
+                                    updateText = $"{(int)timeDiff.TotalMinutes} phút trước";
+                                }
+                                else if (timeDiff.TotalHours < 24)
+                                {
+                                    updateText = $"{(int)timeDiff.TotalHours} giờ trước";
+                                }
+                                else if (timeDiff.TotalDays < 7)
+                                {
+                                    updateText = $"{(int)timeDiff.TotalDays} ngày trước";
+                                }
+                                else
+                                {
+                                    updateText = item.NgayCapNhat.ToString("dd/MM/yyyy");
+                                }
+                            }
+                            <p class="story-update">Cập nhật: @updateText</p>
+                        </div>
+                    </div>
+                    <div class="actions">
+                        <button class="write-button">
+                            Tiếp tục viết
+                            <span class="caret-down"><i class="fas fa-caret-down"></i></span>
+                        </button>
+                        <div class="top-buttons" style="position: relative;">
+                            @if (item.SoChuongDaDang > 0)
+                            {
+                                <button class="stats-button" onclick="location.href='@Url.Action("ThongKe", "Truyen", new {area="Admin", id = item.TruyenId })'">Thống kê</button>
+
+                            }
+                            <div class="more-options-wrapper" style="position: relative; display: inline-block;">
+                                <button class="more-options" onclick="togglePopup(this)">...</button>
+                                <div class="popup-menu">
+                                    @if (item.SoChuongDaDang > 0)
+                                    {
+                                        <button class="preview-btn" onclick="location.href='@Url.Action("ChiTiet", "Truyen", new { area="Admin",id = item.TruyenId })'">
+                                            <i class="fas fa-eye"></i> Xem trước
+                                        </button>
+                                        <form action="@Url.Action("DungDangTai", "Truyen", new { area = "Admin" })" method="post" onsubmit="return confirm('Bạn chắc chắn muốn dừng đăng?');">
+                                            @Html.AntiForgeryToken()
+                                            <input type="hidden" name="id" value="@item.TruyenId" />
+                                            <button type="submit"> <i class="fas fa-pause"></i> Dừng đăng</button>
+                                        </form>
+                                        @Html.AntiForgeryToken()
+                                    }
+
+                                    <input type="hidden" name="id" value="@item.TruyenId" />
+                                    <button type="button" onclick="location.href='@Url.Action("Delete", "Truyen", new { area = "Admin", id = item.TruyenId, returnUrl = Url.Action("TruyenCuaToi", "User", new { userId = userId }) })'">
+                                        <i class="fas fa-trash-alt"></i> Xóa truyện
+                                    </button>
+
+                                </div>
+
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <!-- Popup mục lục -->
+                <div class="chapter-popup" style="display:none;">
+                    @{
+                        ViewBag.ControllerName = "Chuong";
+                        ViewBag.ActionName = "Edit";
+                        ViewBag.IsDocChuong = true;
+                        ViewBag.AreaName = "Admin";
+                        ViewBag.HienThiNutThemChuong = true;
+                        ViewBag.TruyenId = item.TruyenId;
+                    }
+                    @Html.Partial("~/Areas/Admin/Views/Chuong/MucLuc.cshtml", new Tuple<List<Web_truyen.Models.Chuong>, int>(ViewBag.DanhSachChuong, ViewBag.ChuongDangChon ?? 0))
+                </div>
+
+
+            </div>
+        }
+    </div>
+
+</div>
+<script>
+    const dungDangTaiUrl = '@Url.Action("DungDangTai", "Truyen", new { area = "Admin" })';
+</script>
+<script src="~/Assets/js/User/TruyenCuaToi.js"></script>
+

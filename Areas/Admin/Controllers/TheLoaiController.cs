@@ -27,13 +27,18 @@ namespace Web_truyen.Areas.Admin.Controllers
             }
 
             return View(list.ToPagedList(pageNumber, pageSize));
-        } 
+        }
         public ActionResult Index()
         {
-             var theLoaiList = db.TheLoai.ToList(); 
-              ViewData["TheLoaiList"] = theLoaiList;
+            var theLoaiList = db.TheLoai
+                                .Where(tl => tl.TheLoaiId != 2)
+                                .ToList();
+
+            ViewData["TheLoaiList"] = theLoaiList;
+
             return View();
         }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult DanhSach(string TenTheLoai)

@@ -4,6 +4,14 @@
     ViewBag.Title = "Chi tiết truyện";
     Layout = "~/Views/Share/_LayoutPage.cshtml";
 }
+@if (TempData["NotifyMessage"] != null)
+{
+    <div id="notifyMessage" class="alert alert-success">
+        @TempData["NotifyMessage"]
+    </div>
+}
+
+
 <link href="~/Assets/Admin/css/truyen/ChiTiet.css" rel="stylesheet" />
 <div class="container">
     <!-- Phần ảnh & thông tin truyện -->
@@ -20,17 +28,27 @@
                 </thead>
                 <tbody>
                     <tr>
-                        <td>10</td>
+                        <td>@Model.LuotDoc</td>
                         <td>@ViewBag.TongSoChuong</td>
                     </tr>
                 </tbody>
             </table>
             <div class="btn-group">
-                <button class="read-btn">Bắt đầu đọc</button>
+                @if (ViewBag.ChuongDauTienId != null)
+                {
+                    <a href="@Url.Action("DocChuong", "Chuong", new { area="Admin", id = ViewBag.ChuongDauTienId })" class="read-btn">
+                        Bắt đầu đọc
+                    </a>
+                }
                 <form action="/TheoDoiTruyen/AddThuvien" method="post">
                     <input type="hidden" name="truyenId" value="@Model.truyenId" />
-                    <button type="submit" class="plus-btn">+</button>
+                    <button type="submit"
+                            class="plus-btn @(ViewBag.IsFollowing == true || ViewBag.IsFollowing!=null  ? "followed" : "")"
+                            title="Theo dõi truyện">
+                        +
+                    </button>
                 </form>
+
             </div>
 
         </div>
@@ -56,7 +74,13 @@
                 }
             </div>
 
-            <div class="des">@Model.MoTa</div>
+            <div class="des" id="description">
+                <span id="short-desc">@Model.MoTa</span>
+                <a href="#" id="read-more" style="display: none; color: var(--button);">xem thêm</a>
+                <a href="#" id="read-less" style="display: none; color: var(--button);">thu gọn</a>
+            </div>
+
+
         </div>
 
         <!-- Mục lục -->
@@ -94,7 +118,7 @@
                                     }
                                 </div>
                             </div>
-                            
+
                         </a>
                     </div>
                 }
@@ -104,3 +128,4 @@
 
 
 </div>
+<script src="~/Assets/Admin/js/truyen/ChiTiet.js"></script>

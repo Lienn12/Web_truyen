@@ -12,3 +12,12 @@
         passwordIcon.classList.add("fa-eye");  
     }
 }
+document.addEventListener("DOMContentLoaded", function () {
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get("requireLogin") === "true") {
+        const result = confirm("Bạn cần đăng nhập để thực hiện chức năng này. Bạn có muốn đăng nhập không?");
+        if (!result) {
+            history.back(); 
+        }
+    }
+});
