@@ -70,7 +70,7 @@
                     </a>
                     <ul class="dropdown-menu">
                         <li><a href="#">Hồ sơ của tôi</a></li>
-                        <li><a href="#">Cài đặt</a></li>
+                        <li><a href="@Url.Action("Settings", "User", new { model=user, area="" })">Cài đặt</a></li>
                         <li><a href="@Url.Action("Logout", "Account",new {area=""})">Đăng xuất</a></li>
                     </ul>
                 </div>
