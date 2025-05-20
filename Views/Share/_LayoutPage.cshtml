@@ -69,7 +69,7 @@
                         <img src="@(user.avt != null ? Url.Content("~/Assets/img/"+user.avt.ToString()) : Url.Content("~/Assets/img/user1.png"))" alt="Avatar" />
                     </a>
                     <ul class="dropdown-menu">
-                        <li><a href="#">Hồ sơ của tôi</a></li>
+                        <li><a href="@Url.Action("HoSoCaNhan", "User", new { area = "", useId = user.userId })">Hồ sơ của tôi</a></li>
                         <li><a href="@Url.Action("Settings", "User", new { userId= user.userId, area="" })">Cài đặt</a></li>
                         <li><a href="@Url.Action("Logout", "Account",new {area=""})">Đăng xuất</a></li>
                     </ul>
