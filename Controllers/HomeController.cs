@@ -32,10 +32,10 @@ namespace Web_truyen.Controllers
 
             // Truyện mới đăng
             var newBooks = db.Truyen
-                             .Where(t => t.DaDang == true )
-                             .OrderByDescending(t => t.NgayTao)
-                             .Take(10)
-                             .ToList();
+                     .Where(t => t.DaDang == true)
+                     .OrderByDescending(t => t.NgayTao)
+                     .Take(10)
+                     .ToList();
             ViewBag.NewBooks = newBooks;
 
             // Truyện đề xuất (nhiều lượt xem nhất)

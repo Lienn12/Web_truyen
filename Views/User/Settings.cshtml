@@ -1,0 +1,84 @@
+﻿@model Web_truyen.Models.Users
+
+@{
+    ViewBag.Title = "Cài đặt tài khoản";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Cài đặt</h2>
+
+<div class="account-settings">
+    <ul class="nav nav-tabs">
+        <li class="active"><a href="#">Tài khoản</a></li>
+        <!-- Có thể thêm tab khác ở đây -->
+    </ul>
+
+    <div class="tab-content" style="margin-top: 20px;">
+        @using (Html.BeginForm("Settings", "User", FormMethod.Post, new { enctype = "multipart/form-data" }))
+        {
+            @Html.AntiForgeryToken()
+            @Html.HiddenFor(m => m.userId)
+
+            <div class="settings-box" style="background: white; padding: 20px; border-radius: 10px; max-width: 600px;">
+                <div class="form-group row">
+                    <label class="col-sm-3 control-label">Tên đăng nhập</label>
+                    <div class="col-sm-9">
+                        @Html.TextBoxFor(m => m.Username, new { @class = "form-control", placeholder = "Tên đăng nhập" })
+                        @Html.ValidationMessageFor(m => m.Username, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group row" style="margin-top: 15px;">
+                    <label class="col-sm-3 control-label">Mật khẩu</label>
+                    <div class="col-sm-9">
+                        <!-- Hiển thị link thay đổi mật khẩu, không show mật khẩu -->
+                        <a href="@Url.Action("ChangePassword", "User", new { userId = Model.userId })">Thay đổi</a>
+                    </div>
+                </div>
+
+                <div class="form-group row" style="margin-top: 15px;">
+                    <label class="col-sm-3 control-label">Email</label>
+                    <div class="col-sm-9">
+                        @Html.TextBoxFor(m => m.Email, new { @class = "form-control", placeholder = "Email", type = "email" })
+                        @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group row" style="margin-top: 15px;">
+                    <label class="col-sm-3 control-label">Ngày sinh</label>
+                    <div class="col-sm-9">
+                        @Html.TextBoxFor(m => m.NgaySinh, "{0:yyyy-MM-dd}", new { @class = "form-control", type = "date" })
+                        @Html.ValidationMessageFor(m => m.NgaySinh, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group row" style="margin-top: 20px; justify-content: center;">
+                    <button type="submit" class="btn btn-primary" style="padding: 10px 30px; border-radius: 5px;">Lưu</button>
+                </div>
+            </div>
+        }
+    </div>
+
+    <div style="margin-top: 20px;">
+        <a href="@Url.Action("DeleteAccount", "User", new { userId = Model.userId })" style="color: red; font-weight: bold;">Xóa tài khoản</a>
+    </div>
+</div>
+
+<style>
+    /* Tùy chỉnh nhỏ để layout giống ảnh */
+    .form-group.row {
+        display: flex;
+        align-items: center;
+    }
+
+    .control-label {
+        font-weight: bold;
+        padding-right: 15px;
+        width: 120px;
+        text-align: right;
+    }
+
+    .form-control {
+        max-width: 400px;
+    }
+</style>

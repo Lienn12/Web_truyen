@@ -22,7 +22,6 @@ namespace Web_truyen.Models
         public System.DateTime NgayTao { get; set; }
         public Nullable<int> BinhLuanChaId { get; set; }
         public virtual ICollection<BinhLuan> TraLoi { get; set; }
-
         public virtual Chuong Chuong { get; set; }
         public virtual Truyen Truyen { get; set; }
         public virtual Users Users { get; set; }

@@ -283,6 +283,51 @@ namespace Web_truyen.Areas.Admin.Controllers
             TempData["SuccessMessage"] = "Tài khoản đã được mở khóa.";
             return RedirectToAction("DanhSachUser");
         }
+        [HttpGet]
+        public ActionResult Settings(int? userId)
+        {
+            if (userId == null)
+                return RedirectToAction("Index", "Home");
 
+            var user = db.Users.Find(userId);
+            if (user == null)
+                return HttpNotFound();
+
+            return View(user);
+        }
+        [HttpPost]
+        [RoleUser]
+        public ActionResult Settings(int userId) {
+            if (ModelState.IsValid)
+            {
+                var user = db.Users.Find(userId);
+                if (user == null)
+                {
+                    return HttpNotFound();
+                }
+
+                // Kiểm tra trùng username (nếu bạn cho phép đổi username)
+                var exists = db.Users.Any(u => u.Username == Username && u.userId != userId);
+                if (exists)
+                {
+                    ModelState.AddModelError("Username", "Tên đăng nhập đã tồn tại, vui lòng chọn tên khác.");
+                    return View(user);
+                }
+
+                // Cập nhật thông tin được phép thay đổi
+                user.Username = model.Username;
+                user.Email = model.Email;
+                user.NgaySinh = model.NgaySinh;
+
+                db.Entry(user).State = EntityState.Modified;
+                db.SaveChanges();
+
+                TempData["SuccessMessage"] = "Cập nhật thông tin thành công.";
+                return RedirectToAction("Settings", new { userId = user.userId });
+            }
+
+            // Nếu có lỗi validate, trả về view với model để hiển thị lỗi
+            return View(userId);
+        }
     }
 }
