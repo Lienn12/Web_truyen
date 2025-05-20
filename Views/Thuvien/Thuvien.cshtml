@@ -28,11 +28,34 @@
             foreach (var truyen in Model)
             {
                 <div class="story-card">
-                    <a href="@Url.Action("ChiTiet", "Truyen", new { id = truyen.truyenId })">
-                        <img src="@Url.Content(string.IsNullOrEmpty(truyen.AnhBia) ? "~/Assets/img/user1.png" : "~/Assets/img/" + truyen.AnhBia)" alt="@truyen.TieuDe" />
-                    </a>
+                    <div class="image-wrapper" style="position: relative;">
+                        <a href="@Url.Action("ChiTiet", "Truyen", new { id = truyen.truyenId, area="Admin" })">
+                            <img src="@Url.Content(string.IsNullOrEmpty(truyen.AnhBia) ? "~/Assets/img/user1.png" : "~/Assets/img/" + truyen.AnhBia)" alt="@truyen.TieuDe" />
+                        </a>
+                        @{
+                            var chuongDict = ViewBag.ChuongGanNhatDict as Dictionary<int, int?>;
+                            int? chuongDocGanNhatId = null;
+                            if (chuongDict != null && chuongDict.ContainsKey(truyen.truyenId))
+                            {
+                                chuongDocGanNhatId = chuongDict[truyen.truyenId];
+                            }
+                        }
+                    <div class="story-actions">
+                        @if (chuongDocGanNhatId != null)
+                        {
+                            <a href="@Url.Action("DocChuong", "Chuong", new { id = chuongDocGanNhatId.Value, area = "Admin" })" class="btn btn-read">Đọc tiếp</a>
+                        }
+                        else
+                        {
+                            <a href="@Url.Action("ChiTiet", "Truyen", new { id = truyen.truyenId, area = "Admin" })" class="btn btn-read">Đọc tiếp</a>
+                        }
+                        <a href="@Url.Action("ChiTiet", "Truyen", new { id = truyen.truyenId, area="Admin" })" class="btn btn-detail">Chi tiết</a>
+                    </div>
+                    </div>
+
                     <div class="story-title">@truyen.TieuDe</div>
                 </div>
+
             }
         }
         else

@@ -15,7 +15,7 @@ namespace Web_truyen.Controllers
         public ActionResult Index()
         {
             var newBooks = db.Truyen
-                     .Where(t => t.DaDang == true)  
+                     .Where(t => t.DaDang == true)
                      .OrderByDescending(t => t.NgayTao)
                      .Take(10)
                      .ToList();
