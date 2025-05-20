@@ -146,6 +146,7 @@
     <Content Include="Assets\Admin\css\truyen\ThongKe.css" />
     <Content Include="Assets\Admin\js\truyen\ChiTiet.js" />
     <Content Include="Assets\Admin\js\truyen\ThongKe.js" />
+    <Content Include="Assets\css\AllBook.css" />
     <Content Include="Assets\css\User\HoSoCaNhan.css" />
     <Content Include="Assets\Admin\css\_head.css" />
     <Content Include="Assets\Admin\css\_MenuHead.css" />
@@ -211,6 +212,7 @@
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Areas\Admin\Models\ListChuongViewModel.cs" />
     <Compile Include="Areas\Admin\Models\ListTruyenViewModel.cs" />
+    <Compile Include="ViewModel\AuthorViewModel.cs" />
     <Compile Include="ViewModel\ListUserViewModel.cs" />
     <Compile Include="Areas\Admin\Models\TaoAnhBiaMacDinh.cs" />
     <Compile Include="Areas\Admin\Models\TruyenWithCountViewModel.cs" />
@@ -322,6 +324,7 @@
     <Content Include="Views\Thuvien\Thuvien.cshtml" />
     <Content Include="Views\User\ChinhSuaUser.cshtml" />
     <Content Include="Views\Share\_MenuHeadU.cshtml" />
+    <Content Include="Views\Home\AllBooks.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

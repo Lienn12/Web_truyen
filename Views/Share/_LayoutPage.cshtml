@@ -29,11 +29,11 @@
 
         <nav class="nav-links">
             <div class="dropdown">
-                <a href="#" class="dropdown-toggle">Danh sách<i class="fa-solid fa-angle-down"></i></a>
+                <a href="#" class="dropdown-toggle">Danh sách <i class="fa-solid fa-angle-down"></i></a>
                 <ul class="dropdown-menu">
-                    <li><a href="#">Tất cả truyện</a></li>
-                    <li><a href="#">Truyện hot</a></li>
-                    <li><a href="#">Truyện hoàn thành</a></li>
+                    <li><a href="@Url.Action("AllBooks", "Home", new { filter = "tatca" })">Tất cả truyện</a></li>
+                    <li><a href="@Url.Action("AllBooks", "Home", new { filter = "hot" })">Truyện hot</a></li>
+                    <li><a href="@Url.Action("AllBooks", "Home", new { filter = "hoanthanh" })">Truyện hoàn thành</a></li>
                 </ul>
             </div>
             <div class="dropdown">
