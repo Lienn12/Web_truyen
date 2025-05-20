@@ -3,6 +3,7 @@
 @{
     ViewBag.Title = "Home";
     Layout = "~/Views/Share/_LayoutPage.cshtml";
+    
 }
 <link href="~/Assets/css/Home.css" rel="stylesheet" />
 @section svg{
@@ -48,9 +49,9 @@
                 <h4>Truyện của tôi</h4>
             </li>
             <li>
-                @if (SessionConfig.GetUser() != null)
+                @if (ViewBag.UserId > 0)
                 {
-                    <a href="@Url.Action("HoSoCaNhan", "User", new { area = "Admin", userId = SessionConfig.GetUser().userId })">
+                    <a href="@Url.Action("HoSoCaNhan", "User", new { area = "", useId = ViewBag.UserId })">
                         <div class="icon-box">
                             <i class="fas fa-user-circle"></i> <!-- Icon hồ sơ người dùng -->
                         </div>

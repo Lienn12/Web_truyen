@@ -18,7 +18,8 @@ namespace Web_truyen.Controllers
         {
             var user = SessionConfig.GetUser();
             if (user != null)
-            { 
+            {
+                ViewBag.UserId = user.userId;
                 var reading = db.ThuVien
                                 .Where(ls => ls.UserID == user.userId)
                                 .OrderByDescending(ls => ls.ThoiGianDocGanNhat)
