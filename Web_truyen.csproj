@@ -162,6 +162,7 @@
     <Content Include="Assets\Admin\js\MucLuc.js" />
     <Content Include="Assets\Admin\js\truyen\MucLucEdit.js" />
     <Content Include="Assets\Admin\js\truyen\Themtruyen.js" />
+    <Content Include="Assets\css\User\Settings.css" />
     <Content Include="Assets\css\User\SuaHoSo.css" />
     <Content Include="Assets\css\User\TruyenCuaToi.css" />
     <Content Include="Assets\js\User\HoSoCaNhan.js" />

@@ -74,30 +74,31 @@
 <div class="main-layout">
     <div class="container_main">
         <!-- Truyện đang đọc -->
-        @if (ViewBag.ReadingBooks != null)
-        {
-            <div class="section-title">Truyện bạn đang đọc:</div>
-            <div class="carousel-wrapper">
-                <button class="carousel-btn prev"><i class="fas fa-chevron-left"></i></button>
-
-                <div class="carousel">
-                    @foreach (var item in ViewBag.ReadingBooks)
-                    {
-                        <a href="@Url.Action("ChiTiet", "Truyen", new { area="Admin", id = item.truyenId })" class="book-card">
-                            <div class="book-thumbnail">
-                                <img src="~/Assets/img/@item.AnhBia" alt="@item.TieuDe" />
-                            </div>
-                            <div class="book-name">@item.TieuDe</div>
-                        </a>
-                    }
-                </div>
-
-                <button class="carousel-btn next"><i class="fas fa-chevron-right"></i></button>
-            </div>
-        }
+       
 
         <div class="layout-row">
             <div class="main-column">
+                @if (ViewBag.ReadingBooks != null)
+                {
+                    <div class="section-title">Truyện bạn đang đọc:</div>
+                    <div class="carousel-wrapper">
+                        <button class="carousel-btn prev"><i class="fas fa-chevron-left"></i></button>
+
+                        <div class="carousel">
+                            @foreach (var item in ViewBag.ReadingBooks)
+                            {
+                                <a href="@Url.Action("ChiTiet", "Truyen", new { area="Admin", id = item.truyenId })" class="book-card">
+                                    <div class="book-thumbnail">
+                                        <img src="~/Assets/img/@item.AnhBia" alt="@item.TieuDe" />
+                                    </div>
+                                    <div class="book-name">@item.TieuDe</div>
+                                </a>
+                            }
+                        </div>
+
+                        <button class="carousel-btn next"><i class="fas fa-chevron-right"></i></button>
+                    </div>
+                }
                 <!-- Truyện mới -->
                 <div class="section-title">Truyện mới</div>
                 <div class="carousel-wrapper">

@@ -1,6 +1,5 @@
 ﻿@model List<Web_truyen.Models.Truyen>
 @{
-    ViewBag.Title = "AllBooks";
     Layout = "~/Views/Share/_LayoutPage.cshtml";
     var currentFilter = (string)ViewBag.Filter ?? "tatca";
     var theLoaiId = (int?)ViewBag.TheLoaiId;
@@ -26,16 +25,36 @@
 <div class="grid-container">
     @foreach (var item in Model)
     {
+
         <div class="card">
-            <div class="thumbnail"></div>
-            <div class="name">@item.TieuDe</div>
-            <div class="description">@item.MoTa?.Substring(0, Math.Min(item.MoTa.Length, 100))...</div>
-            <div class="buttons">
-                <a href="@Url.Action("Detail", "Truyen", new { id = item.truyenId })" class="btn complete">Xem</a>
-                <span class="btn tag">@item.TheLoai?.TenTheLoai</span>
+            <img class="thumbnail" src="~/Assets/img/@item.AnhBia" />
+            <div class="content">
+                <h3 class="title">
+                    <a href="@Url.Action("ChiTiet", "Truyen", new { area = "Admin", id = item.truyenId })">
+                        @item.TieuDe
+                    </a>
+                </h3>
+                <div class="stats">
+                    <span class="likes">
+                        <i class="fa-solid fa-heart"></i> @(ViewBag.YeuThichDict > 0 ? ViewBag.YeuThichDict.ToString() : 0)
+                    </span>
+                    <span class="comments">
+                        <i class="fa-solid fa-comment-dots"></i> @(ViewBag.BinhLuanDict > 0 ? ViewBag.BinhLuanDict.ToString() : 0)
+                    </span>
+                    <span class="chapters">
+                        <i class="fa-solid fa-book-open"></i> @(ViewBag.ChuongDict > 0 ? ViewBag.ChuongDict.ToString() : 0)
+                    </span>
+                </div>
+
+
+                <p class="description">@item.MoTa</p>
+                <button class="btn @(item.TrangThai ? "btn-complete" : "btn-inprogress")">
+                    @(item.TrangThai ? "Hoàn thành" : "Đang viết")
+                </button>
             </div>
         </div>
     }
+
 </div>
 
 

@@ -1,0 +1,111 @@
+﻿*{
+    font-family: var(--font);
+}
+.account-settings {
+    max-width: 600px;
+    margin: 40px auto;
+}
+
+.nav-tabs {
+    border-bottom: none;
+/*    margin-bottom: -1px;*/
+    padding-left: 15px;
+}
+
+    .nav-tabs li {
+        list-style: none;
+        display: inline-block;
+        margin-right: 15px;
+    }
+
+        .nav-tabs li a {
+            color: #3c3c3c;
+            font-weight: bold;
+            text-decoration: none;
+            font-size: 16px;
+        }
+
+        .nav-tabs li.active a {
+            color: #2a00ff;
+            border-bottom: 3px solid #2a00ff;
+            padding-bottom: 4px;
+        }
+
+.settings-box {
+    background-color: white;
+    padding: 30px 40px;
+    border-radius: 15px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+}
+
+.form-group {
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+}
+
+.control-label {
+    flex: 0 0 130px;
+    font-weight: 600;
+    color: #111;
+}
+
+.form-control {
+    flex: 1;
+    border: none;
+    background-color: transparent;
+    font-size: 16px;
+    padding-left: 0;
+}
+
+    .form-control:focus {
+        outline: none;
+        box-shadow: none;
+    }
+
+a[href*="ChangePassword"] {
+    font-size: 13px;
+    color: #6c63ff;
+    margin-left: 5px;
+    text-decoration: none;
+}
+
+    a[href*="ChangePassword"]:hover {
+        text-decoration: underline;
+    }
+
+.btn-primary {
+    background-color: #2a00ff;
+    border: none;
+    padding: 10px 40px;
+    border-radius: 10px;
+    font-weight: bold;
+    color: white;
+    font-size: 16px;
+    transition: background-color 0.3s;
+}
+
+    .btn-primary:hover {
+        background-color: #1a00cc;
+    }
+
+.text-danger {
+    color: red;
+    font-size: 13px;
+}
+
+.delete-account {
+    margin-top: 25px;
+    text-align: center;
+}
+
+    .delete-account a {
+        color: #b30000;
+        font-weight: bold;
+        font-size: 16px;
+        text-decoration: none;
+    }
+
+        .delete-account a:hover {
+            text-decoration: underline;
+        }
