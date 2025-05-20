@@ -1,0 +1,41 @@
+﻿@model List<Web_truyen.Models.Truyen>
+@{
+    ViewBag.Title = "AllBooks";
+    Layout = "~/Views/Share/_LayoutPage.cshtml";
+    var currentFilter = (string)ViewBag.Filter ?? "tatca";
+    var theLoaiId = (int?)ViewBag.TheLoaiId;
+    var allTheLoai = ViewBag.AllTheLoai as List<Web_truyen.Models.TheLoai>;
+}
+<link href="~/Assets/css/AllBook.css" rel="stylesheet" />
+<h2 class="text-center">@ViewBag.Title</h2>
+
+<div class="filter-bar">
+    <a class="filter-item @(currentFilter == "tatca" && theLoaiId == null ? "active" : "")" href="@Url.Action("AllBooks", new { filter = "tatca" })">Tất cả</a>
+    <a class="filter-item @(currentFilter == "hot" ? "active" : "")" href="@Url.Action("AllBooks", new { filter = "hot" })">Truyện hot</a>
+    <a class="filter-item @(currentFilter == "hoanthanh" ? "active" : "")" href="@Url.Action("AllBooks", new { filter = "hoanthanh" })">Hoàn thành</a>
+
+    @foreach (var theLoai in allTheLoai)
+    {
+        <a class="filter-item @(theLoaiId == theLoai.TheLoaiId ? "active" : "")"
+           href="@Url.Action("AllBooks", new { filter = "tatca", theLoaiId = theLoai.TheLoaiId })">
+            @theLoai.TenTheLoai
+        </a>
+    }
+</div>
+
+<div class="grid-container">
+    @foreach (var item in Model)
+    {
+        <div class="card">
+            <div class="thumbnail"></div>
+            <div class="name">@item.TieuDe</div>
+            <div class="description">@item.MoTa?.Substring(0, Math.Min(item.MoTa.Length, 100))...</div>
+            <div class="buttons">
+                <a href="@Url.Action("Detail", "Truyen", new { id = item.truyenId })" class="btn complete">Xem</a>
+                <span class="btn tag">@item.TheLoai?.TenTheLoai</span>
+            </div>
+        </div>
+    }
+</div>
+
+
