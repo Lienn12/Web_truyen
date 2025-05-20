@@ -162,6 +162,7 @@
     <Content Include="Assets\Admin\js\MucLuc.js" />
     <Content Include="Assets\Admin\js\truyen\MucLucEdit.js" />
     <Content Include="Assets\Admin\js\truyen\Themtruyen.js" />
+    <Content Include="Assets\css\User\Settings.css" />
     <Content Include="Assets\css\User\SuaHoSo.css" />
     <Content Include="Assets\css\User\TruyenCuaToi.css" />
     <Content Include="Assets\js\User\HoSoCaNhan.js" />
@@ -304,6 +305,7 @@
     <Content Include="Views\User\DanhSachUser.cshtml" />
     <Content Include="Views\User\HoSoCaNhan.cshtml" />
     <Content Include="Views\User\TruyenCuaToi.cshtml" />
+    <Content Include="Views\User\Settings.cshtml" />
     <EntityDeploy Include="Models\Connect.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>Connect.Designer.cs</LastGenOutput>

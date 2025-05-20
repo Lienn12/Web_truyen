@@ -297,24 +297,25 @@ namespace Web_truyen.Areas.Admin.Controllers
         }
         [HttpPost]
         [RoleUser]
-        public ActionResult Settings(int userId) {
+        public ActionResult Settings(Users model)
+        {
             if (ModelState.IsValid)
             {
-                var user = db.Users.Find(userId);
+                var user = db.Users.Find(model.userId);
                 if (user == null)
                 {
                     return HttpNotFound();
                 }
 
-                // Kiểm tra trùng username (nếu bạn cho phép đổi username)
-                var exists = db.Users.Any(u => u.Username == Username && u.userId != userId);
+                // Kiểm tra trùng username
+                var exists = db.Users.Any(u => u.Username == model.Username && u.userId != model.userId);
                 if (exists)
                 {
                     ModelState.AddModelError("Username", "Tên đăng nhập đã tồn tại, vui lòng chọn tên khác.");
-                    return View(user);
+                    return View(model);
                 }
 
-                // Cập nhật thông tin được phép thay đổi
+                // Cập nhật thông tin
                 user.Username = model.Username;
                 user.Email = model.Email;
                 user.NgaySinh = model.NgaySinh;
@@ -323,11 +324,11 @@ namespace Web_truyen.Areas.Admin.Controllers
                 db.SaveChanges();
 
                 TempData["SuccessMessage"] = "Cập nhật thông tin thành công.";
-                return RedirectToAction("Settings", new { userId = user.userId });
+                return RedirectToAction("Settings", new { userId = model.userId });
             }
 
-            // Nếu có lỗi validate, trả về view với model để hiển thị lỗi
-            return View(userId);
+            return View(model);
         }
+
     }
 }

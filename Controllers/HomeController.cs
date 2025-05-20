@@ -97,41 +97,70 @@ namespace Web_truyen.Controllers
         }
         public ActionResult AllBooks(string filter = "tatca", int? theLoaiId = null)
         {
+            // Truy vấn các truyện đã đăng
             IQueryable<Truyen> query = db.Truyen.Where(t => t.DaDang == true);
 
-            ViewBag.Title = "Tất cả truyện";
+            // Tiêu đề mặc định
+            string title = "Tất cả truyện";
 
+            // Áp dụng bộ lọc theo loại truyện
             switch (filter.ToLower())
             {
                 case "hot":
                     query = query.OrderByDescending(t => t.LuotDoc);
-                    ViewBag.Title = "Truyện Hot";
+                    title = "Truyện Hot";
                     break;
+
                 case "hoanthanh":
-                    query = query.Where(t => t.TrangThai == true).OrderByDescending(t => t.NgayTao);
-                    ViewBag.Title = "Truyện Hoàn Thành";
+                    query = query.Where(t => t.TrangThai == true)
+                                 .OrderByDescending(t => t.NgayTao);
+                    title = "Truyện Hoàn Thành";
                     break;
+
+                case "tatca":
                 default:
                     query = query.OrderByDescending(t => t.NgayTao);
                     break;
             }
 
-            if (theLoaiId.HasValue)
+            // Nếu có lọc theo thể loại
+            if (theLoaiId.HasValue && theLoaiId.Value != 2)
             {
                 query = query.Where(t => t.TheLoaiId == theLoaiId.Value);
+
                 var theLoai = db.TheLoai.Find(theLoaiId.Value);
                 if (theLoai != null)
                 {
-                    ViewBag.Title = $"Thể loại: {theLoai.TenTheLoai}";
+                    title += $" - Thể loại: {theLoai.TenTheLoai}";
                 }
             }
 
+            // Tạo dictionary thống kê
+            var yeuThichDict = db.TheoDoi_Truyen
+                .GroupBy(y => y.truyenId)
+                .ToDictionary(g => g.Key, g => g.Count());
+
+            var binhLuanDict = db.BinhLuan
+                .GroupBy(b => b.truyenId)
+                .ToDictionary(g => g.Key, g => g.Count());
+
+            var chuongDict = db.Chuong
+                .GroupBy(c => c.truyenId)
+                .ToDictionary(g => g.Key, g => g.Count());
+
+            // Gán vào ViewBag
+            ViewBag.YeuThichDict = yeuThichDict;
+            ViewBag.BinhLuanDict = binhLuanDict;
+            ViewBag.ChuongDict = chuongDict;
+
+            // Truy vấn kết quả
             var allBooks = query.ToList();
 
+            // Gán dữ liệu cho view
+            ViewBag.Title = title;
             ViewBag.Filter = filter;
             ViewBag.TheLoaiId = theLoaiId;
-            ViewBag.AllTheLoai = db.TheLoai.ToList();
-
+            ViewBag.AllTheLoai = db.TheLoai.Where(t => t.TheLoaiId != 2).ToList();
             return View(allBooks);
         }
 

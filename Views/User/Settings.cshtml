@@ -2,24 +2,30 @@
 
 @{
     ViewBag.Title = "Cài đặt tài khoản";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    Layout = "~/Views/Share/_LayoutPage.cshtml";
 }
 
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success">
+        @TempData["SuccessMessage"]
+    </div>
+}
+<link href="~/Assets/css/User/Settings.css" rel="stylesheet" />
 <h2>Cài đặt</h2>
-
 <div class="account-settings">
     <ul class="nav nav-tabs">
         <li class="active"><a href="#">Tài khoản</a></li>
         <!-- Có thể thêm tab khác ở đây -->
     </ul>
 
-    <div class="tab-content" style="margin-top: 20px;">
+    <div class="tab-content" style="margin-top: 3px;">
         @using (Html.BeginForm("Settings", "User", FormMethod.Post, new { enctype = "multipart/form-data" }))
         {
             @Html.AntiForgeryToken()
             @Html.HiddenFor(m => m.userId)
 
-            <div class="settings-box" style="background: white; padding: 20px; border-radius: 10px; max-width: 600px;">
+            <div class="settings-box" style="background: white;  border-radius: 10px; max-width: 600px;">
                 <div class="form-group row">
                     <label class="col-sm-3 control-label">Tên đăng nhập</label>
                     <div class="col-sm-9">
@@ -64,21 +70,4 @@
     </div>
 </div>
 
-<style>
-    /* Tùy chỉnh nhỏ để layout giống ảnh */
-    .form-group.row {
-        display: flex;
-        align-items: center;
-    }
 
-    .control-label {
-        font-weight: bold;
-        padding-right: 15px;
-        width: 120px;
-        text-align: right;
-    }
-
-    .form-control {
-        max-width: 400px;
-    }
-</style>
